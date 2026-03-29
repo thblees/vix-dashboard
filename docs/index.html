@@ -1,1 +1,907 @@
+bash
+
+cat /home/claude/vix-dashboard/docs/index.html
+Ausgabe
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIX Regime Dashboard — meine-geldseite.de</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #080b0f;
+    --s1:       #0f1520;
+    --s2:       #141d2b;
+    --border:   #1c2840;
+    --border2:  #253350;
+    --gold:     #c8a234;
+    --green:    #2fbe6a;
+    --red:      #dc4f4f;
+    --orange:   #e07b28;
+    --blue:     #3d8ef0;
+    --text:     #bbc8d8;
+    --muted:    #465870;
+    --white:    #e8eff8;
+    --fhead:    'Syne', sans-serif;
+    --fmono:    'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--fmono);
+    font-size: 13px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* ─── TOPBAR ─── */
+  .topbar {
+    background: var(--s1);
+    border-bottom: 1px solid var(--border);
+    padding: 0 28px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .topbar-brand { font-family: var(--fhead); font-size: 15px; font-weight: 800; color: var(--gold); letter-spacing: -0.3px; }
+  .topbar-brand span { color: var(--white); }
+  .topbar-right { display: flex; align-items: center; gap: 20px; font-size: 11px; color: var(--muted); }
+  .update-badge { display: flex; align-items: center; gap: 6px; }
+  .update-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .refresh-btn {
+    background: transparent; border: 1px solid var(--border2); color: var(--text);
+    padding: 5px 14px; font-family: var(--fmono); font-size: 11px; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .refresh-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ─── LAYOUT ─── */
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+  .page-padding { padding: 28px 0; }
+
+  /* ─── ERROR / LOADING ─── */
+  #loading, #error-msg {
+    text-align: center; padding: 60px 20px;
+    color: var(--muted); font-size: 14px;
+  }
+  #error-msg { color: var(--red); display: none; }
+
+  /* ─── HERO METRICS ─── */
+  .hero {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .vix-big {
+    background: var(--s1);
+    border: 1px solid var(--border);
+    padding: 28px 28px 24px;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .vix-big-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .vix-big-value { font-family: var(--fhead); font-size: 72px; font-weight: 800; line-height: 1; color: var(--white); }
+  .vix-big-sub { font-size: 11px; color: var(--muted); margin-top: 6px; }
+  .regime-pill {
+    display: inline-block; padding: 7px 16px; margin-top: 16px;
+    font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+    border-radius: 2px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr 1fr;
+    gap: 4px;
+  }
+
+  .stat-box {
+    background: var(--s1);
+    border: 1px solid var(--border);
+    padding: 16px 18px;
+  }
+
+  .stat-box-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .stat-box-value { font-family: var(--fhead); font-size: 22px; font-weight: 700; color: var(--white); }
+  .stat-box-detail { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+  /* ─── SIGNAL STRIP ─── */
+  .signal-strip {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+    margin-bottom: 20px;
+  }
+
+  .sig-card {
+    background: var(--s1);
+    border: 1px solid var(--border);
+    padding: 16px;
+    position: relative;
+    transition: border-color 0.3s;
+  }
+
+  .sig-card.active-green { border-color: rgba(47,190,106,0.5); background: rgba(47,190,106,0.04); }
+  .sig-card.active-red   { border-color: rgba(220,79,79,0.5);  background: rgba(220,79,79,0.04);  }
+  .sig-card.manual       { border-color: rgba(200,162,52,0.4); background: rgba(200,162,52,0.03); }
+  .sig-card.inactive     { opacity: 0.55; }
+
+  .sig-id {
+    font-size: 9px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .sig-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  .sig-title { font-size: 12px; font-weight: 600; color: var(--white); margin-bottom: 4px; line-height: 1.3; }
+  .sig-detail { font-size: 10px; color: var(--muted); line-height: 1.5; }
+  .sig-badge { font-size: 10px; font-weight: 700; margin-top: 8px; }
+
+  /* ─── REENTRY VERDICT ─── */
+  .verdict-box {
+    background: var(--s1);
+    border: 1px solid var(--border);
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 20px;
+    transition: border-color 0.4s;
+  }
+
+  .verdict-score {
+    font-family: var(--fhead);
+    font-size: 52px;
+    font-weight: 800;
+    color: var(--white);
+    min-width: 80px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .verdict-divider { width: 1px; height: 60px; background: var(--border2); flex-shrink: 0; }
+
+  .verdict-text { flex: 1; }
+  .verdict-title { font-family: var(--fhead); font-size: 19px; font-weight: 700; color: var(--white); margin-bottom: 6px; }
+  .verdict-action { font-size: 12px; color: var(--text); line-height: 1.7; }
+
+  .verdict-equity { flex-shrink: 0; text-align: right; }
+  .verdict-equity-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .verdict-equity-value { font-family: var(--fhead); font-size: 26px; font-weight: 700; }
+
+  /* ─── CHARTS ─── */
+  .charts-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .chart-card {
+    background: var(--s1);
+    border: 1px solid var(--border);
+    padding: 20px 20px 14px;
+  }
+
+  .chart-title {
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 14px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .chart-title span { font-size: 11px; color: var(--text); font-weight: 600; letter-spacing: 0; text-transform: none; }
+
+  .chart-wrap { position: relative; height: 220px; }
+
+  /* ─── DATA TABLE ─── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+
+  .data-table th {
+    text-align: left;
+    font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); padding: 10px 14px;
+    border-bottom: 1px solid var(--border2); font-weight: 400;
+  }
+
+  .data-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(28,40,64,0.6);
+    vertical-align: middle;
+  }
+
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: rgba(255,255,255,0.01); }
+
+  /* ─── STATUS INDICATOR ─── */
+  .status-indicator {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600;
+    padding: 3px 10px; border-radius: 1px;
+  }
+  .si-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+  /* ─── MONITORING BOX ─── */
+  .monitoring-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    margin-top: 20px;
+  }
+
+  .mon-box {
+    background: var(--s1);
+    border: 1px solid var(--border);
+    padding: 18px;
+  }
+
+  .mon-freq { font-family: var(--fhead); font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+  .mon-when { font-size: 10px; color: var(--muted); margin-bottom: 10px; letter-spacing: 1px; text-transform: uppercase; }
+  .mon-item { font-size: 11px; color: var(--text); padding: 4px 0; border-bottom: 1px solid var(--border); line-height: 1.5; }
+  .mon-item:last-child { border-bottom: none; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 20px 0;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .footer-brand { font-family: var(--fhead); color: var(--gold); font-size: 13px; }
+
+  /* ─── UTILS ─── */
+  .green  { color: var(--green); }
+  .red    { color: var(--red); }
+  .orange { color: var(--orange); }
+  .gold   { color: var(--gold); }
+  .blue   { color: var(--blue); }
+  .white  { color: var(--white); }
+  .muted  { color: var(--muted); }
+
+  @media (max-width: 900px) {
+    .hero           { grid-template-columns: 1fr; }
+    .stats-grid     { grid-template-columns: repeat(3, 1fr); }
+    .signal-strip   { grid-template-columns: 1fr 1fr; }
+    .charts-row     { grid-template-columns: 1fr; }
+    .monitoring-grid { grid-template-columns: 1fr 1fr; }
+    .verdict-box    { flex-wrap: wrap; }
+  }
+
+  @media (max-width: 580px) {
+    .signal-strip   { grid-template-columns: 1fr; }
+    .stats-grid     { grid-template-columns: 1fr 1fr; }
+    .monitoring-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-brand">meine-<span>geldseite</span>.de · VIX Dashboard</div>
+  <div class="topbar-right">
+    <div class="update-badge">
+      <div class="update-dot"></div>
+      <span id="update-time">Lädt...</span>
+    </div>
+    <button class="refresh-btn" onclick="loadData()">↻ Refresh</button>
+  </div>
+</div>
+
+<div class="container">
+<div class="page-padding">
+
+  <div id="loading">⏳ Lade VIX-Daten...</div>
+  <div id="error-msg">⚠ Fehler beim Laden der Daten. Bitte Seite neu laden.</div>
+
+  <!-- MAIN CONTENT (hidden until data loaded) -->
+  <div id="main-content" style="display:none">
+
+    <!-- HERO: VIX + Stats -->
+    <div class="hero">
+      <div class="vix-big">
+        <div>
+          <div class="vix-big-label">CBOE VIX Index — Aktuell</div>
+          <div class="vix-big-value" id="vix-value">—</div>
+          <div class="vix-big-sub" id="vix-sub">Lade...</div>
+        </div>
+        <div>
+          <div id="regime-pill" class="regime-pill">—</div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-box-label">MA10 (VIX)</div>
+          <div class="stat-box-value" id="stat-ma10">—</div>
+          <div class="stat-box-detail" id="stat-ma10-rel">—</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">MA20 (VIX)</div>
+          <div class="stat-box-value" id="stat-ma20">—</div>
+          <div class="stat-box-detail" id="stat-ma20-pct">—</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">Bollinger Oben</div>
+          <div class="stat-box-value" id="stat-bb">—</div>
+          <div class="stat-box-detail" id="stat-bb-rel">—</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">VVIX</div>
+          <div class="stat-box-value" id="stat-vvix">—</div>
+          <div class="stat-box-detail" id="stat-vvix-trend">—</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">S&P 500</div>
+          <div class="stat-box-value" id="stat-spy">—</div>
+          <div class="stat-box-detail" id="stat-spy-ma50">—</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">VIX 30d Max</div>
+          <div class="stat-box-value" id="stat-vix30max">—</div>
+          <div class="stat-box-detail" id="stat-vix30min">30d Min: —</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RE-ENTRY SIGNAL VERDICT -->
+    <div class="verdict-box" id="verdict-box">
+      <div class="verdict-score" id="verdict-score">—</div>
+      <div class="verdict-divider"></div>
+      <div class="verdict-text">
+        <div class="verdict-title" id="verdict-title">Lädt...</div>
+        <div class="verdict-action" id="verdict-action">—</div>
+      </div>
+      <div class="verdict-equity">
+        <div class="verdict-equity-label">Aktienquote</div>
+        <div class="verdict-equity-value" id="verdict-equity">—</div>
+      </div>
+    </div>
+
+    <!-- 5 SIGNAL CARDS -->
+    <div class="signal-strip">
+      <!-- R1 -->
+      <div class="sig-card" id="sig-r1">
+        <div class="sig-id"><div class="sig-dot" id="r1-dot"></div> R1 · PFLICHT</div>
+        <div class="sig-title">VIX 3 Tage unter MA10</div>
+        <div class="sig-detail">VIX schließt heute und die letzten 2 Tage unter dem 10-Tage-Durchschnitt</div>
+        <div class="sig-badge" id="r1-badge">—</div>
+        <div class="sig-detail" id="r1-streak" style="margin-top:4px"></div>
+      </div>
+      <!-- R2 -->
+      <div class="sig-card manual" id="sig-r2">
+        <div class="sig-id"><div class="sig-dot" style="background:var(--gold)"></div> R2 · MANUELL</div>
+        <div class="sig-title">VIX Futures in Contango</div>
+        <div class="sig-detail">Prüfe cboe.com → Term Structure. Frontmonat &lt; Folgemonat?</div>
+        <div class="sig-badge gold" style="margin-top:8px">→ cboe.com/tradable-products/vix/term-structure/</div>
+      </div>
+      <!-- R3 -->
+      <div class="sig-card" id="sig-r3">
+        <div class="sig-id"><div class="sig-dot" id="r3-dot"></div> R3</div>
+        <div class="sig-title">VIX 30%+ über MA20 gewesen</div>
+        <div class="sig-detail">Überdehnung in den letzten 30 Tagen bestätigt — Mean Reversion wahrscheinlich</div>
+        <div class="sig-badge" id="r3-badge">—</div>
+        <div class="sig-detail" id="r3-pct" style="margin-top:4px"></div>
+      </div>
+      <!-- R4 -->
+      <div class="sig-card" id="sig-r4">
+        <div class="sig-id"><div class="sig-dot" id="r4-dot"></div> R4</div>
+        <div class="sig-title">VVIX fällt &lt; 120</div>
+        <div class="sig-detail">Volatilität der Volatilität normalisiert sich — frühes Beruhigungssignal</div>
+        <div class="sig-badge" id="r4-badge">—</div>
+        <div class="sig-detail" id="r4-detail" style="margin-top:4px"></div>
+      </div>
+      <!-- R5 -->
+      <div class="sig-card" id="sig-r5">
+        <div class="sig-id"><div class="sig-dot" id="r5-dot"></div> R5 · HINWEIS</div>
+        <div class="sig-title">S&P 500 technische Basis</div>
+        <div class="sig-detail">Kein neues Tief mehr erkennbar. Higher Low oder Seitwärtsbasis?</div>
+        <div class="sig-badge" id="r5-badge">—</div>
+        <div class="sig-detail" id="r5-detail" style="margin-top:4px"></div>
+      </div>
+    </div>
+
+    <!-- CHARTS -->
+    <div class="charts-row">
+      <div class="chart-card">
+        <div class="chart-title">
+          VIX-Verlauf 90 Tage + MA10/MA20 + Bollinger Bands
+          <span id="chart-vix-current"></span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="chartVix"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">
+          VVIX (Vol der Vol) — 30 Tage
+          <span id="chart-vvix-current"></span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="chartVvix"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- METRIKEN-TABELLE -->
+    <div class="chart-card" style="margin-bottom:20px">
+      <div class="chart-title">Alle Metriken im Überblick</div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Metrik</th>
+            <th>Aktueller Wert</th>
+            <th>Schwelle</th>
+            <th>Status</th>
+            <th>Bedeutung</th>
+          </tr>
+        </thead>
+        <tbody id="metrics-tbody">
+          <tr><td colspan="5" style="color:var(--muted);padding:16px">Lädt...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- MONITORING FREQUENZ -->
+    <div class="chart-card" style="margin-bottom:4px">
+      <div class="chart-title">Monitoring-Frequenz — aktuell empfohlen</div>
+      <div class="monitoring-grid">
+        <div class="mon-box">
+          <div class="mon-freq" id="mon-freq">Täglich</div>
+          <div class="mon-when">Nach US-Close, ~22:00</div>
+          <div class="mon-item">✓ VIX Close vs. MA10</div>
+          <div class="mon-item">✓ VVIX Trend</div>
+          <div class="mon-item">✓ Futures Term Structure</div>
+          <div class="mon-item">✓ S&P 500 Chart (Tief?)</div>
+        </div>
+        <div class="mon-box">
+          <div class="mon-freq">Wöchentlich</div>
+          <div class="mon-when">Sonntags ~15 Min</div>
+          <div class="mon-item">→ Regime-Check (dieses Dashboard)</div>
+          <div class="mon-item">→ Alle 5 Bedingungen prüfen</div>
+          <div class="mon-item">→ Allokation anpassen?</div>
+          <div class="mon-item">→ Watchlist aktualisieren</div>
+        </div>
+        <div class="mon-box">
+          <div class="mon-freq">Quellen</div>
+          <div class="mon-when">Datenquellen</div>
+          <div class="mon-item">VIX/VVIX: Yahoo Finance</div>
+          <div class="mon-item">Futures: cboe.com/vix</div>
+          <div class="mon-item">Chart: TradingView SPX</div>
+          <div class="mon-item">Update: täglich 22:30 Uhr</div>
+        </div>
+        <div class="mon-box">
+          <div class="mon-freq" style="color:var(--gold)">Warnung</div>
+          <div class="mon-when">Datenhinweis</div>
+          <div class="mon-item">R2 = manuell (CBOE)</div>
+          <div class="mon-item">R5 = Schätzung, kein Ersatz für eigene Chart-Analyse</div>
+          <div class="mon-item">Kein Anlageberatung</div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <span class="footer-brand">meine-geldseite.de</span>
+      <span id="footer-updated">VIX Regime Dashboard · Daten: Yahoo Finance</span>
+    </footer>
+
+  </div><!-- /main-content -->
+</div>
+</div>
+
+<script>
+// ─── FARBPALETTE ───
+const C = {
+  green:  '#2fbe6a',
+  red:    '#dc4f4f',
+  orange: '#e07b28',
+  gold:   '#c8a234',
+  blue:   '#3d8ef0',
+  muted:  '#465870',
+  border: '#1c2840',
+  text:   '#bbc8d8',
+  white:  '#e8eff8',
+  bg:     '#0f1520',
+};
+
+// ─── REGIME → FARBE ───
+const REGIME_COLOR = {
+  KOMFORT:          { bg: 'rgba(47,190,106,0.15)',  border: 'rgba(47,190,106,0.5)',  text: '#2fbe6a',  pill_bg: 'rgba(47,190,106,0.2)' },
+  NIEDRIG_NORMAL:   { bg: 'rgba(47,190,106,0.08)',  border: 'rgba(47,190,106,0.3)',  text: '#7ddda8',  pill_bg: 'rgba(47,190,106,0.12)' },
+  NORMAL:           { bg: 'rgba(200,162,52,0.1)',   border: 'rgba(200,162,52,0.35)', text: '#c8a234',  pill_bg: 'rgba(200,162,52,0.15)' },
+  ERHOEHTE_SPANNUNG:{ bg: 'rgba(224,123,40,0.1)',   border: 'rgba(224,123,40,0.35)', text: '#e07b28',  pill_bg: 'rgba(224,123,40,0.15)' },
+  STRESS:           { bg: 'rgba(220,79,79,0.1)',    border: 'rgba(220,79,79,0.35)',  text: '#dc4f4f',  pill_bg: 'rgba(220,79,79,0.15)' },
+  KRISE:            { bg: 'rgba(220,79,79,0.12)',   border: 'rgba(220,79,79,0.5)',   text: '#e87070',  pill_bg: 'rgba(220,79,79,0.2)' },
+  PANIK:            { bg: 'rgba(180,40,40,0.15)',   border: 'rgba(180,40,40,0.6)',   text: '#f09090',  pill_bg: 'rgba(180,40,40,0.25)' },
+};
+
+const SIGNAL_COLOR = {
+  NONE:        C.red,
+  WAIT:        C.orange,
+  CAUTIOUS:    C.gold,
+  BUY:         C.green,
+  STRONG_BUY:  '#00e87a',
+};
+
+let vixChart = null;
+let vvixChart = null;
+
+// ─── HAUPTFUNKTION ───
+async function loadData() {
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('main-content').style.display = 'none';
+  document.getElementById('error-msg').style.display = 'none';
+
+  try {
+    const resp = await fetch(`data.json?t=${Date.now()}`);
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const d = await resp.json();
+    renderDashboard(d);
+  } catch(e) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('error-msg').style.display = 'block';
+    document.getElementById('error-msg').textContent = '⚠ Fehler: ' + e.message;
+    console.error(e);
+  }
+}
+
+function renderDashboard(d) {
+  const v   = d.vix;
+  const vv  = d.vvix;
+  const spy = d.spy;
+  const re  = d.reentry;
+  const meta = d.meta;
+
+  // ─── TOPBAR ───
+  document.getElementById('update-time').textContent =
+    'Update: ' + (meta.updated_at || '—');
+  document.getElementById('footer-updated').textContent =
+    'VIX Regime Dashboard · ' + meta.updated_at + ' · ' + meta.data_source;
+
+  // ─── VIX HERO ───
+  const regime = v.regime || 'NORMAL';
+  const rc = REGIME_COLOR[regime] || REGIME_COLOR.NORMAL;
+
+  document.getElementById('vix-value').textContent = v.current_vix ?? '—';
+  document.getElementById('vix-sub').textContent =
+    `MA10: ${v.current_ma10} · MA20: ${v.current_ma20} · BB-Oben: ${v.current_bb_upper}`;
+
+  const pill = document.getElementById('regime-pill');
+  pill.textContent = v.regime_label || regime;
+  pill.style.background = rc.pill_bg;
+  pill.style.color = rc.text;
+  pill.style.border = '1px solid ' + rc.border;
+
+  // ─── STAT BOXES ───
+  const vixVsMa10 = v.current_vix > v.current_ma10 ? '▲ über MA10' : '▼ unter MA10';
+  const vixVsMa10Color = v.current_vix > v.current_ma10 ? C.red : C.green;
+  document.getElementById('stat-ma10').textContent = v.current_ma10;
+  const ma10el = document.getElementById('stat-ma10-rel');
+  ma10el.textContent = vixVsMa10;
+  ma10el.style.color = vixVsMa10Color;
+
+  const pctSign = v.vix_pct_above_ma20 >= 0 ? '+' : '';
+  document.getElementById('stat-ma20').textContent = v.current_ma20;
+  const ma20el = document.getElementById('stat-ma20-pct');
+  ma20el.textContent = `${pctSign}${v.vix_pct_above_ma20}% vs. MA20`;
+  ma20el.style.color = v.vix_pct_above_ma20 > 30 ? C.red : (v.vix_pct_above_ma20 > 0 ? C.orange : C.green);
+
+  document.getElementById('stat-bb').textContent = v.current_bb_upper;
+  const bbEl = document.getElementById('stat-bb-rel');
+  bbEl.textContent = v.current_vix > v.current_bb_upper ? '⚠ Über BB-Oben' : '✓ Unter BB-Oben';
+  bbEl.style.color = v.current_vix > v.current_bb_upper ? C.red : C.green;
+
+  document.getElementById('stat-vvix').textContent = vv.current_vvix ?? '—';
+  const vvixEl = document.getElementById('stat-vvix-trend');
+  vvixEl.textContent = vv.vvix_trend ? `Trend: ${vv.vvix_trend}` : '—';
+  vvixEl.style.color = vv.vvix_trend === 'fällt' ? C.green : C.orange;
+
+  document.getElementById('stat-spy').textContent = spy.current_spy ?? '—';
+  document.getElementById('stat-spy-ma50').textContent =
+    spy.spy_pct_from_ma50 != null
+      ? `${spy.spy_pct_from_ma50 >= 0 ? '+' : ''}${spy.spy_pct_from_ma50}% vs. MA50`
+      : '—';
+
+  document.getElementById('stat-vix30max').textContent = v.vix_30d_max ?? '—';
+  document.getElementById('stat-vix30min').textContent = `30d Min: ${v.vix_30d_min ?? '—'}`;
+
+  // ─── VERDICT BOX ───
+  const sigColor = SIGNAL_COLOR[re.signal] || C.text;
+  const vbox = document.getElementById('verdict-box');
+  vbox.style.borderColor = sigColor + '55';
+  vbox.style.background = sigColor + '08';
+
+  const autoMet = re.auto_conditions_met ?? 0;
+  document.getElementById('verdict-score').textContent = `${autoMet}/4`;
+  document.getElementById('verdict-score').style.color = sigColor;
+  document.getElementById('verdict-title').textContent = re.signal_label || '—';
+  document.getElementById('verdict-title').style.color = sigColor;
+  document.getElementById('verdict-action').textContent = re.action || '—';
+
+  const eqEl = document.getElementById('verdict-equity');
+  eqEl.textContent = v.equity_pct || '—';
+  eqEl.style.color = sigColor;
+
+  // ─── SIGNAL CARDS ───
+  renderSigCard('r1', re.r1, `Streak: ${v.r1_streak ?? 0} / 3 Tage`, '');
+  // R2 ist statisch (manuell)
+  renderSigCard('r3', re.r3,
+    `Max. Überdehnung (30d): ${v.max_pct_above_ma20_30d ?? '?'}% (≥30% = erfüllt)`, '');
+  renderSigCard('r4', re.r4,
+    `VVIX: ${vv.current_vvix ?? '?'} · Trend: ${vv.vvix_trend ?? '?'}`, '');
+  renderSigCard('r5', re.r5_hint,
+    `S&P Tage seit 30d-Tief: ${spy.days_since_30d_low ?? '?'}. Nur Schätzung!`, '', true);
+
+  // ─── METRIKEN-TABELLE ───
+  renderMetricsTable(v, vv, spy, re);
+
+  // ─── MONITORING FREQUENZ ───
+  const freqEl = document.getElementById('mon-freq');
+  if (['KOMFORT','NIEDRIG_NORMAL'].includes(regime)) {
+    freqEl.textContent = 'Wöchentlich';
+    freqEl.style.color = C.green;
+  } else {
+    freqEl.textContent = 'Täglich';
+    freqEl.style.color = C.orange;
+  }
+
+  // ─── CHARTS ───
+  renderVixChart(v);
+  renderVvixChart(vv);
+
+  document.getElementById('chart-vix-current').textContent = `VIX: ${v.current_vix}`;
+  document.getElementById('chart-vvix-current').textContent = `VVIX: ${vv.current_vvix ?? '—'}`;
+
+  // ─── SHOW ───
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('main-content').style.display = 'block';
+}
+
+function renderSigCard(id, active, detailText, extraClass, isHint = false) {
+  const card  = document.getElementById('sig-' + id);
+  const dot   = document.getElementById(id + '-dot');
+  const badge = document.getElementById(id + '-badge');
+  const detail = document.getElementById(id + '-' + (id==='r1'?'streak':id==='r3'?'pct':id==='r4'?'detail':'detail'));
+
+  if (active === null || active === undefined) {
+    card.className = 'sig-card manual';
+    if(dot) dot.style.background = C.gold;
+    if(badge) { badge.textContent = 'Manuell prüfen'; badge.style.color = C.gold; }
+  } else if (active) {
+    card.className = 'sig-card active-green';
+    if(dot) dot.style.background = C.green;
+    if(badge) { badge.textContent = isHint ? '~ Wahrscheinlich erfüllt' : '✓ Erfüllt'; badge.style.color = C.green; }
+  } else {
+    card.className = 'sig-card inactive';
+    if(dot) dot.style.background = C.red;
+    if(badge) { badge.textContent = isHint ? '~ Nicht erkennbar' : '✗ Nicht erfüllt'; badge.style.color = C.red; }
+  }
+  if(detail) detail.textContent = detailText;
+}
+
+function renderMetricsTable(v, vv, spy, re) {
+  const rows = [
+    { m: 'VIX aktuell', val: v.current_vix, thresh: '< 20 (gut), > 30 (Stress)',
+      ok: v.current_vix < 20, info: 'Kern-Volatilitätsindikator' },
+    { m: 'VIX vs. MA10', val: `${v.current_vix} vs. ${v.current_ma10}`,
+      thresh: 'VIX < MA10 für 3d', ok: v.r1_active,
+      info: `Streak: ${v.r1_streak ?? 0} / 3 Tage → R1` },
+    { m: 'VIX vs. MA20', val: `+${v.vix_pct_above_ma20}%`, thresh: '< 0% (ideal)',
+      ok: v.vix_pct_above_ma20 < 0, info: 'VIX unter MA20 = normalisiert' },
+    { m: 'Bollinger Band', val: `${v.current_vix} / BB-Oben: ${v.current_bb_upper}`,
+      thresh: 'VIX < BB-Oben', ok: v.current_vix < v.current_bb_upper,
+      info: 'E3-Signal wenn 2d darüber' },
+    { m: 'Max. Überdehnung (30d)', val: `${v.max_pct_above_ma20_30d}%`,
+      thresh: '≥ 30% (R3 erfüllt)', ok: re.r3,
+      info: 'Mean-Reversion-Basis für R3' },
+    { m: 'VVIX', val: vv.current_vvix ?? '—', thresh: '< 120 & fallend',
+      ok: re.r4, info: `Trend: ${vv.vvix_trend ?? '?'} · R4` },
+    { m: 'S&P 500 vs. MA50', val: `${spy.spy_pct_from_ma50 ?? '?'}%`,
+      thresh: '> -15%', ok: spy.spy_pct_from_ma50 > -15,
+      info: 'Technische Marktstruktur' },
+    { m: 'Tage seit 30d-Tief (SPX)', val: `${spy.days_since_30d_low ?? '?'} Tage`,
+      thresh: '≥ 5 Tage', ok: spy.days_since_30d_low >= 5,
+      info: 'Grobe Higher-Low-Schätzung · R5' },
+  ];
+
+  const tbody = document.getElementById('metrics-tbody');
+  tbody.innerHTML = rows.map(r => {
+    const color = r.ok ? C.green : C.red;
+    const badge = r.ok
+      ? `<span class="status-indicator" style="background:rgba(47,190,106,0.1);color:${C.green};border:1px solid rgba(47,190,106,0.3)"><span class="si-dot" style="background:${C.green}"></span>OK</span>`
+      : `<span class="status-indicator" style="background:rgba(220,79,79,0.1);color:${C.red};border:1px solid rgba(220,79,79,0.3)"><span class="si-dot" style="background:${C.red}"></span>Prüfen</span>`;
+    return `<tr>
+      <td style="color:var(--white);font-weight:500">${r.m}</td>
+      <td style="color:${color};font-weight:600">${r.val}</td>
+      <td style="color:var(--muted);font-size:11px">${r.thresh}</td>
+      <td>${badge}</td>
+      <td style="color:var(--muted);font-size:11px">${r.info}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ─── CHART: VIX ───
+function renderVixChart(v) {
+  const ctx = document.getElementById('chartVix').getContext('2d');
+  if (vixChart) vixChart.destroy();
+
+  vixChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: v.chart_dates,
+      datasets: [
+        {
+          label: 'VIX',
+          data: v.chart_vix,
+          borderColor: '#c8a234',
+          borderWidth: 2,
+          pointRadius: 0,
+          tension: 0.1,
+          fill: false,
+          order: 1,
+        },
+        {
+          label: 'MA10',
+          data: v.chart_ma10,
+          borderColor: '#3d8ef0',
+          borderWidth: 1.5,
+          pointRadius: 0,
+          borderDash: [],
+          tension: 0.1,
+          fill: false,
+          order: 2,
+        },
+        {
+          label: 'MA20',
+          data: v.chart_ma20,
+          borderColor: '#6a7f9f',
+          borderWidth: 1,
+          pointRadius: 0,
+          tension: 0.1,
+          fill: false,
+          order: 3,
+        },
+        {
+          label: 'BB Oben',
+          data: v.chart_bb_upper,
+          borderColor: 'rgba(220,79,79,0.5)',
+          borderWidth: 1,
+          borderDash: [4, 3],
+          pointRadius: 0,
+          tension: 0.1,
+          fill: '+1',
+          backgroundColor: 'rgba(220,79,79,0.04)',
+          order: 4,
+        },
+        {
+          label: 'BB Unten',
+          data: v.chart_bb_lower,
+          borderColor: 'rgba(47,190,106,0.4)',
+          borderWidth: 1,
+          borderDash: [4, 3],
+          pointRadius: 0,
+          tension: 0.1,
+          fill: false,
+          order: 5,
+        },
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 600 },
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: { color: C.muted, font: { family: 'JetBrains Mono', size: 10 },
+                    boxWidth: 14, padding: 12 }
+        },
+        tooltip: {
+          backgroundColor: '#141d2b',
+          borderColor: '#253350',
+          borderWidth: 1,
+          titleColor: C.white,
+          bodyColor: C.text,
+          titleFont: { family: 'JetBrains Mono', size: 11 },
+          bodyFont: { family: 'JetBrains Mono', size: 11 },
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: C.muted, font: { size: 9 }, maxTicksLimit: 8, maxRotation: 0 },
+          grid: { color: 'rgba(28,40,64,0.8)' },
+        },
+        y: {
+          ticks: { color: C.muted, font: { size: 10 } },
+          grid: { color: 'rgba(28,40,64,0.8)' },
+        }
+      }
+    }
+  });
+}
+
+// ─── CHART: VVIX ───
+function renderVvixChart(vv) {
+  const ctx = document.getElementById('chartVvix').getContext('2d');
+  if (vvixChart) vvixChart.destroy();
+  if (!vv.vvix_hist_vals) return;
+
+  vvixChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: vv.vvix_hist_dates,
+      datasets: [{
+        label: 'VVIX',
+        data: vv.vvix_hist_vals,
+        borderColor: '#e07b28',
+        borderWidth: 2,
+        pointRadius: 0,
+        tension: 0.1,
+        fill: true,
+        backgroundColor: 'rgba(224,123,40,0.06)',
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 600 },
+      plugins: {
+        legend: { display: false },
+        annotation: {},
+        tooltip: {
+          backgroundColor: '#141d2b',
+          borderColor: '#253350',
+          borderWidth: 1,
+          titleColor: C.white,
+          bodyColor: C.text,
+          titleFont: { family: 'JetBrains Mono', size: 11 },
+          bodyFont: { family: 'JetBrains Mono', size: 11 },
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: C.muted, font: { size: 9 }, maxTicksLimit: 6, maxRotation: 0 },
+          grid: { color: 'rgba(28,40,64,0.8)' },
+        },
+        y: {
+          ticks: { color: C.muted, font: { size: 10 } },
+          grid: { color: 'rgba(28,40,64,0.8)' },
+          // Referenzlinie bei 120
+          afterDataLimits: (axis) => {
+            axis.max = Math.max(axis.max, 130);
+          }
+        }
+      }
+    }
+  });
+}
+
+// ─── START ───
+loadData();
+</script>
+</body>
+</html>
 
