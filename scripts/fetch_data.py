@@ -270,10 +270,10 @@ def build_html(data):
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VIX Dashboard — meine-geldseite.de</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{{box-sizing:border-box;margin:0;padding:0}}
-body{{background:#1a2540;color:#c8d8f0;font-family:'JetBrains Mono',monospace;font-size:14px;line-height:1.65}}
+body{{background:#1a2540;color:#c8d8f0;font-family:'Inter',sans-serif;font-size:15px;line-height:1.65}}
 .topbar{{background:#1a2540;border-bottom:1px solid #2e4070;padding:0 28px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.4)}}
 .brand{{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:#f0c060}}
 .brand span{{color:#e8f0ff}}
