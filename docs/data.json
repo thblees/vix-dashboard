@@ -1,6 +1,6 @@
 {
   "meta": {
-    "updated_at": "2026-03-29 15:08 UTC",
+    "updated_at": "2026-03-29 15:24 UTC",
     "updated_date": "2026-03-29",
     "data_source": "Yahoo Finance via yfinance"
   },
@@ -473,7 +473,7 @@
     "r5_hint": false,
     "auto_conditions_met": 1,
     "signal": "NONE",
-    "signal_label": "Kein Signal \u2014 R1 nicht erf\u00fcllt",
-    "action": "Abwarten. VIX muss 3 Tage unter MA10 schlie\u00dfen."
+    "signal_label": "Kein Wiedereinstieg \u2014 Bedingung 1 nicht erf\u00fcllt",
+    "action": "Der VIX ist noch zu hoch. Warte bis er 3 Tage unter seinem 10-Tage-Durchschnitt liegt."
   }
 }
