@@ -93,16 +93,40 @@ def fetch_spy():
     except: return {"current_spy":None,"r5_hint":False,"days_since_30d_low":0,"spy_pct_from_ma50":0}
 
 def count_reentry(v,vv,spy):
-    r1=v.get("r1_active",False); r3=v.get("r3_active",False)
-    r4=vv.get("r4_active",False); r5=spy.get("r5_hint",False)
-    n=sum([r1,r3,r4,r5])
-    if not r1:   s,l,a="NONE","Kein Wiedereinstieg — Bedingung 1 nicht erfüllt","Der VIX ist noch zu hoch. Warte bis er 3 Tage unter seinem 10-Tage-Durchschnitt liegt."
-    elif n==1:   s,l,a="WAIT","Zu früh — weitere Bestätigungen fehlen noch","Bedingung 1 erfüllt, aber noch keine weiteren Bestätigungen. Morgen wieder prüfen."
-    elif n==2:   s,l,a="CAUTIOUS","Vorsichtiger Einstieg möglich","Erste kleine Tranche kaufen (10–15% der Ziel-Aktienquote). Bedingung 2 auf CBOE manuell prüfen."
-    elif n==3:   s,l,a="BUY","Klares Kaufsignal","Erste Kauftranche (20–25%). Zweite Tranche in einer Woche wenn Signale stabil bleiben."
-    else:        s,l,a="STRONG_BUY","Starkes Kaufsignal — Aggressiver Einstieg","40–60% sofort kaufen. Rest in 2 Wochen aufbauen. Historisch beste Einstiegschancen."
-    return {"r1":r1,"r3":r3,"r4":r4,"r5_hint":r5,"auto_conditions_met":n,
-            "signal":s,"signal_label":l,"action":a}
+    cv   = v.get("current_vix", 99)
+    r1   = v.get("r1_active", False)    # VIX 3 Tage unter MA10
+    r3   = v.get("r3_active", False)    # Überdehnung 30%+ gewesen
+    r4   = vv.get("r4_active", False)   # VVIX unter 120 und fällt
+    r5   = spy.get("r5_hint", False)    # S&P Chartbasis
+
+    # PFLICHT-GATE 1: VIX muss unter 30 sein
+    gate1 = cv < 30
+    # PFLICHT-GATE 2: VIX 3 Tage unter MA10 (Beruhigung nachhaltig)
+    gate2 = r1
+
+    # Beide Gates müssen offen sein — sonst gar kein Einstieg
+    if not gate1:
+        s = "GATE1_BLOCKED"
+        l = "🔴 Pflicht-Gate 1 nicht erfüllt — VIX noch über 30"
+        a = f"VIX steht bei {cv} — über der 30er-Schwelle. Kein Wiedereinstieg möglich. Bedingung 2 gar nicht erst prüfen. Abwarten und Kapital schützen."
+        n = 0
+    elif not gate2:
+        s = "GATE2_BLOCKED"
+        l = "🟠 Pflicht-Gate 2 nicht erfüllt — VIX noch nicht 3 Tage unter MA10"
+        streak = v.get("r1_streak", 0)
+        a = f"VIX ist zwar unter 30, aber noch nicht lange genug unter dem 10-Tage-Durchschnitt ({streak} von 3 Tagen). Bedingungen 3–5 noch nicht relevant. Morgen wieder prüfen."
+        n = 0
+    else:
+        # Beide Gates offen — jetzt Bestätigungen zählen
+        n = sum([r3, r4, r5])
+        if n == 0:   s,l,a = "WAIT","🟡 Beide Gates offen — Bestätigungen fehlen noch","VIX hat sich beruhigt. Prüfe jetzt Bedingungen 3, 4 und 5. Noch keine Bestätigung — abwarten."
+        elif n == 1: s,l,a = "CAUTIOUS","🟡 Erste Bestätigung — vorsichtiger Einstieg möglich","Kleine Pilotposition möglich: 10–15% der Ziel-Aktienquote. Bedingungen 4 und 5 weiter beobachten."
+        elif n == 2: s,l,a = "BUY","🟢 Klares Kaufsignal — Einstieg","Erste Kauftranche: 20–25%. Zweite Tranche in einer Woche wenn Signale stabil bleiben."
+        else:        s,l,a = "STRONG_BUY","🟢 Starkes Kaufsignal — Aggressiver Einstieg","40–60% sofort kaufen. Rest in 2 Wochen aufbauen. Historisch beste Einstiegschancen."
+
+    return {"gate1":gate1,"gate2":gate2,"r1":r1,"r3":r3,"r4":r4,"r5_hint":r5,
+            "auto_conditions_met":n,"signal":s,"signal_label":l,"action":a,
+            "current_vix":cv}
 
 def build_html(data):
     v=data["vix"]; vv=data["vvix"]; spy=data["spy"]; re=data["reentry"]; meta=data["meta"]
@@ -135,6 +159,9 @@ def build_html(data):
     r5a  = spy.get("r5_hint",False)
     dsl  = spy.get("days_since_30d_low",0)
     n    = re.get("auto_conditions_met",0)
+    gate1 = re.get("gate1", False)
+    gate2 = re.get("gate2", False)
+    gates_open = gate1 and gate2
 
     def ok_badge(ok, yes="✓ Erfüllt", no="✗ Nicht erfüllt"):
         c,t = ("#4dd890",yes) if ok else ("#ff7070",no)
@@ -185,66 +212,67 @@ def build_html(data):
     jvd=json.dumps(vv.get("vvix_hist_dates",[])); jvv=json.dumps(vv.get("vvix_hist_vals",[]))
 
     # Schritte
-    s1 = step_card("1","📊","Wie ist das aktuelle Markt-Klima?", True,
-        f'Der <strong style="color:#e8f0ff">VIX (Volatilitätsindex)</strong> misst die Angst am Aktienmarkt. Je höher der VIX, desto nervöser ist der Markt.<br><br>'
-        f'<strong style="color:#e8f0ff">Aktuell: VIX = {cv}</strong><br>'
-        f'Unter 20 = ruhig. 20–30 = erhöht. Über 30 = Stress.',
-        f'Schau auf das farbige Badge oben links.<br><br>'
-        f'<strong style="color:{rc[0]}">{v.get("regime_label","—")}</strong><br>'
-        f'Empfohlene Aktienquote: <strong style="color:{rc[0]}">{v.get("equity_pct","—")}</strong>',
-        cv < 25, "VIX im grünen Bereich", f"VIX = {cv} — erhöht, Vorsicht geboten",
-        f'Regime wird täglich um 22:30 Uhr automatisch aktualisiert.')
+    # ── PFLICHT-GATE STATUS ──
+    if not gate1:
+        gate1_color = "#ff7070"
+        gate1_bg = "rgba(255,112,112,0.10)"
+        gate1_border = "rgba(255,112,112,0.45)"
+        gate1_icon = "🔴"
+        gate1_status = f"NICHT ERFÜLLT — VIX steht bei {cv} (muss unter 30 sein)"
+        gate1_action = f"Solange der VIX über 30 liegt, ist der Markt im Stress-Modus. Kein Einstieg. Weiter warten. Bedingung 2 jetzt noch nicht relevant."
+    else:
+        gate1_color = "#4dd890"
+        gate1_bg = "rgba(77,216,144,0.10)"
+        gate1_border = "rgba(77,216,144,0.45)"
+        gate1_icon = "🟢"
+        gate1_status = f"✓ ERFÜLLT — VIX bei {cv} (unter 30)"
+        gate1_action = "Gut — der Markt hat die Panik-Zone verlassen. Weiter zu Pflicht-Gate 2."
 
-    r1_what = (f'Der VIX muss <strong style="color:#e8f0ff">3 Tage hintereinander</strong> unter seinem '
-               f'10-Tage-Durchschnitt liegen. Das zeigt: die Angst beruhigt sich <em>nachhaltig</em>, '
-               f'nicht nur kurz. Ein einzelner ruhiger Tag reicht nicht.')
-    r1_over = '<strong style="color:#ff7070">ÜBER</strong>' if cv>cm10 else '<strong style="color:#4dd890">UNTER</strong>'
-    r1_check = (f'Aktueller VIX: <strong style="color:#e8f0ff">{cv}</strong><br>'
-                f'10-Tage-Durchschnitt: <strong style="color:#e8f0ff">{cm10}</strong><br>'
-                f'VIX liegt {r1_over} dem Durchschnitt<br>'
-                f'Bisheriger Streak: <strong style="color:#e8f0ff">{r1s} von 3 Tagen</strong>')
-    s2 = step_card("2","📉","Beruhigt sich der VIX nachhaltig? (Pflichtbedingung)", True,
-        r1_what, r1_check, r1a,
-        "✓ Bedingung erfüllt — VIX 3 Tage unter Durchschnitt",
-        f"✗ Noch nicht — erst {r1s} von 3 Tagen",
-        "⚠ Ohne diese Bedingung kein Wiedereinstieg — egal wie andere aussehen.")
+    if not gate2:
+        gate2_color = "#ff7070"
+        gate2_bg = "rgba(255,112,112,0.10)"
+        gate2_border = "rgba(255,112,112,0.45)"
+        gate2_icon = "🔴" if not gate1 else "🟠"
+        gate2_status = f"NICHT ERFÜLLT — Erst {r1s} von 3 Tagen unter MA10" if gate1 else "NOCH NICHT PRÜFEN — erst Pflicht-Gate 1 abwarten"
+        gate2_action = f"VIX muss 3 Tage in Folge unter seinem 10-Tage-Durchschnitt ({cm10}) schließen. Aktuell: Tag {r1s} von 3." if gate1 else "Erst wenn Gate 1 erfüllt ist, wird diese Bedingung relevant."
+    else:
+        gate2_color = "#4dd890"
+        gate2_bg = "rgba(77,216,144,0.10)"
+        gate2_border = "rgba(77,216,144,0.45)"
+        gate2_icon = "🟢"
+        gate2_status = f"✓ ERFÜLLT — VIX {r1s} Tage unter MA10 ({cm10})"
+        gate2_action = "Beide Pflicht-Gates erfüllt! Jetzt weiter zu den Bestätigungs-Bedingungen 3, 4 und 5."
 
-    s3 = step_card("3","📈","Beruhigt sich auch der Futures-Markt? (Manuell)", False,
-        'VIX-Futures sind Wetten auf die künftige Angst. Im Normalfall sind <strong style="color:#e8f0ff">weiter entfernte Monate teurer</strong> als nahe — weil die Zukunft unsicherer ist (= <em>Contango</em>).<br><br>'
-        'Wenn der nächste Monat <strong style="color:#ff7070">teurer</strong> ist als übernächste — Alarm! Der Markt hat jetzt mehr Angst als in Zukunft (= <em>Backwardation</em>).',
+    gates_dimmed = "opacity:0.4;pointer-events:none" if not gates_open else ""
+
+    # ── BESTÄTIGUNGS-SCHRITTE (nur relevant wenn beide Gates offen) ──
+    s3 = step_card("3 — Bestätigung", "📈", "Beruhigt sich auch der Futures-Markt?", False,
+        'VIX-Futures sind Wetten auf die künftige Angst. Im Normalfall sind <strong style="color:#e8f0ff">weiter entfernte Monate teurer</strong> (= Contango). '
+        'Wenn der nächste Monat <strong style="color:#ff7070">teurer</strong> ist als der übernächste, hat der Markt jetzt mehr Angst als in der Zukunft (= Backwardation — Warnsignal).',
         'Öffne: <a href="https://www.cboe.com/tradable-products/vix/term-structure/" target="_blank" style="color:#70b8ff">cboe.com → VIX Term Structure</a><br><br>'
-        'Schau auf die Tabelle mit den Monatswerten:<br>'
-        '<strong style="color:#4dd890">Gut (Contango):</strong> Monat 1 &lt; Monat 2 &lt; Monat 3<br>'
-        '<strong style="color:#ff7070">Schlecht (Backwardation):</strong> Monat 1 &gt; Monat 2',
-        None, "", "", "Monat 1 = nächster Verfallstermin (~30 Tage). Monat 2 = übernächster (~60 Tage).",
+        '<strong style="color:#4dd890">Gut:</strong> Monat 1 &lt; Monat 2 &lt; Monat 3 (aufsteigend)<br>'
+        '<strong style="color:#ff7070">Schlecht:</strong> Monat 1 &gt; Monat 2 (absteigend)',
+        None, "", "", "Monat 1 = nächster Verfall (~30 Tage). Monat 2 = übernächster (~60 Tage).",
         is_manual=True)
 
-    r4_what = ('Der <strong style="color:#e8f0ff">VVIX</strong> ist die "Volatilität der Volatilität" — '
-               'er misst wie nervös der VIX <em>selbst</em> gerade ist. Wenn der VVIX fällt, '
-               'beruhigt sich der Markt von innen heraus — oft <em>bevor</em> der VIX selbst deutlich fällt. '
-               'Ein frühes Warnsignal.')
-    r4_check = (f'Aktueller VVIX: <strong style="color:#e8f0ff">{vviv}</strong><br>'
-                f'Trend der letzten 5 Tage: <strong style="color:{"#4dd890" if vvit=="fällt" else "#ffaa55"}">{vvit}</strong><br>'
-                f'Schwelle: unter 120 UND fallend')
-    s4 = step_card("4","🔍","Beruhigt sich die Nervosität von innen? (VVIX)", True,
-        r4_what, r4_check, r4a,
-        "✓ VVIX unter 120 und fällt — Beruhigung sichtbar",
+    s4 = step_card("4 — Bestätigung", "🔍", "Beruhigt sich der Nerven-Index (VVIX)?", True,
+        f'Der VVIX misst wie nervös der VIX <em>selbst</em> ist. Wenn er fällt, beruhigt sich der Markt von innen — oft <em>bevor</em> der VIX selbst stark fällt. Daher ein wertvolles Frühsignal.',
+        f'Aktueller VVIX: <strong style="color:#e8f0ff">{vviv}</strong><br>'
+        f'Trend der letzten 5 Tage: <strong style="color:{"#4dd890" if vvit=="fällt" else "#ffaa55"}">{vvit}</strong><br>'
+        f'Schwelle: unter 120 UND fallend',
+        r4a, "✓ VVIX unter 120 und fällt — Beruhigung sichtbar",
         f"✗ VVIX = {vviv} — noch zu hoch oder steigend",
-        "Tipp: VVIX fällt oft als erstes — beobachte ihn täglich.")
+        "Fällt der VVIX, obwohl der VIX noch hoch ist? → Das ist das früheste Signal überhaupt.")
 
-    r5_what = ('Der Chart des S&P 500 muss bestätigen, dass der Markt einen Boden gefunden hat. '
-               'Das erkennst du daran, dass er <strong style="color:#e8f0ff">keine neuen Tiefs mehr macht</strong> — '
-               'sondern sich seitwärts bewegt oder ein höheres Tief bildet. '
-               'Ohne Chartbestätigung kann ein Einstieg zu früh sein.')
-    r5_check = (f'Öffne: <a href="https://www.tradingview.com/chart/?symbol=SPX" target="_blank" style="color:#70b8ff">TradingView → SPX Wochenchart</a><br><br>'
-                f'Frage: Hat der S&P 500 in den letzten Tagen ein <em>neues Tief</em> gemacht?<br>'
-                f'<strong style="color:#4dd890">Gut:</strong> Kein neues Tief seit mehreren Tagen<br>'
-                f'<strong style="color:#ff7070">Schlecht:</strong> Immer neue Tiefs')
-    s5 = step_card("5","📉","Bestätigt der S&P 500 Chart die Erholung? (Manuell)", False,
-        r5_what, r5_check, r5a,
-        "✓ Schätzung: Boden wahrscheinlich gebildet",
+    s5 = step_card("5 — Bestätigung", "📉", "Bestätigt der S&P 500 Chart die Erholung?", False,
+        'Der Chart muss zeigen, dass der Markt einen Boden gefunden hat. Das erkennst du daran, dass der S&P 500 <strong style="color:#e8f0ff">keine neuen Tiefs mehr macht</strong>.',
+        f'Öffne: <a href="https://www.tradingview.com/chart/?symbol=SPX" target="_blank" style="color:#70b8ff">TradingView → SPX Wochenchart</a><br><br>'
+        f'Frage: Macht der S&P 500 noch neue Tiefs?<br>'
+        f'<strong style="color:#4dd890">Gut:</strong> Kein neues Tief seit mind. 5 Tagen<br>'
+        f'<strong style="color:#ff7070">Schlecht:</strong> Immer noch neue Tiefs',
+        r5a, "✓ Schätzung: Boden wahrscheinlich gebildet",
         f"✗ S&P noch nicht stabil — Tief vor {dsl} Tagen",
-        "Schätzung des Dashboards — eigener Blick auf den Chart empfohlen.",
+        "Eigener Blick auf den Chart empfohlen — Dashboard-Schätzung nur grober Hinweis.",
         is_manual=True)
 
     # Aktions-Tabelle
@@ -583,6 +611,7 @@ h2{{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#e8f0ff;m
 </div>
 
 <div class="w">
+<div id="panel-daily" class="tab-panel active">
 
 <!-- ══════════════════════════════════════════════
      BLOCK 1: TÄGLICHE CHECKLISTE — GANZ OBEN
@@ -590,11 +619,60 @@ h2{{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#e8f0ff;m
 <h2>📋 Deine tägliche Checkliste</h2>
 <p class="section-intro">Jeden Werktag nach 22:00 Uhr (nach US-Börsenschluss) diese 5 Punkte der Reihe nach abarbeiten. Dauert ca. 5 Minuten.</p>
 
-{s1}
-{s2}
+<!-- PFLICHT-GATES -->
+<div style="margin-bottom:6px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8">Pflicht-Gates — müssen BEIDE erfüllt sein, bevor du weiterschaust</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px">
+
+  <!-- GATE 1 -->
+  <div style="background:{gate1_bg};border:2px solid {gate1_border};border-radius:6px;padding:20px;position:relative">
+    <div style="position:absolute;top:-12px;left:16px;background:#1a2540;padding:0 8px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:{gate1_color}">Pflicht-Gate 1</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+      <span style="font-size:24px">{gate1_icon}</span>
+      <div>
+        <div style="font-size:15px;font-weight:700;color:#e8f0ff">VIX unter 30</div>
+        <div style="font-size:12px;color:#7090b8">Markt hat Panik-Zone verlassen</div>
+      </div>
+    </div>
+    <div style="padding:10px 14px;background:rgba(0,0,0,0.2);border-radius:4px;margin-bottom:10px">
+      <div style="font-size:12px;font-weight:700;color:{gate1_color};margin-bottom:4px">{gate1_status}</div>
+      <div style="font-size:12px;color:#c8d8f0;line-height:1.6">{gate1_action}</div>
+    </div>
+    <div style="font-size:12px;color:#7090b8;padding:8px 12px;background:rgba(255,255,255,0.04);border-radius:4px">
+      💡 <strong style="color:#e8f0ff">Warum 30?</strong> Über 30 ist der Markt im Stress-Modus. Statistisch verlieren Aktien in solchen Phasen kurzfristig an Wert. Kein Einstieg sinnvoll.
+    </div>
+  </div>
+
+  <!-- GATE 2 -->
+  <div style="background:{gate2_bg};border:2px solid {gate2_border};border-radius:6px;padding:20px;position:relative">
+    <div style="position:absolute;top:-12px;left:16px;background:#1a2540;padding:0 8px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:{gate2_color}">Pflicht-Gate 2</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+      <span style="font-size:24px">{gate2_icon}</span>
+      <div>
+        <div style="font-size:15px;font-weight:700;color:#e8f0ff">VIX 3 Tage unter MA10</div>
+        <div style="font-size:12px;color:#7090b8">Beruhigung nachhaltig bestätigt</div>
+      </div>
+    </div>
+    <div style="padding:10px 14px;background:rgba(0,0,0,0.2);border-radius:4px;margin-bottom:10px">
+      <div style="font-size:12px;font-weight:700;color:{gate2_color};margin-bottom:4px">{gate2_status}</div>
+      <div style="font-size:12px;color:#c8d8f0;line-height:1.6">{gate2_action}</div>
+    </div>
+    <div style="font-size:12px;color:#7090b8;padding:8px 12px;background:rgba(255,255,255,0.04);border-radius:4px">
+      💡 <strong style="color:#e8f0ff">Warum 3 Tage?</strong> Ein einzelner ruhiger Tag kann Zufall sein. Erst 3 Tage in Folge unter dem Durchschnitt zeigen eine echte Trendwende.
+    </div>
+  </div>
+</div>
+
+<!-- WENN GATES NICHT OFFEN: STOPP-HINWEIS -->
+{'<div style="padding:14px 18px;background:rgba(255,112,112,0.10);border:1px solid rgba(255,112,112,0.4);border-radius:4px;margin-bottom:20px;font-size:13px;color:#ff9090;line-height:1.7"><strong>🛑 Stopp hier.</strong> Solange nicht beide Pflicht-Gates erfüllt sind, sind Bedingungen 3–5 irrelevant. Nicht weiter prüfen — Kapital schützen und täglich wiederholen.</div>' if not gates_open else '<div style="padding:14px 18px;background:rgba(77,216,144,0.08);border:1px solid rgba(77,216,144,0.4);border-radius:4px;margin-bottom:20px;font-size:13px;color:#4dd890;line-height:1.7"><strong>✓ Beide Pflicht-Gates erfüllt.</strong> Weiter zu den Bestätigungs-Bedingungen unten.</div>'}
+
+<!-- BESTÄTIGUNGS-BEDINGUNGEN (ausgegraut wenn Gates nicht offen) -->
+<div style="{gates_dimmed}">
+<div style="margin-bottom:6px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8">Bestätigungs-Bedingungen — je mehr erfüllt, desto aggressiver der Einstieg</div>
 {s3}
 {s4}
 {s5}
+</div>
 
 <!-- ══════ ERGEBNIS ══════ -->
 <div style="background:#223058;border:2px solid {sc}44;border-radius:6px;padding:20px 22px;margin-bottom:8px">
