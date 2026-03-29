@@ -723,9 +723,13 @@ async function loadData() {
   document.getElementById('main-content').style.display = 'none';
   document.getElementById('error-msg').style.display = 'none';
 
+  // Pfad ermitteln: funktioniert lokal und auf GitHub Pages
+  const base = window.location.href.replace(/index\.html.*$/, '').replace(/\/$/, '');
+  const url = base + '/data.json?t=' + Date.now();
+
   try {
-    const resp = await fetch(`data.json?t=${Date.now()}`);
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error('HTTP ' + resp.status + ' — URL: ' + url);
     const d = await resp.json();
     renderDashboard(d);
   } catch(e) {
@@ -737,11 +741,19 @@ async function loadData() {
 }
 
 function renderDashboard(d) {
+  // Sicherheits-Check: Pflichtfelder vorhanden?
+  if (!d || !d.vix || !d.reentry) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('error-msg').style.display = 'block';
+    document.getElementById('error-msg').textContent = '⚠ data.json unvollständig. Bitte GitHub Action neu starten.';
+    return;
+  }
+
   const v   = d.vix;
-  const vv  = d.vvix;
-  const spy = d.spy;
+  const vv  = d.vvix  || {};
+  const spy = d.spy   || {};
   const re  = d.reentry;
-  const meta = d.meta;
+  const meta = d.meta || {};
 
   // ─── TOPBAR ───
   document.getElementById('update-time').textContent =
@@ -754,16 +766,4 @@ function renderDashboard(d) {
   const rc = REGIME_COLOR[regime] || REGIME_COLOR.NORMAL;
 
   document.getElementById('vix-value').textContent = v.current_vix ?? '—';
-  document.getElementById('vix-sub').textContent =
-    `MA10: ${v.current_ma10} · MA20: ${v.current_ma20} · BB-Oben: ${v.current_bb_upper}`;
-
-  const pill = document.getElementById('regime-pill');
-  pill.textContent = v.regime_label || regime;
-  pill.style.background = rc.pill_bg;
-  pill.style.color = rc.text;
-  pill.style.border = '1px solid ' + rc.border;
-
-  // ─── STAT BOXES ───
-  const vixVsMa10 = v.current_vix > v.current_ma10 ? '▲ über MA10' : '▼ unter MA10';
-  const vixVsMa10Color = v.current_vix > v.current_ma10 ? C.red : C.green;
-  document.getElementById('stat-ma10').textCon
+  document.getElementById('
