@@ -32,11 +32,12 @@ h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#e8f0ff;ma
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="showTab('daily')" id="tab-daily" style="background:rgba(240,192,96,0.2);border:1px solid rgba(240,192,96,0.5);color:#f0c060;padding:6px 16px;border-radius:3px;font-family:Inter,sans-serif;font-size:13px;font-weight:600;cursor:pointer">📋 Tägliches Check-up</button>
     <button onclick="showTab('info')" id="tab-info" style="background:transparent;border:1px solid #2e4070;color:#7090b8;padding:6px 16px;border-radius:3px;font-family:Inter,sans-serif;font-size:13px;font-weight:600;cursor:pointer">📖 Hintergrundwissen</button>
-    <div style="font-size:11px;color:#7090b8;margin-left:8px">Aktualisiert: 2026-03-29 16:23 UTC</div>
+    <div style="font-size:11px;color:#7090b8;margin-left:8px">Aktualisiert: 2026-03-29 16:31 UTC</div>
   </div>
 </div>
 
 <div class="w">
+<div id="panel-daily" class="tab-panel active">
 
 <!-- ══════════════════════════════════════════════
      BLOCK 1: TÄGLICHE CHECKLISTE — GANZ OBEN
@@ -44,122 +45,129 @@ h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#e8f0ff;ma
 <h2>📋 Deine tägliche Checkliste</h2>
 <p class="section-intro">Jeden Werktag nach 22:00 Uhr (nach US-Börsenschluss) diese 5 Punkte der Reihe nach abarbeiten. Dauert ca. 5 Minuten.</p>
 
-<div style="background:#223058;border:1px solid #2e4070;border-radius:6px;overflow:hidden;margin-bottom:8px">
-  <div style="display:flex;align-items:center;gap:12px;padding:13px 18px;background:rgba(255,255,255,0.03);border-bottom:1px solid #2e4070;flex-wrap:wrap">
-    <div style="width:32px;height:32px;border-radius:50%;background:rgba(112,184,255,0.15);color:#70b8ff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0">1</div>
-    <div style="font-size:20px;flex-shrink:0">📊</div>
-    <div style="flex:1">
-      <div style="font-size:15px;font-weight:700;color:#e8f0ff">Wie ist das aktuelle Markt-Klima?</div>
+<!-- PFLICHT-GATES -->
+<div style="margin-bottom:6px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8">Pflicht-Gates — müssen BEIDE erfüllt sein, bevor du weiterschaust</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px">
+
+  <!-- GATE 1 -->
+  <div style="background:rgba(255,112,112,0.10);border:2px solid rgba(255,112,112,0.45);border-radius:6px;padding:20px;position:relative">
+    <div style="position:absolute;top:-12px;left:16px;background:#1a2540;padding:0 8px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#ff7070">Pflicht-Gate 1</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+      <span style="font-size:24px">🔴</span>
+      <div>
+        <div style="font-size:15px;font-weight:700;color:#e8f0ff">VIX unter 30</div>
+        <div style="font-size:12px;color:#7090b8">Markt hat Panik-Zone verlassen</div>
+      </div>
     </div>
-    <span style="font-size:11px;padding:2px 10px;border-radius:3px;background:rgba(77,216,144,0.12);color:#4dd890;border:1px solid rgba(77,216,144,0.3);font-weight:600">● Dashboard zeigt es automatisch</span>
+    <div style="padding:10px 14px;background:rgba(0,0,0,0.2);border-radius:4px;margin-bottom:10px">
+      <div style="font-size:12px;font-weight:700;color:#ff7070;margin-bottom:4px">NICHT ERFÜLLT — VIX steht bei 31.05 (muss unter 30 sein)</div>
+      <div style="font-size:12px;color:#c8d8f0;line-height:1.6">Solange der VIX über 30 liegt, ist der Markt im Stress-Modus. Kein Einstieg. Weiter warten. Bedingung 2 jetzt noch nicht relevant.</div>
+    </div>
+    <div style="font-size:12px;color:#7090b8;padding:8px 12px;background:rgba(255,255,255,0.04);border-radius:4px">
+      💡 <strong style="color:#e8f0ff">Warum 30?</strong> Über 30 ist der Markt im Stress-Modus. Statistisch verlieren Aktien in solchen Phasen kurzfristig an Wert. Kein Einstieg sinnvoll.
+    </div>
   </div>
-  <div style="padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
-    <div>
-      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Was bedeutet das?</div>
-      <div style="font-size:13px;color:#c8d8f0;line-height:1.75">Der <strong style="color:#e8f0ff">VIX (Volatilitätsindex)</strong> misst die Angst am Aktienmarkt. Je höher der VIX, desto nervöser ist der Markt.<br><br><strong style="color:#e8f0ff">Aktuell: VIX = 31.05</strong><br>Unter 20 = ruhig. 20–30 = erhöht. Über 30 = Stress.</div>
+
+  <!-- GATE 2 -->
+  <div style="background:rgba(255,112,112,0.10);border:2px solid rgba(255,112,112,0.45);border-radius:6px;padding:20px;position:relative">
+    <div style="position:absolute;top:-12px;left:16px;background:#1a2540;padding:0 8px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#ff7070">Pflicht-Gate 2</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+      <span style="font-size:24px">🔴</span>
+      <div>
+        <div style="font-size:15px;font-weight:700;color:#e8f0ff">VIX 3 Tage unter MA10</div>
+        <div style="font-size:12px;color:#7090b8">Beruhigung nachhaltig bestätigt</div>
+      </div>
     </div>
-    <div>
-      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Was prüfe ich konkret?</div>
-      <div style="font-size:13px;color:#c8d8f0;line-height:1.75;margin-bottom:12px">Schau auf das farbige Badge oben links.<br><br><strong style="color:#ff7070">Stress-Zone</strong><br>Empfohlene Aktienquote: <strong style="color:#ff7070">20–40%</strong></div>
-      <span style="padding:4px 12px;border-radius:3px;font-size:13px;font-weight:700;background:rgba(255,112,112,0.12);color:#ff7070">VIX = 31.05 — erhöht, Vorsicht geboten</span>
-      <div style="font-size:12px;color:#7090b8;margin-top:6px">Regime wird täglich um 22:30 Uhr automatisch aktualisiert.</div>
+    <div style="padding:10px 14px;background:rgba(0,0,0,0.2);border-radius:4px;margin-bottom:10px">
+      <div style="font-size:12px;font-weight:700;color:#ff7070;margin-bottom:4px">NOCH NICHT PRÜFEN — erst Pflicht-Gate 1 abwarten</div>
+      <div style="font-size:12px;color:#c8d8f0;line-height:1.6">Erst wenn Gate 1 erfüllt ist, wird diese Bedingung relevant.</div>
+    </div>
+    <div style="font-size:12px;color:#7090b8;padding:8px 12px;background:rgba(255,255,255,0.04);border-radius:4px">
+      💡 <strong style="color:#e8f0ff">Warum 3 Tage?</strong> Ein einzelner ruhiger Tag kann Zufall sein. Erst 3 Tage in Folge unter dem Durchschnitt zeigen eine echte Trendwende.
     </div>
   </div>
 </div>
+
+<!-- WENN GATES NICHT OFFEN: STOPP-HINWEIS -->
+<div style="padding:14px 18px;background:rgba(255,112,112,0.10);border:1px solid rgba(255,112,112,0.4);border-radius:4px;margin-bottom:20px;font-size:13px;color:#ff9090;line-height:1.7"><strong>🛑 Stopp hier.</strong> Solange nicht beide Pflicht-Gates erfüllt sind, sind Bedingungen 3–5 irrelevant. Nicht weiter prüfen — Kapital schützen und täglich wiederholen.</div>
+
+<!-- BESTÄTIGUNGS-BEDINGUNGEN (ausgegraut wenn Gates nicht offen) -->
+<div style="opacity:0.4;pointer-events:none">
+<div style="margin-bottom:6px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8">Bestätigungs-Bedingungen — je mehr erfüllt, desto aggressiver der Einstieg</div>
 <div style="background:#223058;border:1px solid #2e4070;border-radius:6px;overflow:hidden;margin-bottom:8px">
   <div style="display:flex;align-items:center;gap:12px;padding:13px 18px;background:rgba(255,255,255,0.03);border-bottom:1px solid #2e4070;flex-wrap:wrap">
-    <div style="width:32px;height:32px;border-radius:50%;background:rgba(112,184,255,0.15);color:#70b8ff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0">2</div>
-    <div style="font-size:20px;flex-shrink:0">📉</div>
-    <div style="flex:1">
-      <div style="font-size:15px;font-weight:700;color:#e8f0ff">Beruhigt sich der VIX nachhaltig? (Pflichtbedingung)</div>
-    </div>
-    <span style="font-size:11px;padding:2px 10px;border-radius:3px;background:rgba(77,216,144,0.12);color:#4dd890;border:1px solid rgba(77,216,144,0.3);font-weight:600">● Dashboard zeigt es automatisch</span>
-  </div>
-  <div style="padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
-    <div>
-      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Was bedeutet das?</div>
-      <div style="font-size:13px;color:#c8d8f0;line-height:1.75">Der VIX muss <strong style="color:#e8f0ff">3 Tage hintereinander</strong> unter seinem 10-Tage-Durchschnitt liegen. Das zeigt: die Angst beruhigt sich <em>nachhaltig</em>, nicht nur kurz. Ein einzelner ruhiger Tag reicht nicht.</div>
-    </div>
-    <div>
-      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Was prüfe ich konkret?</div>
-      <div style="font-size:13px;color:#c8d8f0;line-height:1.75;margin-bottom:12px">Aktueller VIX: <strong style="color:#e8f0ff">31.05</strong><br>10-Tage-Durchschnitt: <strong style="color:#e8f0ff">25.87</strong><br>VIX liegt <strong style="color:#ff7070">ÜBER</strong> dem Durchschnitt<br>Bisheriger Streak: <strong style="color:#e8f0ff">0 von 3 Tagen</strong></div>
-      <span style="padding:4px 12px;border-radius:3px;font-size:13px;font-weight:700;background:rgba(255,112,112,0.12);color:#ff7070">✗ Noch nicht — erst 0 von 3 Tagen</span>
-      <div style="font-size:12px;color:#7090b8;margin-top:6px">⚠ Ohne diese Bedingung kein Wiedereinstieg — egal wie andere aussehen.</div>
-    </div>
-  </div>
-</div>
-<div style="background:#223058;border:1px solid #2e4070;border-radius:6px;overflow:hidden;margin-bottom:8px">
-  <div style="display:flex;align-items:center;gap:12px;padding:13px 18px;background:rgba(255,255,255,0.03);border-bottom:1px solid #2e4070;flex-wrap:wrap">
-    <div style="width:32px;height:32px;border-radius:50%;background:rgba(112,184,255,0.15);color:#70b8ff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0">3</div>
+    <div style="width:32px;height:32px;border-radius:50%;background:rgba(112,184,255,0.15);color:#70b8ff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0">3 — Bestätigung</div>
     <div style="font-size:20px;flex-shrink:0">📈</div>
     <div style="flex:1">
-      <div style="font-size:15px;font-weight:700;color:#e8f0ff">Beruhigt sich auch der Futures-Markt? (Manuell)</div>
+      <div style="font-size:15px;font-weight:700;color:#e8f0ff">Beruhigt sich auch der Futures-Markt?</div>
     </div>
     <span style="font-size:11px;padding:2px 10px;border-radius:3px;background:rgba(240,192,96,0.15);color:#f0c060;border:1px solid rgba(240,192,96,0.4);font-weight:600">⚠ Manuell auf externer Website prüfen</span>
   </div>
   <div style="padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
     <div>
       <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Was bedeutet das?</div>
-      <div style="font-size:13px;color:#c8d8f0;line-height:1.75">VIX-Futures sind Wetten auf die künftige Angst. Im Normalfall sind <strong style="color:#e8f0ff">weiter entfernte Monate teurer</strong> als nahe — weil die Zukunft unsicherer ist (= <em>Contango</em>).<br><br>Wenn der nächste Monat <strong style="color:#ff7070">teurer</strong> ist als übernächste — Alarm! Der Markt hat jetzt mehr Angst als in Zukunft (= <em>Backwardation</em>).</div>
+      <div style="font-size:13px;color:#c8d8f0;line-height:1.75">VIX-Futures sind Wetten auf die künftige Angst. Im Normalfall sind <strong style="color:#e8f0ff">weiter entfernte Monate teurer</strong> (= Contango). Wenn der nächste Monat <strong style="color:#ff7070">teurer</strong> ist als der übernächste, hat der Markt jetzt mehr Angst als in der Zukunft (= Backwardation — Warnsignal).</div>
     </div>
     <div>
       <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Was prüfe ich konkret?</div>
-      <div style="font-size:13px;color:#c8d8f0;line-height:1.75;margin-bottom:12px">Öffne: <a href="https://www.cboe.com/tradable-products/vix/term-structure/" target="_blank" style="color:#70b8ff">cboe.com → VIX Term Structure</a><br><br>Schau auf die Tabelle mit den Monatswerten:<br><strong style="color:#4dd890">Gut (Contango):</strong> Monat 1 &lt; Monat 2 &lt; Monat 3<br><strong style="color:#ff7070">Schlecht (Backwardation):</strong> Monat 1 &gt; Monat 2</div>
+      <div style="font-size:13px;color:#c8d8f0;line-height:1.75;margin-bottom:12px">Öffne: <a href="https://www.cboe.com/tradable-products/vix/term-structure/" target="_blank" style="color:#70b8ff">cboe.com → VIX Term Structure</a><br><br><strong style="color:#4dd890">Gut:</strong> Monat 1 &lt; Monat 2 &lt; Monat 3 (aufsteigend)<br><strong style="color:#ff7070">Schlecht:</strong> Monat 1 &gt; Monat 2 (absteigend)</div>
       <span style="padding:4px 12px;border-radius:3px;font-size:13px;font-weight:700;background:rgba(255,112,112,0.12);color:#ff7070"></span>
-      <div style="font-size:12px;color:#7090b8;margin-top:6px">Monat 1 = nächster Verfallstermin (~30 Tage). Monat 2 = übernächster (~60 Tage).</div>
+      <div style="font-size:12px;color:#7090b8;margin-top:6px">Monat 1 = nächster Verfall (~30 Tage). Monat 2 = übernächster (~60 Tage).</div>
     </div>
   </div>
 </div>
 <div style="background:#223058;border:1px solid #2e4070;border-radius:6px;overflow:hidden;margin-bottom:8px">
   <div style="display:flex;align-items:center;gap:12px;padding:13px 18px;background:rgba(255,255,255,0.03);border-bottom:1px solid #2e4070;flex-wrap:wrap">
-    <div style="width:32px;height:32px;border-radius:50%;background:rgba(112,184,255,0.15);color:#70b8ff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0">4</div>
+    <div style="width:32px;height:32px;border-radius:50%;background:rgba(112,184,255,0.15);color:#70b8ff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0">4 — Bestätigung</div>
     <div style="font-size:20px;flex-shrink:0">🔍</div>
     <div style="flex:1">
-      <div style="font-size:15px;font-weight:700;color:#e8f0ff">Beruhigt sich die Nervosität von innen? (VVIX)</div>
+      <div style="font-size:15px;font-weight:700;color:#e8f0ff">Beruhigt sich der Nerven-Index (VVIX)?</div>
     </div>
     <span style="font-size:11px;padding:2px 10px;border-radius:3px;background:rgba(77,216,144,0.12);color:#4dd890;border:1px solid rgba(77,216,144,0.3);font-weight:600">● Dashboard zeigt es automatisch</span>
   </div>
   <div style="padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
     <div>
       <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Was bedeutet das?</div>
-      <div style="font-size:13px;color:#c8d8f0;line-height:1.75">Der <strong style="color:#e8f0ff">VVIX</strong> ist die "Volatilität der Volatilität" — er misst wie nervös der VIX <em>selbst</em> gerade ist. Wenn der VVIX fällt, beruhigt sich der Markt von innen heraus — oft <em>bevor</em> der VIX selbst deutlich fällt. Ein frühes Warnsignal.</div>
+      <div style="font-size:13px;color:#c8d8f0;line-height:1.75">Der VVIX misst wie nervös der VIX <em>selbst</em> ist. Wenn er fällt, beruhigt sich der Markt von innen — oft <em>bevor</em> der VIX selbst stark fällt. Daher ein wertvolles Frühsignal.</div>
     </div>
     <div>
       <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Was prüfe ich konkret?</div>
       <div style="font-size:13px;color:#c8d8f0;line-height:1.75;margin-bottom:12px">Aktueller VVIX: <strong style="color:#e8f0ff">133.18</strong><br>Trend der letzten 5 Tage: <strong style="color:#ffaa55">steigt</strong><br>Schwelle: unter 120 UND fallend</div>
       <span style="padding:4px 12px;border-radius:3px;font-size:13px;font-weight:700;background:rgba(255,112,112,0.12);color:#ff7070">✗ VVIX = 133.18 — noch zu hoch oder steigend</span>
-      <div style="font-size:12px;color:#7090b8;margin-top:6px">Tipp: VVIX fällt oft als erstes — beobachte ihn täglich.</div>
+      <div style="font-size:12px;color:#7090b8;margin-top:6px">Fällt der VVIX, obwohl der VIX noch hoch ist? → Das ist das früheste Signal überhaupt.</div>
     </div>
   </div>
 </div>
 <div style="background:#223058;border:1px solid #2e4070;border-radius:6px;overflow:hidden;margin-bottom:8px">
   <div style="display:flex;align-items:center;gap:12px;padding:13px 18px;background:rgba(255,255,255,0.03);border-bottom:1px solid #2e4070;flex-wrap:wrap">
-    <div style="width:32px;height:32px;border-radius:50%;background:rgba(112,184,255,0.15);color:#70b8ff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0">5</div>
+    <div style="width:32px;height:32px;border-radius:50%;background:rgba(112,184,255,0.15);color:#70b8ff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0">5 — Bestätigung</div>
     <div style="font-size:20px;flex-shrink:0">📉</div>
     <div style="flex:1">
-      <div style="font-size:15px;font-weight:700;color:#e8f0ff">Bestätigt der S&P 500 Chart die Erholung? (Manuell)</div>
+      <div style="font-size:15px;font-weight:700;color:#e8f0ff">Bestätigt der S&P 500 Chart die Erholung?</div>
     </div>
     <span style="font-size:11px;padding:2px 10px;border-radius:3px;background:rgba(240,192,96,0.15);color:#f0c060;border:1px solid rgba(240,192,96,0.4);font-weight:600">⚠ Manuell auf externer Website prüfen</span>
   </div>
   <div style="padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
     <div>
       <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Was bedeutet das?</div>
-      <div style="font-size:13px;color:#c8d8f0;line-height:1.75">Der Chart des S&P 500 muss bestätigen, dass der Markt einen Boden gefunden hat. Das erkennst du daran, dass er <strong style="color:#e8f0ff">keine neuen Tiefs mehr macht</strong> — sondern sich seitwärts bewegt oder ein höheres Tief bildet. Ohne Chartbestätigung kann ein Einstieg zu früh sein.</div>
+      <div style="font-size:13px;color:#c8d8f0;line-height:1.75">Der Chart muss zeigen, dass der Markt einen Boden gefunden hat. Das erkennst du daran, dass der S&P 500 <strong style="color:#e8f0ff">keine neuen Tiefs mehr macht</strong>.</div>
     </div>
     <div>
       <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Was prüfe ich konkret?</div>
-      <div style="font-size:13px;color:#c8d8f0;line-height:1.75;margin-bottom:12px">Öffne: <a href="https://www.tradingview.com/chart/?symbol=SPX" target="_blank" style="color:#70b8ff">TradingView → SPX Wochenchart</a><br><br>Frage: Hat der S&P 500 in den letzten Tagen ein <em>neues Tief</em> gemacht?<br><strong style="color:#4dd890">Gut:</strong> Kein neues Tief seit mehreren Tagen<br><strong style="color:#ff7070">Schlecht:</strong> Immer neue Tiefs</div>
+      <div style="font-size:13px;color:#c8d8f0;line-height:1.75;margin-bottom:12px">Öffne: <a href="https://www.tradingview.com/chart/?symbol=SPX" target="_blank" style="color:#70b8ff">TradingView → SPX Wochenchart</a><br><br>Frage: Macht der S&P 500 noch neue Tiefs?<br><strong style="color:#4dd890">Gut:</strong> Kein neues Tief seit mind. 5 Tagen<br><strong style="color:#ff7070">Schlecht:</strong> Immer noch neue Tiefs</div>
       <span style="padding:4px 12px;border-radius:3px;font-size:13px;font-weight:700;background:rgba(255,112,112,0.12);color:#ff7070">✗ S&P noch nicht stabil — Tief vor 1 Tagen</span>
-      <div style="font-size:12px;color:#7090b8;margin-top:6px">Schätzung des Dashboards — eigener Blick auf den Chart empfohlen.</div>
+      <div style="font-size:12px;color:#7090b8;margin-top:6px">Eigener Blick auf den Chart empfohlen — Dashboard-Schätzung nur grober Hinweis.</div>
     </div>
   </div>
+</div>
 </div>
 
 <!-- ══════ ERGEBNIS ══════ -->
 <div style="background:#223058;border:2px solid #ff707044;border-radius:6px;padding:20px 22px;margin-bottom:8px">
-  <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Ergebnis heute — 1 von 4 automatischen Bedingungen erfüllt</div>
-  <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#ff7070;margin-bottom:8px">Kein Wiedereinstieg — Bedingung 1 nicht erfüllt</div>
-  <div style="font-size:14px;color:#c8d8f0;line-height:1.7;margin-bottom:16px">Der VIX ist noch zu hoch. Warte bis er 3 Tage unter seinem 10-Tage-Durchschnitt liegt.</div>
+  <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Ergebnis heute — 0 von 4 automatischen Bedingungen erfüllt</div>
+  <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#ff7070;margin-bottom:8px">🔴 Pflicht-Gate 1 nicht erfüllt — VIX noch über 30</div>
+  <div style="font-size:14px;color:#c8d8f0;line-height:1.7;margin-bottom:16px">VIX steht bei 31.05 — über der 30er-Schwelle. Kein Wiedereinstieg möglich. Bedingung 2 gar nicht erst prüfen. Abwarten und Kapital schützen.</div>
   <div style="background:#1a2540;border-radius:4px;overflow:hidden">
     <div style="padding:10px 14px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;border-bottom:1px solid #2e4070">Was tue ich jetzt konkret?</div>
     <div style="display:grid;grid-template-columns:120px 1fr 2fr;border-bottom:1px solid #2e4070">
@@ -301,7 +309,7 @@ h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#e8f0ff;ma
 
 <div style="border-top:1px solid #2e4070;padding-top:16px;display:flex;justify-content:space-between;font-size:11px;color:#7090b8">
   <span style="font-family:'Syne',sans-serif;color:#f0c060;font-size:13px">meine-geldseite.de</span>
-  <span>VIX Dashboard · 2026-03-29 16:23 UTC · Yahoo Finance</span>
+  <span>VIX Dashboard · 2026-03-29 16:31 UTC · Yahoo Finance</span>
 </div>
 
 </div><!-- /panel-daily -->
