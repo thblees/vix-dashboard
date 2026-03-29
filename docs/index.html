@@ -8,19 +8,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:       #f0f2f5;
-    --s1:       #ffffff;
-    --s2:       #f7f9fc;
-    --border:   #dde3ed;
-    --border2:  #c4cede;
-    --gold:     #9a6f10;
-    --green:    #1a7a40;
-    --red:      #b83030;
-    --orange:   #b85a10;
-    --blue:     #1a5fc8;
-    --text:     #2a3a50;
-    --muted:    #7a8fa8;
-    --white:    #111a28;
+    --bg:       #1a2540;
+    --s1:       #223058;
+    --s2:       #1e2c50;
+    --border:   #2e4070;
+    --border2:  #3a5080;
+    --gold:     #f0c060;
+    --green:    #4dd890;
+    --red:      #ff7070;
+    --orange:   #ffaa55;
+    --blue:     #70b8ff;
+    --text:     #c8d8f0;
+    --muted:    #7090b8;
+    --white:    #e8f0ff;
     --fhead:    'Syne', sans-serif;
     --fmono:    'JetBrains Mono', monospace;
   }
@@ -39,7 +39,7 @@
 
   /* ─── TOPBAR ─── */
   .topbar {
-    background: #ffffff;
+    background: #1a2540;
     border-bottom: 1px solid var(--border);
     padding: 0 28px;
     height: 52px;
@@ -47,7 +47,7 @@
     align-items: center;
     justify-content: space-between;
     position: sticky; top: 0; z-index: 100;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    box-shadow: 0 1px 8px rgba(0,0,0,0.3);
   }
   .topbar-brand { font-family: var(--fhead); font-size: 15px; font-weight: 800; color: var(--gold); letter-spacing: -0.3px; }
   .topbar-brand span { color: var(--white); }
@@ -251,6 +251,47 @@
   .mon-when { font-size: 11px; color: var(--muted); margin-bottom: 10px; letter-spacing: 1px; text-transform: uppercase; }
   .mon-item { font-size: 13px; color: var(--text); padding: 4px 0; border-bottom: 1px solid var(--border); line-height: 1.5; }
   .mon-item:last-child { border-bottom: none; }
+
+  /* ─── INTERPRETATIONSHILFE ─── */
+  .interp-block {
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .interp-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 18px;
+    background: rgba(255,255,255,0.04);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .interp-step {
+    font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    background: rgba(112,184,255,0.15); color: var(--blue);
+    padding: 3px 10px; border-radius: 3px; flex-shrink: 0;
+  }
+  .interp-title { font-size: 14px; font-weight: 600; color: var(--white); flex: 1; }
+  .interp-auto-badge {
+    font-size: 11px; font-weight: 600; padding: 3px 12px;
+    border-radius: 3px; border: 1px solid; flex-shrink: 0;
+  }
+  .interp-body { padding: 16px 18px; }
+  .interp-text { font-size: 13px; color: var(--text); line-height: 1.7; margin-bottom: 14px; }
+  .interp-cases {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 8px;
+  }
+  .interp-case { padding: 12px 14px; border-radius: 4px; border: 1px solid var(--border); }
+  .interp-green { background: rgba(77,216,144,0.07); border-color: rgba(77,216,144,0.35); }
+  .interp-orange { background: rgba(255,170,85,0.07); border-color: rgba(255,170,85,0.35); }
+  .interp-red { background: rgba(255,112,112,0.07); border-color: rgba(255,112,112,0.35); }
+  .interp-case-label { font-size: 12px; font-weight: 600; margin-bottom: 5px; }
+  .interp-green .interp-case-label { color: var(--green); }
+  .interp-orange .interp-case-label { color: var(--orange); }
+  .interp-red .interp-case-label { color: var(--red); }
+  .interp-case-action { font-size: 12px; color: var(--text); line-height: 1.6; }
 
   /* ─── FOOTER ─── */
   footer {
@@ -459,41 +500,174 @@
       </table>
     </div>
 
-    <!-- MONITORING FREQUENZ -->
-    <div class="chart-card" style="margin-bottom:4px">
-      <div class="chart-title">Monitoring-Frequenz — aktuell empfohlen</div>
-      <div class="monitoring-grid">
-        <div class="mon-box">
-          <div class="mon-freq" id="mon-freq">Täglich</div>
-          <div class="mon-when">Nach US-Close, ~22:00</div>
-          <div class="mon-item">✓ VIX Close vs. MA10</div>
-          <div class="mon-item">✓ VVIX Trend</div>
-          <div class="mon-item">✓ Futures Term Structure</div>
-          <div class="mon-item">✓ S&P 500 Chart (Tief?)</div>
+    <!-- INTERPRETATIONSHILFE -->
+    <div class="chart-card" style="margin-bottom:16px">
+      <div class="chart-title">Tägliche Interpretationshilfe — Was tue ich mit den Daten?</div>
+      <div style="font-size:13px; color:var(--muted); margin-bottom:20px; line-height:1.7">
+        Jeden Werktag nach 22:00 Uhr (nach US-Börsenschluss) öffnest du dieses Dashboard. Das hier erklärt dir Schritt für Schritt, was du siehst — und was du danach tun sollst.
+      </div>
+
+      <!-- CHECK 1: VIX REGIME -->
+      <div class="interp-block">
+        <div class="interp-header">
+          <div class="interp-step">Schritt 1</div>
+          <div class="interp-title">VIX-Stand und Regime ablesen</div>
+          <div class="interp-auto-badge" style="background:rgba(77,216,144,0.15);color:var(--green);border-color:rgba(77,216,144,0.4)">● Automatisch</div>
         </div>
-        <div class="mon-box">
-          <div class="mon-freq">Wöchentlich</div>
-          <div class="mon-when">Sonntags ~15 Min</div>
-          <div class="mon-item">→ Regime-Check (dieses Dashboard)</div>
-          <div class="mon-item">→ Alle 5 Bedingungen prüfen</div>
-          <div class="mon-item">→ Allokation anpassen?</div>
-          <div class="mon-item">→ Watchlist aktualisieren</div>
+        <div class="interp-body">
+          <div class="interp-text">Schau oben links auf die große VIX-Zahl und das farbige Regime-Badge. Das ist dein wichtigster Orientierungspunkt.</div>
+          <div class="interp-cases">
+            <div class="interp-case interp-green">
+              <div class="interp-case-label">VIX unter 20 — Grün</div>
+              <div class="interp-case-action">→ Nichts tun. Investiert bleiben. Trend folgen. Du musst heute keine Entscheidung treffen.</div>
+            </div>
+            <div class="interp-case interp-orange">
+              <div class="interp-case-label">VIX 20–30 — Orange</div>
+              <div class="interp-case-action">→ Wachsam sein. Stopps im Depot überprüfen. Noch kein Verkauf, aber Finger näher am Abzug.</div>
+            </div>
+            <div class="interp-case interp-red">
+              <div class="interp-case-label">VIX über 30 — Rot</div>
+              <div class="interp-case-action">→ Aktienquote reduzieren falls noch nicht geschehen. Schritt 2–4 jetzt täglich prüfen.</div>
+            </div>
+          </div>
         </div>
-        <div class="mon-box">
-          <div class="mon-freq">Quellen</div>
-          <div class="mon-when">Datenquellen</div>
-          <div class="mon-item">VIX/VVIX: Yahoo Finance</div>
-          <div class="mon-item">Futures: cboe.com/vix</div>
-          <div class="mon-item">Chart: TradingView SPX</div>
-          <div class="mon-item">Update: täglich 22:30 Uhr</div>
+      </div>
+
+      <!-- CHECK 2: R1 -->
+      <div class="interp-block">
+        <div class="interp-header">
+          <div class="interp-step">Schritt 2</div>
+          <div class="interp-title">R1 prüfen — VIX vs. MA10 (Pflichtbedingung für Wiedereinstieg)</div>
+          <div class="interp-auto-badge" style="background:rgba(77,216,144,0.15);color:var(--green);border-color:rgba(77,216,144,0.4)">● Automatisch</div>
         </div>
-        <div class="mon-box">
-          <div class="mon-freq" style="color:var(--gold)">Warnung</div>
-          <div class="mon-when">Datenhinweis</div>
-          <div class="mon-item">R2 = manuell (CBOE)</div>
-          <div class="mon-item">R5 = Schätzung, kein Ersatz für eigene Chart-Analyse</div>
-          <div class="mon-item">Kein Anlageberatung</div>
+        <div class="interp-body">
+          <div class="interp-text">Sieh dir in der Metriken-Tabelle die Zeile "VIX vs. MA10" an. Dort steht der aktuelle Streak — also wie viele Tage der VIX bereits unter dem MA10 liegt.</div>
+          <div class="interp-cases">
+            <div class="interp-case interp-red">
+              <div class="interp-case-label">VIX über MA10 (Streak = 0)</div>
+              <div class="interp-case-action">→ Kein Einstieg möglich. Wenn du noch investiert bist: Stopps eng halten. Wenn du draußen bist: weiter warten.</div>
+            </div>
+            <div class="interp-case interp-orange">
+              <div class="interp-case-label">Streak 1–2 Tage unter MA10</div>
+              <div class="interp-case-action">→ Ermutigend, aber noch nicht ausreichend. Morgen wieder prüfen. Noch nicht kaufen.</div>
+            </div>
+            <div class="interp-case interp-green">
+              <div class="interp-case-label">Streak ≥ 3 Tage unter MA10 ✓</div>
+              <div class="interp-case-action">→ R1 erfüllt! Jetzt Schritte 3–5 prüfen. Wenn 2 weitere Bedingungen grün sind, kannst du erste Kauftranche platzieren.</div>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <!-- CHECK 3: R2 MANUELL -->
+      <div class="interp-block" style="border-color:rgba(240,192,96,0.5)">
+        <div class="interp-header">
+          <div class="interp-step">Schritt 3</div>
+          <div class="interp-title">R2 manuell prüfen — VIX Futures Kurvenstruktur</div>
+          <div class="interp-auto-badge" style="background:rgba(240,192,96,0.2);color:var(--gold);border-color:rgba(240,192,96,0.5)">⚠ Manuell — 30 Sek.</div>
+        </div>
+        <div class="interp-body">
+          <div class="interp-text">
+            Öffne diese Seite: <a href="https://www.cboe.com/tradable-products/vix/term-structure/" target="_blank" style="color:var(--blue)">cboe.com → VIX Term Structure</a><br>
+            Du siehst eine Tabelle mit VIX-Futures-Preisen für verschiedene Monate. Schau ob der erste Monat (M1) günstiger ist als der zweite (M2).
+          </div>
+          <div class="interp-cases">
+            <div class="interp-case interp-green">
+              <div class="interp-case-label">M1 &lt; M2 &lt; M3 (aufsteigend = Contango) ✓</div>
+              <div class="interp-case-action">→ Normal und gut. Der Markt erwartet in Zukunft weniger Angst als heute. R2 erfüllt — zählt als Kaufsignal.</div>
+            </div>
+            <div class="interp-case interp-red">
+              <div class="interp-case-label">M1 &gt; M2 (absteigend = Backwardation) ✗</div>
+              <div class="interp-case-action">→ Warnsignal. Der Markt hat jetzt mehr Angst als in der Zukunft. R2 nicht erfüllt — noch kein Einstieg.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHECK 4: R4 VVIX -->
+      <div class="interp-block">
+        <div class="interp-header">
+          <div class="interp-step">Schritt 4</div>
+          <div class="interp-title">R4 prüfen — VVIX (Volatilität der Volatilität)</div>
+          <div class="interp-auto-badge" style="background:rgba(77,216,144,0.15);color:var(--green);border-color:rgba(77,216,144,0.4)">● Automatisch</div>
+        </div>
+        <div class="interp-body">
+          <div class="interp-text">Der VVIX-Wert steht in der Stat-Box oben (Mitte). Er misst wie nervös der VIX selbst gerade ist — quasi ein "Frühwarnsystem vor dem Frühwarnsystem". Wenn der VVIX fällt, beruhigt sich der Markt von innen heraus, noch bevor der VIX selbst deutlich fällt.</div>
+          <div class="interp-cases">
+            <div class="interp-case interp-red">
+              <div class="interp-case-label">VVIX über 120 und steigt</div>
+              <div class="interp-case-action">→ Der Markt wird nervöser. Kein Einstieg. Wenn du investiert bist: Risiko weiter reduzieren.</div>
+            </div>
+            <div class="interp-case interp-orange">
+              <div class="interp-case-label">VVIX über 120 aber fällt</div>
+              <div class="interp-case-action">→ Erste Beruhigung sichtbar. Noch nicht kaufen, aber Lage beobachten. Morgen wieder prüfen.</div>
+            </div>
+            <div class="interp-case interp-green">
+              <div class="interp-case-label">VVIX unter 120 und fällt ✓</div>
+              <div class="interp-case-action">→ R4 erfüllt. Markt normalisiert sich. Zusammen mit R1 und R3 ein starkes Kaufsignal.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHECK 5: R5 CHART -->
+      <div class="interp-block" style="border-color:rgba(240,192,96,0.5)">
+        <div class="interp-header">
+          <div class="interp-step">Schritt 5</div>
+          <div class="interp-title">R5 manuell prüfen — S&P 500 Chartstruktur</div>
+          <div class="interp-auto-badge" style="background:rgba(240,192,96,0.2);color:var(--gold);border-color:rgba(240,192,96,0.5)">⚠ Manuell — 2 Min.</div>
+        </div>
+        <div class="interp-body">
+          <div class="interp-text">
+            Öffne <a href="https://www.tradingview.com/chart/?symbol=SPX" target="_blank" style="color:var(--blue)">TradingView → SPX Wochenchart</a>. Du brauchst keine Indikatoren — nur den nackten Kursverlauf. Eine Frage: Hat der S&P 500 ein höheres Tief gebildet oder sich seitwärts stabilisiert?
+          </div>
+          <div class="interp-cases">
+            <div class="interp-case interp-red">
+              <div class="interp-case-label">Kurs macht immer neue Tiefs ✗</div>
+              <div class="interp-case-action">→ R5 nicht erfüllt. Der Markt hat noch keinen Boden gefunden. Trotz anderer grüner Signale: abwarten.</div>
+            </div>
+            <div class="interp-case interp-orange">
+              <div class="interp-case-label">Kurs seitwärts, kein neues Tief seit &gt;5 Tagen</div>
+              <div class="interp-case-action">→ Mögliche Bodenbildung. Vorsichtig: kleine erste Tranche möglich wenn R1+R2+R4 auch grün sind.</div>
+            </div>
+            <div class="interp-case interp-green">
+              <div class="interp-case-label">Höheres Tief nach dem Tief sichtbar ✓</div>
+              <div class="interp-case-action">→ R5 erfüllt. Klassisches Umkehrmuster. Zusammen mit anderen Signalen: Einstieg berechtigt.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ENTSCHEIDUNG -->
+      <div class="interp-block" style="border-color:rgba(112,184,255,0.5);background:rgba(112,184,255,0.05)">
+        <div class="interp-header">
+          <div class="interp-step" style="background:rgba(112,184,255,0.2);color:var(--blue)">Ergebnis</div>
+          <div class="interp-title">Was tue ich jetzt konkret?</div>
+        </div>
+        <div class="interp-body">
+          <div class="interp-cases">
+            <div class="interp-case" style="border-color:rgba(255,112,112,0.4);background:rgba(255,112,112,0.08)">
+              <div class="interp-case-label" style="color:var(--red)">0–1 Bedingungen grün (inkl. R1 fehlt)</div>
+              <div class="interp-case-action">Nichts kaufen. Dashboard morgen wieder öffnen. Watchlist pflegen.</div>
+            </div>
+            <div class="interp-case" style="border-color:rgba(255,170,85,0.4);background:rgba(255,170,85,0.08)">
+              <div class="interp-case-label" style="color:var(--orange)">R1 + 1 weitere grün</div>
+              <div class="interp-case-action">Kleine Pilotposition möglich: 10–15% der Ziel-Aktienquote. Morgen wieder prüfen.</div>
+            </div>
+            <div class="interp-case interp-green">
+              <div class="interp-case-label">R1 + 2 weitere grün ✓</div>
+              <div class="interp-case-action">Erste Kauftranche: 20–25%. Zweite Tranche in 1 Woche wenn Signale stabil bleiben.</div>
+            </div>
+            <div class="interp-case interp-green" style="border-color:rgba(77,216,144,0.6)">
+              <div class="interp-case-label">R1 + 3–4 weitere grün ✓✓</div>
+              <div class="interp-case-action">Aggressiver Einstieg: 40–60% sofort, Rest in 2 Wochen. Beste historische Einstiegschancen.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px;padding:14px 18px;background:rgba(240,192,96,0.08);border:1px solid rgba(240,192,96,0.3);border-radius:4px;font-size:12px;color:var(--muted);line-height:1.7">
+        <strong style="color:var(--gold)">Wichtig:</strong> Dieses Dashboard ersetzt keine eigene Urteilsfähigkeit. R2 und R5 müssen immer manuell geprüft werden — dafür genügst du dir 3 Minuten täglich. Kein Anlageberatung. Historische Muster garantieren keine zukünftigen Ergebnisse.
       </div>
     </div>
 
@@ -509,16 +683,16 @@
 <script>
 // ─── FARBPALETTE ───
 const C = {
-  green:  '#1a7a40',
-  red:    '#b83030',
-  orange: '#b85a10',
-  gold:   '#9a6f10',
-  blue:   '#1a5fc8',
-  muted:  '#7a8fa8',
-  border: '#dde3ed',
-  text:   '#2a3a50',
-  white:  '#111a28',
-  bg:     '#ffffff',
+  green:  '#4dd890',
+  red:    '#ff7070',
+  orange: '#ffaa55',
+  gold:   '#f0c060',
+  blue:   '#70b8ff',
+  muted:  '#7090b8',
+  border: '#2e4070',
+  text:   '#c8d8f0',
+  white:  '#e8f0ff',
+  bg:     '#223058',
 };
 
 // ─── REGIME → FARBE ───
@@ -533,11 +707,11 @@ const REGIME_COLOR = {
 };
 
 const SIGNAL_COLOR = {
-  NONE:        '#b83030',
-  WAIT:        '#b85a10',
-  CAUTIOUS:    '#9a6f10',
-  BUY:         '#1a7a40',
-  STRONG_BUY:  '#0d5c2e',
+  NONE:        '#ff7070',
+  WAIT:        '#ffaa55',
+  CAUTIOUS:    '#f0c060',
+  BUY:         '#4dd890',
+  STRONG_BUY:  '#80ffb8',
 };
 
 let vixChart = null;
@@ -592,308 +766,4 @@ function renderDashboard(d) {
   // ─── STAT BOXES ───
   const vixVsMa10 = v.current_vix > v.current_ma10 ? '▲ über MA10' : '▼ unter MA10';
   const vixVsMa10Color = v.current_vix > v.current_ma10 ? C.red : C.green;
-  document.getElementById('stat-ma10').textContent = v.current_ma10;
-  const ma10el = document.getElementById('stat-ma10-rel');
-  ma10el.textContent = vixVsMa10;
-  ma10el.style.color = vixVsMa10Color;
-
-  const pctSign = v.vix_pct_above_ma20 >= 0 ? '+' : '';
-  document.getElementById('stat-ma20').textContent = v.current_ma20;
-  const ma20el = document.getElementById('stat-ma20-pct');
-  ma20el.textContent = `${pctSign}${v.vix_pct_above_ma20}% vs. MA20`;
-  ma20el.style.color = v.vix_pct_above_ma20 > 30 ? C.red : (v.vix_pct_above_ma20 > 0 ? C.orange : C.green);
-
-  document.getElementById('stat-bb').textContent = v.current_bb_upper;
-  const bbEl = document.getElementById('stat-bb-rel');
-  bbEl.textContent = v.current_vix > v.current_bb_upper ? '⚠ Über BB-Oben' : '✓ Unter BB-Oben';
-  bbEl.style.color = v.current_vix > v.current_bb_upper ? C.red : C.green;
-
-  document.getElementById('stat-vvix').textContent = vv.current_vvix ?? '—';
-  const vvixEl = document.getElementById('stat-vvix-trend');
-  vvixEl.textContent = vv.vvix_trend ? `Trend: ${vv.vvix_trend}` : '—';
-  vvixEl.style.color = vv.vvix_trend === 'fällt' ? C.green : C.orange;
-
-  document.getElementById('stat-spy').textContent = spy.current_spy ?? '—';
-  document.getElementById('stat-spy-ma50').textContent =
-    spy.spy_pct_from_ma50 != null
-      ? `${spy.spy_pct_from_ma50 >= 0 ? '+' : ''}${spy.spy_pct_from_ma50}% vs. MA50`
-      : '—';
-
-  document.getElementById('stat-vix30max').textContent = v.vix_30d_max ?? '—';
-  document.getElementById('stat-vix30min').textContent = `30d Min: ${v.vix_30d_min ?? '—'}`;
-
-  // ─── VERDICT BOX ───
-  const sigColor = SIGNAL_COLOR[re.signal] || C.text;
-  const vbox = document.getElementById('verdict-box');
-  vbox.style.borderColor = sigColor + '55';
-  vbox.style.background = sigColor + '08';
-
-  const autoMet = re.auto_conditions_met ?? 0;
-  document.getElementById('verdict-score').textContent = `${autoMet}/4`;
-  document.getElementById('verdict-score').style.color = sigColor;
-  document.getElementById('verdict-title').textContent = re.signal_label || '—';
-  document.getElementById('verdict-title').style.color = sigColor;
-  document.getElementById('verdict-action').textContent = re.action || '—';
-
-  const eqEl = document.getElementById('verdict-equity');
-  eqEl.textContent = v.equity_pct || '—';
-  eqEl.style.color = sigColor;
-
-  // ─── SIGNAL CARDS ───
-  renderSigCard('r1', re.r1, `Streak: ${v.r1_streak ?? 0} / 3 Tage`, '');
-  // R2 ist statisch (manuell)
-  renderSigCard('r3', re.r3,
-    `Max. Überdehnung (30d): ${v.max_pct_above_ma20_30d ?? '?'}% (≥30% = erfüllt)`, '');
-  renderSigCard('r4', re.r4,
-    `VVIX: ${vv.current_vvix ?? '?'} · Trend: ${vv.vvix_trend ?? '?'}`, '');
-  renderSigCard('r5', re.r5_hint,
-    `S&P Tage seit 30d-Tief: ${spy.days_since_30d_low ?? '?'}. Nur Schätzung!`, '', true);
-
-  // ─── METRIKEN-TABELLE ───
-  renderMetricsTable(v, vv, spy, re);
-
-  // ─── MONITORING FREQUENZ ───
-  const freqEl = document.getElementById('mon-freq');
-  if (['KOMFORT','NIEDRIG_NORMAL'].includes(regime)) {
-    freqEl.textContent = 'Wöchentlich';
-    freqEl.style.color = C.green;
-  } else {
-    freqEl.textContent = 'Täglich';
-    freqEl.style.color = C.orange;
-  }
-
-  // ─── CHARTS ───
-  renderVixChart(v);
-  renderVvixChart(vv);
-
-  document.getElementById('chart-vix-current').textContent = `VIX: ${v.current_vix}`;
-  document.getElementById('chart-vvix-current').textContent = `VVIX: ${vv.current_vvix ?? '—'}`;
-
-  // ─── SHOW ───
-  document.getElementById('loading').style.display = 'none';
-  document.getElementById('main-content').style.display = 'block';
-}
-
-function renderSigCard(id, active, detailText, extraClass, isHint = false) {
-  const card  = document.getElementById('sig-' + id);
-  const dot   = document.getElementById(id + '-dot');
-  const badge = document.getElementById(id + '-badge');
-  const detail = document.getElementById(id + '-' + (id==='r1'?'streak':id==='r3'?'pct':id==='r4'?'detail':'detail'));
-
-  if (active === null || active === undefined) {
-    card.className = 'sig-card manual';
-    if(dot) dot.style.background = C.gold;
-    if(badge) { badge.textContent = 'Manuell prüfen'; badge.style.color = C.gold; }
-  } else if (active) {
-    card.className = 'sig-card active-green';
-    if(dot) dot.style.background = C.green;
-    if(badge) { badge.textContent = isHint ? '~ Wahrscheinlich erfüllt' : '✓ Erfüllt'; badge.style.color = C.green; }
-  } else {
-    card.className = 'sig-card inactive';
-    if(dot) dot.style.background = C.red;
-    if(badge) { badge.textContent = isHint ? '~ Nicht erkennbar' : '✗ Nicht erfüllt'; badge.style.color = C.red; }
-  }
-  if(detail) detail.textContent = detailText;
-}
-
-function renderMetricsTable(v, vv, spy, re) {
-  const rows = [
-    { m: 'VIX aktuell', val: v.current_vix, thresh: '< 20 (gut), > 30 (Stress)',
-      ok: v.current_vix < 20, info: 'Kern-Volatilitätsindikator' },
-    { m: 'VIX vs. MA10', val: `${v.current_vix} vs. ${v.current_ma10}`,
-      thresh: 'VIX < MA10 für 3d', ok: v.r1_active,
-      info: `Streak: ${v.r1_streak ?? 0} / 3 Tage → R1` },
-    { m: 'VIX vs. MA20', val: `+${v.vix_pct_above_ma20}%`, thresh: '< 0% (ideal)',
-      ok: v.vix_pct_above_ma20 < 0, info: 'VIX unter MA20 = normalisiert' },
-    { m: 'Bollinger Band', val: `${v.current_vix} / BB-Oben: ${v.current_bb_upper}`,
-      thresh: 'VIX < BB-Oben', ok: v.current_vix < v.current_bb_upper,
-      info: 'E3-Signal wenn 2d darüber' },
-    { m: 'Max. Überdehnung (30d)', val: `${v.max_pct_above_ma20_30d}%`,
-      thresh: '≥ 30% (R3 erfüllt)', ok: re.r3,
-      info: 'Mean-Reversion-Basis für R3' },
-    { m: 'VVIX', val: vv.current_vvix ?? '—', thresh: '< 120 & fallend',
-      ok: re.r4, info: `Trend: ${vv.vvix_trend ?? '?'} · R4` },
-    { m: 'S&P 500 vs. MA50', val: `${spy.spy_pct_from_ma50 ?? '?'}%`,
-      thresh: '> -15%', ok: spy.spy_pct_from_ma50 > -15,
-      info: 'Technische Marktstruktur' },
-    { m: 'Tage seit 30d-Tief (SPX)', val: `${spy.days_since_30d_low ?? '?'} Tage`,
-      thresh: '≥ 5 Tage', ok: spy.days_since_30d_low >= 5,
-      info: 'Grobe Higher-Low-Schätzung · R5' },
-  ];
-
-  const tbody = document.getElementById('metrics-tbody');
-  tbody.innerHTML = rows.map(r => {
-    const color = r.ok ? C.green : C.red;
-    const badge = r.ok
-      ? `<span class="status-indicator" style="background:rgba(47,190,106,0.1);color:${C.green};border:1px solid rgba(47,190,106,0.3)"><span class="si-dot" style="background:${C.green}"></span>OK</span>`
-      : `<span class="status-indicator" style="background:rgba(220,79,79,0.1);color:${C.red};border:1px solid rgba(220,79,79,0.3)"><span class="si-dot" style="background:${C.red}"></span>Prüfen</span>`;
-    return `<tr>
-      <td style="color:var(--white);font-weight:500">${r.m}</td>
-      <td style="color:${color};font-weight:600">${r.val}</td>
-      <td style="color:var(--muted);font-size:11px">${r.thresh}</td>
-      <td>${badge}</td>
-      <td style="color:var(--muted);font-size:11px">${r.info}</td>
-    </tr>`;
-  }).join('');
-}
-
-// ─── CHART: VIX ───
-function renderVixChart(v) {
-  const ctx = document.getElementById('chartVix').getContext('2d');
-  if (vixChart) vixChart.destroy();
-
-  vixChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: v.chart_dates,
-      datasets: [
-        {
-          label: 'VIX',
-          data: v.chart_vix,
-          borderColor: '#c8a234',
-          borderWidth: 2,
-          pointRadius: 0,
-          tension: 0.1,
-          fill: false,
-          order: 1,
-        },
-        {
-          label: 'MA10',
-          data: v.chart_ma10,
-          borderColor: '#3d8ef0',
-          borderWidth: 1.5,
-          pointRadius: 0,
-          borderDash: [],
-          tension: 0.1,
-          fill: false,
-          order: 2,
-        },
-        {
-          label: 'MA20',
-          data: v.chart_ma20,
-          borderColor: '#6a7f9f',
-          borderWidth: 1,
-          pointRadius: 0,
-          tension: 0.1,
-          fill: false,
-          order: 3,
-        },
-        {
-          label: 'BB Oben',
-          data: v.chart_bb_upper,
-          borderColor: 'rgba(220,79,79,0.5)',
-          borderWidth: 1,
-          borderDash: [4, 3],
-          pointRadius: 0,
-          tension: 0.1,
-          fill: '+1',
-          backgroundColor: 'rgba(220,79,79,0.04)',
-          order: 4,
-        },
-        {
-          label: 'BB Unten',
-          data: v.chart_bb_lower,
-          borderColor: 'rgba(47,190,106,0.4)',
-          borderWidth: 1,
-          borderDash: [4, 3],
-          pointRadius: 0,
-          tension: 0.1,
-          fill: false,
-          order: 5,
-        },
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: { duration: 600 },
-      plugins: {
-        legend: {
-          position: 'top',
-          labels: { color: '#7a8fa8', font: { family: 'JetBrains Mono', size: 11 },
-                    boxWidth: 14, padding: 12 }
-        },
-        tooltip: {
-          backgroundColor: '#ffffff',
-          borderColor: '#dde3ed',
-          borderWidth: 1,
-          titleColor: '#111a28',
-          bodyColor: '#2a3a50',
-          titleFont: { family: 'JetBrains Mono', size: 11 },
-          bodyFont: { family: 'JetBrains Mono', size: 11 },
-        }
-      },
-      scales: {
-        x: {
-          ticks: { color: '#7a8fa8', font: { size: 10 }, maxTicksLimit: 8, maxRotation: 0 },
-          grid: { color: 'rgba(180,195,215,0.5)' },
-        },
-        y: {
-          ticks: { color: '#7a8fa8', font: { size: 11 } },
-          grid: { color: 'rgba(180,195,215,0.5)' },
-        }
-      }
-    }
-  });
-}
-
-// ─── CHART: VVIX ───
-function renderVvixChart(vv) {
-  const ctx = document.getElementById('chartVvix').getContext('2d');
-  if (vvixChart) vvixChart.destroy();
-  if (!vv.vvix_hist_vals) return;
-
-  vvixChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: vv.vvix_hist_dates,
-      datasets: [{
-        label: 'VVIX',
-        data: vv.vvix_hist_vals,
-        borderColor: '#b85a10',
-        borderWidth: 2,
-        pointRadius: 0,
-        tension: 0.1,
-        fill: true,
-        backgroundColor: 'rgba(184,90,16,0.07)',
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: { duration: 600 },
-      plugins: {
-        legend: { display: false },
-        annotation: {},
-        tooltip: {
-          backgroundColor: '#ffffff',
-          borderColor: '#dde3ed',
-          borderWidth: 1,
-          titleColor: '#111a28',
-          bodyColor: '#2a3a50',
-          titleFont: { family: 'JetBrains Mono', size: 11 },
-          bodyFont: { family: 'JetBrains Mono', size: 11 },
-        }
-      },
-      scales: {
-        x: {
-          ticks: { color: '#7a8fa8', font: { size: 10 }, maxTicksLimit: 6, maxRotation: 0 },
-          grid: { color: 'rgba(180,195,215,0.5)' },
-        },
-        y: {
-          ticks: { color: '#7a8fa8', font: { size: 11 } },
-          grid: { color: 'rgba(180,195,215,0.5)' },
-          afterDataLimits: (axis) => {
-            axis.max = Math.max(axis.max, 130);
-          }
-        }
-      }
-    }
-  });
-}
-
-// ─── START ───
-loadData();
-</script>
-</body>
-</html>
+  document.getElementById('stat-ma10').textCon
