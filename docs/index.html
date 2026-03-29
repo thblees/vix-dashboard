@@ -1,8 +1,3 @@
-bash
-
-cat /home/claude/vix-dashboard/docs/index.html
-Ausgabe
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -13,19 +8,19 @@ Ausgabe
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:       #080b0f;
-    --s1:       #0f1520;
-    --s2:       #141d2b;
-    --border:   #1c2840;
-    --border2:  #253350;
-    --gold:     #c8a234;
-    --green:    #2fbe6a;
-    --red:      #dc4f4f;
-    --orange:   #e07b28;
-    --blue:     #3d8ef0;
-    --text:     #bbc8d8;
-    --muted:    #465870;
-    --white:    #e8eff8;
+    --bg:       #f0f2f5;
+    --s1:       #ffffff;
+    --s2:       #f7f9fc;
+    --border:   #dde3ed;
+    --border2:  #c4cede;
+    --gold:     #9a6f10;
+    --green:    #1a7a40;
+    --red:      #b83030;
+    --orange:   #b85a10;
+    --blue:     #1a5fc8;
+    --text:     #2a3a50;
+    --muted:    #7a8fa8;
+    --white:    #111a28;
     --fhead:    'Syne', sans-serif;
     --fmono:    'JetBrains Mono', monospace;
   }
@@ -37,14 +32,14 @@ Ausgabe
     background: var(--bg);
     color: var(--text);
     font-family: var(--fmono);
-    font-size: 13px;
+    font-size: 15px;
     line-height: 1.65;
     min-height: 100vh;
   }
 
   /* ─── TOPBAR ─── */
   .topbar {
-    background: var(--s1);
+    background: #ffffff;
     border-bottom: 1px solid var(--border);
     padding: 0 28px;
     height: 52px;
@@ -52,6 +47,7 @@ Ausgabe
     align-items: center;
     justify-content: space-between;
     position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
   }
   .topbar-brand { font-family: var(--fhead); font-size: 15px; font-weight: 800; color: var(--gold); letter-spacing: -0.3px; }
   .topbar-brand span { color: var(--white); }
@@ -93,9 +89,9 @@ Ausgabe
     justify-content: space-between;
   }
 
-  .vix-big-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-  .vix-big-value { font-family: var(--fhead); font-size: 72px; font-weight: 800; line-height: 1; color: var(--white); }
-  .vix-big-sub { font-size: 11px; color: var(--muted); margin-top: 6px; }
+  .vix-big-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .vix-big-value { font-family: var(--fhead); font-size: 48px; font-weight: 800; line-height: 1; color: var(--white); }
+  .vix-big-sub { font-size: 13px; color: var(--muted); margin-top: 6px; }
   .regime-pill {
     display: inline-block; padding: 7px 16px; margin-top: 16px;
     font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
@@ -115,9 +111,9 @@ Ausgabe
     padding: 16px 18px;
   }
 
-  .stat-box-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
-  .stat-box-value { font-family: var(--fhead); font-size: 22px; font-weight: 700; color: var(--white); }
-  .stat-box-detail { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .stat-box-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  .stat-box-value { font-family: var(--fhead); font-size: 24px; font-weight: 700; color: var(--white); }
+  .stat-box-detail { font-size: 13px; color: var(--muted); margin-top: 3px; }
 
   /* ─── SIGNAL STRIP ─── */
   .signal-strip {
@@ -141,16 +137,14 @@ Ausgabe
   .sig-card.inactive     { opacity: 0.55; }
 
   .sig-id {
-    font-size: 9px; font-weight: 700; letter-spacing: 2px;
+    font-size: 11px; font-weight: 700; letter-spacing: 2px;
     text-transform: uppercase; margin-bottom: 6px;
     display: flex; align-items: center; gap: 8px;
   }
-
   .sig-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-
-  .sig-title { font-size: 12px; font-weight: 600; color: var(--white); margin-bottom: 4px; line-height: 1.3; }
-  .sig-detail { font-size: 10px; color: var(--muted); line-height: 1.5; }
-  .sig-badge { font-size: 10px; font-weight: 700; margin-top: 8px; }
+  .sig-title { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 4px; line-height: 1.3; }
+  .sig-detail { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .sig-badge { font-size: 12px; font-weight: 700; margin-top: 8px; }
 
   /* ─── REENTRY VERDICT ─── */
   .verdict-box {
@@ -212,19 +206,19 @@ Ausgabe
   .data-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .data-table th {
     text-align: left;
-    font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
     color: var(--muted); padding: 10px 14px;
     border-bottom: 1px solid var(--border2); font-weight: 400;
   }
 
   .data-table td {
-    padding: 12px 14px;
-    border-bottom: 1px solid rgba(28,40,64,0.6);
+    padding: 13px 14px;
+    border-bottom: 1px solid var(--border);
     vertical-align: middle;
   }
 
@@ -253,9 +247,9 @@ Ausgabe
     padding: 18px;
   }
 
-  .mon-freq { font-family: var(--fhead); font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
-  .mon-when { font-size: 10px; color: var(--muted); margin-bottom: 10px; letter-spacing: 1px; text-transform: uppercase; }
-  .mon-item { font-size: 11px; color: var(--text); padding: 4px 0; border-bottom: 1px solid var(--border); line-height: 1.5; }
+  .mon-freq { font-family: var(--fhead); font-size: 17px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+  .mon-when { font-size: 11px; color: var(--muted); margin-bottom: 10px; letter-spacing: 1px; text-transform: uppercase; }
+  .mon-item { font-size: 13px; color: var(--text); padding: 4px 0; border-bottom: 1px solid var(--border); line-height: 1.5; }
   .mon-item:last-child { border-bottom: none; }
 
   /* ─── FOOTER ─── */
@@ -515,35 +509,35 @@ Ausgabe
 <script>
 // ─── FARBPALETTE ───
 const C = {
-  green:  '#2fbe6a',
-  red:    '#dc4f4f',
-  orange: '#e07b28',
-  gold:   '#c8a234',
-  blue:   '#3d8ef0',
-  muted:  '#465870',
-  border: '#1c2840',
-  text:   '#bbc8d8',
-  white:  '#e8eff8',
-  bg:     '#0f1520',
+  green:  '#1a7a40',
+  red:    '#b83030',
+  orange: '#b85a10',
+  gold:   '#9a6f10',
+  blue:   '#1a5fc8',
+  muted:  '#7a8fa8',
+  border: '#dde3ed',
+  text:   '#2a3a50',
+  white:  '#111a28',
+  bg:     '#ffffff',
 };
 
 // ─── REGIME → FARBE ───
 const REGIME_COLOR = {
-  KOMFORT:          { bg: 'rgba(47,190,106,0.15)',  border: 'rgba(47,190,106,0.5)',  text: '#2fbe6a',  pill_bg: 'rgba(47,190,106,0.2)' },
-  NIEDRIG_NORMAL:   { bg: 'rgba(47,190,106,0.08)',  border: 'rgba(47,190,106,0.3)',  text: '#7ddda8',  pill_bg: 'rgba(47,190,106,0.12)' },
-  NORMAL:           { bg: 'rgba(200,162,52,0.1)',   border: 'rgba(200,162,52,0.35)', text: '#c8a234',  pill_bg: 'rgba(200,162,52,0.15)' },
-  ERHOEHTE_SPANNUNG:{ bg: 'rgba(224,123,40,0.1)',   border: 'rgba(224,123,40,0.35)', text: '#e07b28',  pill_bg: 'rgba(224,123,40,0.15)' },
-  STRESS:           { bg: 'rgba(220,79,79,0.1)',    border: 'rgba(220,79,79,0.35)',  text: '#dc4f4f',  pill_bg: 'rgba(220,79,79,0.15)' },
-  KRISE:            { bg: 'rgba(220,79,79,0.12)',   border: 'rgba(220,79,79,0.5)',   text: '#e87070',  pill_bg: 'rgba(220,79,79,0.2)' },
-  PANIK:            { bg: 'rgba(180,40,40,0.15)',   border: 'rgba(180,40,40,0.6)',   text: '#f09090',  pill_bg: 'rgba(180,40,40,0.25)' },
+  KOMFORT:          { bg: 'rgba(26,122,64,0.08)',   border: 'rgba(26,122,64,0.4)',   text: '#1a5c30',  pill_bg: 'rgba(26,122,64,0.12)' },
+  NIEDRIG_NORMAL:   { bg: 'rgba(26,122,64,0.06)',   border: 'rgba(26,122,64,0.3)',   text: '#2a8050',  pill_bg: 'rgba(26,122,64,0.10)' },
+  NORMAL:           { bg: 'rgba(154,111,16,0.08)',  border: 'rgba(154,111,16,0.35)', text: '#7a5800',  pill_bg: 'rgba(154,111,16,0.12)' },
+  ERHOEHTE_SPANNUNG:{ bg: 'rgba(184,90,16,0.08)',   border: 'rgba(184,90,16,0.35)',  text: '#8a4000',  pill_bg: 'rgba(184,90,16,0.12)' },
+  STRESS:           { bg: 'rgba(184,48,48,0.08)',   border: 'rgba(184,48,48,0.4)',   text: '#8a1c1c',  pill_bg: 'rgba(184,48,48,0.12)' },
+  KRISE:            { bg: 'rgba(184,48,48,0.10)',   border: 'rgba(184,48,48,0.5)',   text: '#701010',  pill_bg: 'rgba(184,48,48,0.15)' },
+  PANIK:            { bg: 'rgba(140,20,20,0.10)',   border: 'rgba(140,20,20,0.5)',   text: '#580808',  pill_bg: 'rgba(140,20,20,0.18)' },
 };
 
 const SIGNAL_COLOR = {
-  NONE:        C.red,
-  WAIT:        C.orange,
-  CAUTIOUS:    C.gold,
-  BUY:         C.green,
-  STRONG_BUY:  '#00e87a',
+  NONE:        '#b83030',
+  WAIT:        '#b85a10',
+  CAUTIOUS:    '#9a6f10',
+  BUY:         '#1a7a40',
+  STRONG_BUY:  '#0d5c2e',
 };
 
 let vixChart = null;
@@ -816,27 +810,27 @@ function renderVixChart(v) {
       plugins: {
         legend: {
           position: 'top',
-          labels: { color: C.muted, font: { family: 'JetBrains Mono', size: 10 },
+          labels: { color: '#7a8fa8', font: { family: 'JetBrains Mono', size: 11 },
                     boxWidth: 14, padding: 12 }
         },
         tooltip: {
-          backgroundColor: '#141d2b',
-          borderColor: '#253350',
+          backgroundColor: '#ffffff',
+          borderColor: '#dde3ed',
           borderWidth: 1,
-          titleColor: C.white,
-          bodyColor: C.text,
+          titleColor: '#111a28',
+          bodyColor: '#2a3a50',
           titleFont: { family: 'JetBrains Mono', size: 11 },
           bodyFont: { family: 'JetBrains Mono', size: 11 },
         }
       },
       scales: {
         x: {
-          ticks: { color: C.muted, font: { size: 9 }, maxTicksLimit: 8, maxRotation: 0 },
-          grid: { color: 'rgba(28,40,64,0.8)' },
+          ticks: { color: '#7a8fa8', font: { size: 10 }, maxTicksLimit: 8, maxRotation: 0 },
+          grid: { color: 'rgba(180,195,215,0.5)' },
         },
         y: {
-          ticks: { color: C.muted, font: { size: 10 } },
-          grid: { color: 'rgba(28,40,64,0.8)' },
+          ticks: { color: '#7a8fa8', font: { size: 11 } },
+          grid: { color: 'rgba(180,195,215,0.5)' },
         }
       }
     }
@@ -856,12 +850,12 @@ function renderVvixChart(vv) {
       datasets: [{
         label: 'VVIX',
         data: vv.vvix_hist_vals,
-        borderColor: '#e07b28',
+        borderColor: '#b85a10',
         borderWidth: 2,
         pointRadius: 0,
         tension: 0.1,
         fill: true,
-        backgroundColor: 'rgba(224,123,40,0.06)',
+        backgroundColor: 'rgba(184,90,16,0.07)',
       }]
     },
     options: {
@@ -872,24 +866,23 @@ function renderVvixChart(vv) {
         legend: { display: false },
         annotation: {},
         tooltip: {
-          backgroundColor: '#141d2b',
-          borderColor: '#253350',
+          backgroundColor: '#ffffff',
+          borderColor: '#dde3ed',
           borderWidth: 1,
-          titleColor: C.white,
-          bodyColor: C.text,
+          titleColor: '#111a28',
+          bodyColor: '#2a3a50',
           titleFont: { family: 'JetBrains Mono', size: 11 },
           bodyFont: { family: 'JetBrains Mono', size: 11 },
         }
       },
       scales: {
         x: {
-          ticks: { color: C.muted, font: { size: 9 }, maxTicksLimit: 6, maxRotation: 0 },
-          grid: { color: 'rgba(28,40,64,0.8)' },
+          ticks: { color: '#7a8fa8', font: { size: 10 }, maxTicksLimit: 6, maxRotation: 0 },
+          grid: { color: 'rgba(180,195,215,0.5)' },
         },
         y: {
-          ticks: { color: C.muted, font: { size: 10 } },
-          grid: { color: 'rgba(28,40,64,0.8)' },
-          // Referenzlinie bei 120
+          ticks: { color: '#7a8fa8', font: { size: 11 } },
+          grid: { color: 'rgba(180,195,215,0.5)' },
           afterDataLimits: (axis) => {
             axis.max = Math.max(axis.max, 130);
           }
@@ -904,4 +897,3 @@ loadData();
 </script>
 </body>
 </html>
-
