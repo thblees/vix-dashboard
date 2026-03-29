@@ -3,345 +3,338 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VIX Regime Dashboard — meine-geldseite.de</title>
+<title>VIX Dashboard — meine-geldseite.de</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#1a2540; --s1:#223058; --border:#2e4070; --border2:#3a5080;
-  --gold:#f0c060; --green:#4dd890; --red:#ff7070; --orange:#ffaa55;
-  --blue:#70b8ff; --text:#c8d8f0; --muted:#7090b8; --white:#e8f0ff;
-}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:15px;line-height:1.65}
-.topbar{background:#1a2540;border-bottom:1px solid var(--border);padding:0 28px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 8px rgba(0,0,0,0.3)}
-.brand{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--gold)}
-.brand span{color:var(--white)}
-.upd{font-size:11px;color:var(--muted)}
-.container{max-width:1180px;margin:0 auto;padding:0 24px}
-.pp{padding:24px 0}
-.hero{display:grid;grid-template-columns:220px 1fr;gap:12px;margin-bottom:12px}
-.vix-main{background:var(--s1);border:1px solid var(--border);padding:20px 22px;display:flex;flex-direction:column;justify-content:space-between;border-radius:4px}
-.vix-lbl{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-.vix-num{font-family:'Syne',sans-serif;font-size:52px;font-weight:800;line-height:1;color:var(--white)}
-.vix-sub{font-size:12px;color:var(--muted);margin-top:6px}
-.rpill{display:inline-block;padding:5px 14px;border-radius:3px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:14px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;gap:6px}
-.stat{background:var(--s1);border:1px solid var(--border);padding:13px 15px;border-radius:4px}
-.stat-l{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
-.stat-v{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--white)}
-.stat-d{font-size:12px;margin-top:2px}
-.verdict{display:flex;align-items:center;gap:16px;background:var(--s1);border:1px solid var(--border);border-radius:4px;padding:18px 22px;margin-bottom:12px}
-.v-score{font-family:'Syne',sans-serif;font-size:44px;font-weight:800;min-width:70px;text-align:center}
-.v-div{width:1px;height:50px;background:var(--border2);flex-shrink:0}
-.v-body{flex:1}
-.v-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:5px}
-.v-action{font-size:13px;color:var(--text);line-height:1.6}
-.v-eq{text-align:right;flex-shrink:0}
-.v-eq-l{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
-.v-eq-v{font-family:'Syne',sans-serif;font-size:24px;font-weight:700}
-.sigs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:12px}
-.sig-card{background:var(--s1);border:1px solid var(--border);padding:13px;border-radius:4px}
-.sig-id{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:6px;margin-bottom:6px;color:var(--muted)}
-.sig-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.sig-title{font-size:13px;font-weight:600;color:var(--white);margin-bottom:4px;line-height:1.3}
-.sig-detail{font-size:11px;color:var(--muted);line-height:1.5}
-.sig-badge{font-size:12px;font-weight:600;margin-top:8px}
-.charts-row{display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-bottom:12px}
-.cc{background:var(--s1);border:1px solid var(--border);padding:16px;border-radius:4px}
-.cc-lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
-.cc-lbl span{font-size:13px;font-weight:600;color:var(--white);text-transform:none;letter-spacing:0}
-.tbl-card{background:var(--s1);border:1px solid var(--border);padding:16px;margin-bottom:12px;border-radius:4px}
-.tbl-lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
-table.mt{width:100%;border-collapse:collapse;font-size:13px}
-table.mt th{text-align:left;font-size:10px;color:var(--muted);padding:8px 12px;border-bottom:1px solid var(--border2);font-weight:400;letter-spacing:.04em;text-transform:uppercase}
-table.mt td{padding:11px 12px;border-bottom:1px solid var(--border);color:var(--white);vertical-align:middle}
-table.mt tr:last-child td{border-bottom:none}
-.pill{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600}
-.interp-block{border:1px solid var(--border2);border-radius:6px;margin-bottom:10px;overflow:hidden}
-.interp-header{display:flex;align-items:center;gap:10px;padding:11px 16px;background:rgba(255,255,255,0.03);border-bottom:1px solid var(--border);flex-wrap:wrap}
-.interp-step{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:rgba(112,184,255,0.15);color:var(--blue);padding:2px 8px;border-radius:3px;flex-shrink:0}
-.interp-title{font-size:14px;font-weight:600;color:var(--white);flex:1}
-.interp-badge{font-size:11px;font-weight:600;padding:2px 10px;border-radius:3px;border:1px solid;flex-shrink:0}
-.interp-body{padding:14px 16px}
-.interp-text{font-size:13px;color:var(--text);line-height:1.7;margin-bottom:12px}
-.interp-cases{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:7px}
-.icase{padding:11px 13px;border-radius:4px;border:1px solid var(--border)}
-.ig{background:rgba(77,216,144,0.07);border-color:rgba(77,216,144,0.35)}
-.io{background:rgba(255,170,85,0.07);border-color:rgba(255,170,85,0.35)}
-.ir{background:rgba(255,112,112,0.07);border-color:rgba(255,112,112,0.35)}
-.ib{background:rgba(112,184,255,0.07);border-color:rgba(112,184,255,0.35)}
-.icase-l{font-size:12px;font-weight:600;margin-bottom:4px}
-.ig .icase-l{color:var(--green)} .io .icase-l{color:var(--orange)} .ir .icase-l{color:var(--red)} .ib .icase-l{color:var(--blue)}
-.icase-a{font-size:12px;color:var(--text);line-height:1.6}
-footer{border-top:1px solid var(--border);padding:16px 0;margin-top:12px;display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
-.footer-brand{font-family:'Syne',sans-serif;color:var(--gold);font-size:13px}
-@media(max-width:900px){.hero{grid-template-columns:1fr}.sigs{grid-template-columns:1fr 1fr}.charts-row{grid-template-columns:1fr}.verdict{flex-wrap:wrap}}
-@media(max-width:580px){.sigs{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
+body{background:#1a2540;color:#c8d8f0;font-family:'JetBrains Mono',monospace;font-size:14px;line-height:1.65}
+.topbar{background:#1a2540;border-bottom:1px solid #2e4070;padding:0 28px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.4)}
+.brand{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:#f0c060}
+.brand span{color:#e8f0ff}
+.w{max-width:1100px;margin:0 auto;padding:24px 24px}
+h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#e8f0ff;margin-bottom:4px}
+.section-intro{font-size:13px;color:#7090b8;margin-bottom:16px;line-height:1.7}
+.divider{border:none;border-top:1px solid #2e4070;margin:28px 0}
+.card{background:#223058;border:1px solid #2e4070;border-radius:6px;padding:20px;margin-bottom:8px}
+@media(max-width:700px){
+  [style*="grid-template-columns:1fr 1fr"],[style*="grid-template-columns:120px"]{display:block!important}
+  [style*="grid-template-columns:220px"]{display:block!important}
+}
 </style>
 </head>
 <body>
+
 <div class="topbar">
   <div class="brand">meine-<span>geldseite</span>.de · VIX Dashboard</div>
-  <div class="upd">Update: 2026-03-29 15:05 UTC</div>
+  <div style="font-size:11px;color:#7090b8">Aktualisiert: 2026-03-29 15:21 UTC</div>
 </div>
-<div class="container"><div class="pp">
 
-<div class="hero">
-  <div class="vix-main">
-    <div>
-      <div class="vix-lbl">CBOE VIX — Aktuell</div>
-      <div class="vix-num" style="color:#ff7070">31.05</div>
-      <div class="vix-sub">MA10: 25.87 · MA20: 25.36 · BB↑: 30.4</div>
+<div class="w">
+
+<!-- ══════════════════════════════════════════════
+     BLOCK 1: TÄGLICHE CHECKLISTE — GANZ OBEN
+═══════════════════════════════════════════════ -->
+<h2>📋 Deine tägliche Checkliste</h2>
+<p class="section-intro">Jeden Werktag nach 22:00 Uhr (nach US-Börsenschluss) diese 5 Punkte der Reihe nach abarbeiten. Dauert ca. 5 Minuten.</p>
+
+<div style="background:#223058;border:1px solid #2e4070;border-radius:6px;overflow:hidden;margin-bottom:8px">
+  <div style="display:flex;align-items:center;gap:12px;padding:13px 18px;background:rgba(255,255,255,0.03);border-bottom:1px solid #2e4070;flex-wrap:wrap">
+    <div style="width:32px;height:32px;border-radius:50%;background:rgba(112,184,255,0.15);color:#70b8ff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0">1</div>
+    <div style="font-size:20px;flex-shrink:0">📊</div>
+    <div style="flex:1">
+      <div style="font-size:15px;font-weight:700;color:#e8f0ff">Wie ist das aktuelle Markt-Klima?</div>
     </div>
-    <div class="rpill" style="background:rgba(255,112,112,0.10);color:#ff7070;border:1px solid rgba(255,112,112,0.4)">Stress-Zone</div>
+    <span style="font-size:11px;padding:2px 10px;border-radius:3px;background:rgba(77,216,144,0.12);color:#4dd890;border:1px solid rgba(77,216,144,0.3);font-weight:600">● Dashboard zeigt es automatisch</span>
   </div>
-  <div class="stats">
-    <div class="stat"><div class="stat-l">MA10</div><div class="stat-v">25.87</div><div class="stat-d" style="color:#ff7070">▲ über MA10</div></div>
-    <div class="stat"><div class="stat-l">MA20</div><div class="stat-v">25.36</div><div class="stat-d" style="color:#ff7070">+22.4% vs. MA20</div></div>
-    <div class="stat"><div class="stat-l">BB-Oben</div><div class="stat-v">30.4</div><div class="stat-d" style="color:#ff7070">⚠ Über BB-Oben</div></div>
-    <div class="stat"><div class="stat-l">VVIX</div><div class="stat-v">133.18</div><div class="stat-d" style="color:#ffaa55">Trend: steigt</div></div>
-    <div class="stat"><div class="stat-l">S&amp;P 500</div><div class="stat-v">6368.9</div><div class="stat-d" style="color:var(--muted)">-6.5% vs. MA50</div></div>
-    <div class="stat"><div class="stat-l">VIX 30d Max</div><div class="stat-v">31.05</div><div class="stat-d" style="color:var(--muted)">30d Min: 17.93</div></div>
+  <div style="padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div>
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Was bedeutet das?</div>
+      <div style="font-size:13px;color:#c8d8f0;line-height:1.75">Der <strong style="color:#e8f0ff">VIX (Volatilitätsindex)</strong> misst die Angst am Aktienmarkt. Je höher der VIX, desto nervöser ist der Markt.<br><br><strong style="color:#e8f0ff">Aktuell: VIX = 31.05</strong><br>Unter 20 = ruhig. 20–30 = erhöht. Über 30 = Stress.</div>
+    </div>
+    <div>
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Was prüfe ich konkret?</div>
+      <div style="font-size:13px;color:#c8d8f0;line-height:1.75;margin-bottom:12px">Schau auf das farbige Badge oben links.<br><br><strong style="color:#ff7070">Stress-Zone</strong><br>Empfohlene Aktienquote: <strong style="color:#ff7070">20–40%</strong></div>
+      <span style="padding:4px 12px;border-radius:3px;font-size:13px;font-weight:700;background:rgba(255,112,112,0.12);color:#ff7070">VIX = 31.05 — erhöht, Vorsicht geboten</span>
+      <div style="font-size:12px;color:#7090b8;margin-top:6px">Regime wird täglich um 22:30 Uhr automatisch aktualisiert.</div>
+    </div>
+  </div>
+</div>
+<div style="background:#223058;border:1px solid #2e4070;border-radius:6px;overflow:hidden;margin-bottom:8px">
+  <div style="display:flex;align-items:center;gap:12px;padding:13px 18px;background:rgba(255,255,255,0.03);border-bottom:1px solid #2e4070;flex-wrap:wrap">
+    <div style="width:32px;height:32px;border-radius:50%;background:rgba(112,184,255,0.15);color:#70b8ff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0">2</div>
+    <div style="font-size:20px;flex-shrink:0">📉</div>
+    <div style="flex:1">
+      <div style="font-size:15px;font-weight:700;color:#e8f0ff">Beruhigt sich der VIX nachhaltig? (Pflichtbedingung)</div>
+    </div>
+    <span style="font-size:11px;padding:2px 10px;border-radius:3px;background:rgba(77,216,144,0.12);color:#4dd890;border:1px solid rgba(77,216,144,0.3);font-weight:600">● Dashboard zeigt es automatisch</span>
+  </div>
+  <div style="padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div>
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Was bedeutet das?</div>
+      <div style="font-size:13px;color:#c8d8f0;line-height:1.75">Der VIX muss <strong style="color:#e8f0ff">3 Tage hintereinander</strong> unter seinem 10-Tage-Durchschnitt liegen. Das zeigt: die Angst beruhigt sich <em>nachhaltig</em>, nicht nur kurz. Ein einzelner ruhiger Tag reicht nicht.</div>
+    </div>
+    <div>
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Was prüfe ich konkret?</div>
+      <div style="font-size:13px;color:#c8d8f0;line-height:1.75;margin-bottom:12px">Aktueller VIX: <strong style="color:#e8f0ff">31.05</strong><br>10-Tage-Durchschnitt: <strong style="color:#e8f0ff">25.87</strong><br>VIX liegt <strong style="color:#ff7070">ÜBER</strong> dem Durchschnitt<br>Bisheriger Streak: <strong style="color:#e8f0ff">0 von 3 Tagen</strong></div>
+      <span style="padding:4px 12px;border-radius:3px;font-size:13px;font-weight:700;background:rgba(255,112,112,0.12);color:#ff7070">✗ Noch nicht — erst 0 von 3 Tagen</span>
+      <div style="font-size:12px;color:#7090b8;margin-top:6px">⚠ Ohne diese Bedingung kein Wiedereinstieg — egal wie andere aussehen.</div>
+    </div>
+  </div>
+</div>
+<div style="background:#223058;border:1px solid #2e4070;border-radius:6px;overflow:hidden;margin-bottom:8px">
+  <div style="display:flex;align-items:center;gap:12px;padding:13px 18px;background:rgba(255,255,255,0.03);border-bottom:1px solid #2e4070;flex-wrap:wrap">
+    <div style="width:32px;height:32px;border-radius:50%;background:rgba(112,184,255,0.15);color:#70b8ff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0">3</div>
+    <div style="font-size:20px;flex-shrink:0">📈</div>
+    <div style="flex:1">
+      <div style="font-size:15px;font-weight:700;color:#e8f0ff">Beruhigt sich auch der Futures-Markt? (Manuell)</div>
+    </div>
+    <span style="font-size:11px;padding:2px 10px;border-radius:3px;background:rgba(240,192,96,0.15);color:#f0c060;border:1px solid rgba(240,192,96,0.4);font-weight:600">⚠ Manuell auf externer Website prüfen</span>
+  </div>
+  <div style="padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div>
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Was bedeutet das?</div>
+      <div style="font-size:13px;color:#c8d8f0;line-height:1.75">VIX-Futures sind Wetten auf die künftige Angst. Im Normalfall sind <strong style="color:#e8f0ff">weiter entfernte Monate teurer</strong> als nahe — weil die Zukunft unsicherer ist (= <em>Contango</em>).<br><br>Wenn der nächste Monat <strong style="color:#ff7070">teurer</strong> ist als übernächste — Alarm! Der Markt hat jetzt mehr Angst als in Zukunft (= <em>Backwardation</em>).</div>
+    </div>
+    <div>
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Was prüfe ich konkret?</div>
+      <div style="font-size:13px;color:#c8d8f0;line-height:1.75;margin-bottom:12px">Öffne: <a href="https://www.cboe.com/tradable-products/vix/term-structure/" target="_blank" style="color:#70b8ff">cboe.com → VIX Term Structure</a><br><br>Schau auf die Tabelle mit den Monatswerten:<br><strong style="color:#4dd890">Gut (Contango):</strong> Monat 1 &lt; Monat 2 &lt; Monat 3<br><strong style="color:#ff7070">Schlecht (Backwardation):</strong> Monat 1 &gt; Monat 2</div>
+      <span style="padding:4px 12px;border-radius:3px;font-size:13px;font-weight:700;background:rgba(255,112,112,0.12);color:#ff7070"></span>
+      <div style="font-size:12px;color:#7090b8;margin-top:6px">Monat 1 = nächster Verfallstermin (~30 Tage). Monat 2 = übernächster (~60 Tage).</div>
+    </div>
+  </div>
+</div>
+<div style="background:#223058;border:1px solid #2e4070;border-radius:6px;overflow:hidden;margin-bottom:8px">
+  <div style="display:flex;align-items:center;gap:12px;padding:13px 18px;background:rgba(255,255,255,0.03);border-bottom:1px solid #2e4070;flex-wrap:wrap">
+    <div style="width:32px;height:32px;border-radius:50%;background:rgba(112,184,255,0.15);color:#70b8ff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0">4</div>
+    <div style="font-size:20px;flex-shrink:0">🔍</div>
+    <div style="flex:1">
+      <div style="font-size:15px;font-weight:700;color:#e8f0ff">Beruhigt sich die Nervosität von innen? (VVIX)</div>
+    </div>
+    <span style="font-size:11px;padding:2px 10px;border-radius:3px;background:rgba(77,216,144,0.12);color:#4dd890;border:1px solid rgba(77,216,144,0.3);font-weight:600">● Dashboard zeigt es automatisch</span>
+  </div>
+  <div style="padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div>
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Was bedeutet das?</div>
+      <div style="font-size:13px;color:#c8d8f0;line-height:1.75">Der <strong style="color:#e8f0ff">VVIX</strong> ist die "Volatilität der Volatilität" — er misst wie nervös der VIX <em>selbst</em> gerade ist. Wenn der VVIX fällt, beruhigt sich der Markt von innen heraus — oft <em>bevor</em> der VIX selbst deutlich fällt. Ein frühes Warnsignal.</div>
+    </div>
+    <div>
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Was prüfe ich konkret?</div>
+      <div style="font-size:13px;color:#c8d8f0;line-height:1.75;margin-bottom:12px">Aktueller VVIX: <strong style="color:#e8f0ff">133.18</strong><br>Trend der letzten 5 Tage: <strong style="color:#ffaa55">steigt</strong><br>Schwelle: unter 120 UND fallend</div>
+      <span style="padding:4px 12px;border-radius:3px;font-size:13px;font-weight:700;background:rgba(255,112,112,0.12);color:#ff7070">✗ VVIX = 133.18 — noch zu hoch oder steigend</span>
+      <div style="font-size:12px;color:#7090b8;margin-top:6px">Tipp: VVIX fällt oft als erstes — beobachte ihn täglich.</div>
+    </div>
+  </div>
+</div>
+<div style="background:#223058;border:1px solid #2e4070;border-radius:6px;overflow:hidden;margin-bottom:8px">
+  <div style="display:flex;align-items:center;gap:12px;padding:13px 18px;background:rgba(255,255,255,0.03);border-bottom:1px solid #2e4070;flex-wrap:wrap">
+    <div style="width:32px;height:32px;border-radius:50%;background:rgba(112,184,255,0.15);color:#70b8ff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0">5</div>
+    <div style="font-size:20px;flex-shrink:0">📉</div>
+    <div style="flex:1">
+      <div style="font-size:15px;font-weight:700;color:#e8f0ff">Bestätigt der S&P 500 Chart die Erholung? (Manuell)</div>
+    </div>
+    <span style="font-size:11px;padding:2px 10px;border-radius:3px;background:rgba(240,192,96,0.15);color:#f0c060;border:1px solid rgba(240,192,96,0.4);font-weight:600">⚠ Manuell auf externer Website prüfen</span>
+  </div>
+  <div style="padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div>
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Was bedeutet das?</div>
+      <div style="font-size:13px;color:#c8d8f0;line-height:1.75">Der Chart des S&P 500 muss bestätigen, dass der Markt einen Boden gefunden hat. Das erkennst du daran, dass er <strong style="color:#e8f0ff">keine neuen Tiefs mehr macht</strong> — sondern sich seitwärts bewegt oder ein höheres Tief bildet. Ohne Chartbestätigung kann ein Einstieg zu früh sein.</div>
+    </div>
+    <div>
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Was prüfe ich konkret?</div>
+      <div style="font-size:13px;color:#c8d8f0;line-height:1.75;margin-bottom:12px">Öffne: <a href="https://www.tradingview.com/chart/?symbol=SPX" target="_blank" style="color:#70b8ff">TradingView → SPX Wochenchart</a><br><br>Frage: Hat der S&P 500 in den letzten Tagen ein <em>neues Tief</em> gemacht?<br><strong style="color:#4dd890">Gut:</strong> Kein neues Tief seit mehreren Tagen<br><strong style="color:#ff7070">Schlecht:</strong> Immer neue Tiefs</div>
+      <span style="padding:4px 12px;border-radius:3px;font-size:13px;font-weight:700;background:rgba(255,112,112,0.12);color:#ff7070">✗ S&P noch nicht stabil — Tief vor 1 Tagen</span>
+      <div style="font-size:12px;color:#7090b8;margin-top:6px">Schätzung des Dashboards — eigener Blick auf den Chart empfohlen.</div>
+    </div>
   </div>
 </div>
 
-<div class="verdict" style="border-color:#ff707044;background:#ff707008">
-  <div class="v-score" style="color:#ff7070">1/4</div>
-  <div class="v-div"></div>
-  <div class="v-body">
-    <div class="v-title" style="color:#ff7070">Kein Signal — R1 nicht erfüllt</div>
-    <div class="v-action">Abwarten. VIX muss 3 Tage unter MA10 schließen.</div>
+<!-- ══════ ERGEBNIS ══════ -->
+<div style="background:#223058;border:2px solid #ff707044;border-radius:6px;padding:20px 22px;margin-bottom:8px">
+  <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Ergebnis heute — 1 von 4 automatischen Bedingungen erfüllt</div>
+  <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#ff7070;margin-bottom:8px">Kein Wiedereinstieg — Bedingung 1 nicht erfüllt</div>
+  <div style="font-size:14px;color:#c8d8f0;line-height:1.7;margin-bottom:16px">Der VIX ist noch zu hoch. Warte bis er 3 Tage unter seinem 10-Tage-Durchschnitt liegt.</div>
+  <div style="background:#1a2540;border-radius:4px;overflow:hidden">
+    <div style="padding:10px 14px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;border-bottom:1px solid #2e4070">Was tue ich jetzt konkret?</div>
+    <div style="display:grid;grid-template-columns:120px 1fr 2fr;border-bottom:1px solid #2e4070">
+  <div style="padding:12px 14px;font-size:12px;font-weight:700;color:#ff7070;display:flex;align-items:center">0–1 Bedingungen</div>
+  <div style="padding:12px 14px;border-left:1px solid #2e4070;display:flex;align-items:center;gap:8px">
+    <span style="font-size:18px">🔴</span>
+    <span style="font-size:13px;font-weight:600;color:#e8f0ff">Nicht kaufen</span>
   </div>
-  <div class="v-eq">
-    <div class="v-eq-l">Aktienquote</div>
-    <div class="v-eq-v" style="color:#ff7070">20–40%</div>
+  <div style="padding:12px 14px;border-left:1px solid #2e4070;font-size:13px;color:#c8d8f0;display:flex;align-items:center;line-height:1.5">Watchlist pflegen. Morgen erneut prüfen. Kapital schützen.</div>
+</div><div style="display:grid;grid-template-columns:120px 1fr 2fr;border-bottom:1px solid #2e4070">
+  <div style="padding:12px 14px;font-size:12px;font-weight:700;color:#ffaa55;display:flex;align-items:center">Bed. 1 + 1 weitere</div>
+  <div style="padding:12px 14px;border-left:1px solid #2e4070;display:flex;align-items:center;gap:8px">
+    <span style="font-size:18px">🟡</span>
+    <span style="font-size:13px;font-weight:600;color:#e8f0ff">Kleine Pilotposition</span>
+  </div>
+  <div style="padding:12px 14px;border-left:1px solid #2e4070;font-size:13px;color:#c8d8f0;display:flex;align-items:center;line-height:1.5">10–15% der Ziel-Aktienquote kaufen. Täglich weiter beobachten.</div>
+</div><div style="display:grid;grid-template-columns:120px 1fr 2fr;border-bottom:1px solid #2e4070">
+  <div style="padding:12px 14px;font-size:12px;font-weight:700;color:#4dd890;display:flex;align-items:center">Bed. 1 + 2 weitere</div>
+  <div style="padding:12px 14px;border-left:1px solid #2e4070;display:flex;align-items:center;gap:8px">
+    <span style="font-size:18px">🟢</span>
+    <span style="font-size:13px;font-weight:600;color:#e8f0ff">Erster Einstieg</span>
+  </div>
+  <div style="padding:12px 14px;border-left:1px solid #2e4070;font-size:13px;color:#c8d8f0;display:flex;align-items:center;line-height:1.5">20–25% kaufen. Zweite Tranche in 1 Woche wenn stabil.</div>
+</div><div style="display:grid;grid-template-columns:120px 1fr 2fr;border-bottom:1px solid #2e4070">
+  <div style="padding:12px 14px;font-size:12px;font-weight:700;color:#80ffb8;display:flex;align-items:center">Bed. 1 + 3–4 weitere</div>
+  <div style="padding:12px 14px;border-left:1px solid #2e4070;display:flex;align-items:center;gap:8px">
+    <span style="font-size:18px">🚀</span>
+    <span style="font-size:13px;font-weight:600;color:#e8f0ff">Aggressiver Einstieg</span>
+  </div>
+  <div style="padding:12px 14px;border-left:1px solid #2e4070;font-size:13px;color:#c8d8f0;display:flex;align-items:center;line-height:1.5">40–60% sofort. Rest in 2 Wochen. Historisch beste Chancen.</div>
+</div>
+  </div>
+  <div style="margin-top:12px;font-size:12px;color:#7090b8;padding:10px 14px;background:rgba(240,192,96,0.06);border:1px solid rgba(240,192,96,0.25);border-radius:4px">
+    ⚠ <strong style="color:#f0c060">Wichtig:</strong> Bedingung 3 (Futures-Kurve) und Bedingung 5 (S&P 500 Chart) musst du immer selbst kurz manuell prüfen — das Dashboard kann das nicht automatisch. Kein Anlageberatung.
   </div>
 </div>
 
-<div class="sigs">
-<div class="sig-card" style="opacity:0.7">
-  <div class="sig-id"><div class="sig-dot" style="background:#ff7070"></div>R1 · PFLICHT</div>
-  <div class="sig-title">VIX 3 Tage unter MA10</div>
-  <div class="sig-detail">Streak: 0 / 3 Tage</div>
-  <div class="sig-badge" style="color:#ff7070">✗ Nicht erfüllt</div>
-  <div class="sig-detail" style="margin-top:4px">Pflichtbedingung für Wiedereinstieg</div>
-</div>
-<div class="sig-card" style="border-color:rgba(240,192,96,0.4)">
-  <div class="sig-id"><div class="sig-dot" style="background:#f0c060"></div>R2 · MANUELL</div>
-  <div class="sig-title">VIX Futures in Contango</div>
-  <div class="sig-detail"><a href="https://www.cboe.com/tradable-products/vix/term-structure/" target="_blank" style="color:#70b8ff">→ cboe.com/vix/term-structure</a></div>
-  <div class="sig-badge" style="color:#f0c060;margin-top:8px;font-size:11px">⚠ Manuell prüfen</div>
-  <div class="sig-detail" style="margin-top:4px"></div>
-</div>
-<div class="sig-card" style="border-color:rgba(77,216,144,0.4);background:rgba(77,216,144,0.05)">
-  <div class="sig-id"><div class="sig-dot" style="background:#4dd890"></div>R3</div>
-  <div class="sig-title">VIX 30%+ über MA20 gewesen</div>
-  <div class="sig-detail">Max. Überdehnung (30d): 43.8%</div>
-  <div class="sig-badge" style="color:#4dd890">✓ Erfüllt</div>
-  <div class="sig-detail" style="margin-top:4px">≥30% = erfüllt</div>
-</div>
-<div class="sig-card" style="opacity:0.7">
-  <div class="sig-id"><div class="sig-dot" style="background:#ff7070"></div>R4</div>
-  <div class="sig-title">VVIX fällt &lt; 120</div>
-  <div class="sig-detail">VVIX: 133.18 · Trend: steigt</div>
-  <div class="sig-badge" style="color:#ff7070">✗ Nicht erfüllt</div>
-  <div class="sig-detail" style="margin-top:4px">Frühes Beruhigungssignal</div>
-</div>
-<div class="sig-card" style="opacity:0.7">
-  <div class="sig-id"><div class="sig-dot" style="background:#ff7070"></div>R5 · HINWEIS</div>
-  <div class="sig-title">S&amp;P 500 technische Basis</div>
-  <div class="sig-detail">Tage seit 30d-Tief: 1</div>
-  <div class="sig-badge" style="color:#ff7070">✗ Nicht erfüllt</div>
-  <div class="sig-detail" style="margin-top:4px">Schätzung — Chartanalyse empfohlen</div>
-</div>
+<hr class="divider">
+
+<!-- ══════════════════════════════════════════════
+     BLOCK 2: AKTUELLE ZAHLEN IM ÜBERBLICK
+═══════════════════════════════════════════════ -->
+<h2>📊 Aktuelle Zahlen im Überblick</h2>
+<p class="section-intro">Alle Werte auf einen Blick. Werden täglich um 22:30 Uhr automatisch aktualisiert.</p>
+
+<div style="display:grid;grid-template-columns:220px 1fr;gap:12px;margin-bottom:12px">
+  <div class="card" style="display:flex;flex-direction:column;justify-content:space-between">
+    <div>
+      <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">CBOE VIX — Aktuell</div>
+      <div style="font-family:'Syne',sans-serif;font-size:52px;font-weight:800;line-height:1;color:#ff7070">31.05</div>
+      <div style="font-size:12px;color:#7090b8;margin-top:8px">10-Tage-Durchschnitt: 25.87<br>20-Tage-Durchschnitt: 25.36<br>Oberes Bollinger Band: 30.4</div>
+    </div>
+    <div style="display:inline-block;padding:6px 14px;border-radius:3px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:14px;background:rgba(255,112,112,0.12);color:#ff7070;border:1px solid rgba(255,112,112,0.45)">Stress-Zone</div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;gap:6px">
+    <div class="card" style="padding:14px 16px">
+      <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:6px">10-Tage-Durchschnitt</div>
+      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:#e8f0ff">25.87</div>
+      <div style="font-size:12px;margin-top:3px;color:#ff7070">▲ VIX darüber — Warnung</div>
+    </div>
+    <div class="card" style="padding:14px 16px">
+      <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:6px">20-Tage-Durchschnitt</div>
+      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:#e8f0ff">25.36</div>
+      <div style="font-size:12px;margin-top:3px;color:#ff7070">+22.4% über Durchschnitt</div>
+    </div>
+    <div class="card" style="padding:14px 16px">
+      <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:6px">Bollinger Band oben</div>
+      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:#e8f0ff">30.4</div>
+      <div style="font-size:12px;margin-top:3px;color:#ff7070">⚠ VIX darüber — überhitzt</div>
+    </div>
+    <div class="card" style="padding:14px 16px">
+      <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:6px">VVIX (Nervositäts-Index)</div>
+      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:#e8f0ff">133.18</div>
+      <div style="font-size:12px;margin-top:3px;color:#ffaa55">Trend: steigt — Vorsicht</div>
+    </div>
+    <div class="card" style="padding:14px 16px">
+      <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:6px">S&amp;P 500</div>
+      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:#e8f0ff">6368.9</div>
+      <div style="font-size:12px;margin-top:3px;color:#7090b8">-6.5% vs. 50-Tage-Durchschnitt</div>
+    </div>
+    <div class="card" style="padding:14px 16px">
+      <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:6px">VIX 30-Tage-Maximum</div>
+      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:#e8f0ff">31.05</div>
+      <div style="font-size:12px;margin-top:3px;color:#7090b8">30d-Minimum: 17.93</div>
+    </div>
+  </div>
 </div>
 
-<div class="charts-row">
-  <div class="cc">
-    <div class="cc-lbl">VIX 90 Tage + MA10/MA20 + Bollinger Bands <span>VIX: 31.05</span></div>
+<!-- Charts -->
+<div style="display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-bottom:12px">
+  <div class="card">
+    <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:10px;display:flex;justify-content:space-between"><span>VIX-Verlauf 90 Tage</span><span style="font-size:13px;font-weight:600;color:#e8f0ff;text-transform:none;letter-spacing:0">VIX: 31.05</span></div>
     <div style="position:relative;height:200px"><canvas id="cvix"></canvas></div>
   </div>
-  <div class="cc">
-    <div class="cc-lbl">VVIX — 30 Tage <span>133.18</span></div>
+  <div class="card">
+    <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:10px;display:flex;justify-content:space-between"><span>VVIX Nervositäts-Index</span><span style="font-size:13px;font-weight:600;color:#e8f0ff;text-transform:none;letter-spacing:0">133.18</span></div>
     <div style="position:relative;height:200px"><canvas id="cvvix"></canvas></div>
   </div>
 </div>
 
-<div class="tbl-card">
-  <div class="tbl-lbl">Alle Metriken</div>
-  <table class="mt">
-    <thead><tr><th>Metrik</th><th>Wert</th><th>Schwelle</th><th>Status</th><th>Bedeutung</th></tr></thead>
-    <tbody>
-      <tr><td>VIX aktuell</td><td style="color:#ff7070;font-weight:600">31.05</td><td style="color:var(--muted)">&lt;20 gut / &gt;30 Stress</td><td><span class="pill" style="background:rgba(255,112,112,0.15);color:#ff7070">Prüfen</span></td><td style="color:var(--muted);font-size:11px">Kern-Volatilitätsindikator</td></tr>
-      <tr><td>R1: VIX vs. MA10</td><td style="color:#ff7070;font-weight:600">31.05 / 25.87</td><td style="color:var(--muted)">VIX &lt; MA10 für 3d</td><td><span class="pill" style="background:rgba(255,112,112,0.15);color:#ff7070">Prüfen</span></td><td style="color:var(--muted);font-size:11px">Streak: 0/3 Tage</td></tr>
-      <tr><td>VIX vs. MA20</td><td style="color:#ff7070;font-weight:600">+22.4%</td><td style="color:var(--muted)">&lt;0% ideal</td><td><span class="pill" style="background:rgba(255,112,112,0.15);color:#ff7070">Prüfen</span></td><td style="color:var(--muted);font-size:11px">VIX unter MA20 = normalisiert</td></tr>
-      <tr><td>R3: Überdehnung 30d</td><td style="color:#4dd890;font-weight:600">43.8%</td><td style="color:var(--muted)">≥30%</td><td><span class="pill" style="background:rgba(77,216,144,0.15);color:#4dd890">OK ✓</span></td><td style="color:var(--muted);font-size:11px">Mean-Reversion-Basis</td></tr>
-      <tr><td>R4: VVIX</td><td style="color:#ff7070;font-weight:600">133.18</td><td style="color:var(--muted)">&lt;120 &amp; fallend</td><td><span class="pill" style="background:rgba(255,112,112,0.15);color:#ff7070">Prüfen</span></td><td style="color:var(--muted);font-size:11px">Trend: steigt</td></tr>
-      <tr><td>S&amp;P vs. MA50</td><td style="color:var(--text);font-weight:600">-6.5%</td><td style="color:var(--muted)">&gt;-15%</td><td><span class="pill" style="background:rgba(77,216,144,0.15);color:#4dd890">OK</span></td><td style="color:var(--muted);font-size:11px">Technische Marktstruktur</td></tr>
-    </tbody>
-  </table>
-</div>
+<hr class="divider">
 
-<div class="tbl-card">
-  <div class="tbl-lbl">Tägliche Interpretationshilfe — Was tue ich mit den Daten?</div>
-  <div style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.7">Jeden Werktag nach 22:00 Uhr (nach US-Börsenschluss) diese 5 Punkte prüfen.</div>
+<!-- ══════════════════════════════════════════════
+     BLOCK 3: ERKLÄRUNGEN & GLOSSAR
+═══════════════════════════════════════════════ -->
+<h2>📖 Was bedeuten die Begriffe?</h2>
+<p class="section-intro">Hier findest du alle Fachbegriffe einfach erklärt.</p>
 
-  <div class="interp-block">
-    <div class="interp-header">
-      <div class="interp-step">Schritt 1</div>
-      <div class="interp-title">VIX-Regime ablesen</div>
-      <div class="interp-badge" style="background:rgba(77,216,144,0.15);color:#4dd890;border-color:rgba(77,216,144,0.4)">● Automatisch</div>
-    </div>
-    <div class="interp-body">
-      <div class="interp-text">Schau oben links auf die große VIX-Zahl und das farbige Regime-Badge.</div>
-      <div class="interp-cases">
-        <div class="icase ig"><div class="icase-l">VIX unter 20 — Grün</div><div class="icase-a">→ Nichts tun. Investiert bleiben. Trend folgen.</div></div>
-        <div class="icase io"><div class="icase-l">VIX 20–30 — Orange</div><div class="icase-a">→ Wachsam sein. Stopps im Depot prüfen. Noch kein Verkauf.</div></div>
-        <div class="icase ir"><div class="icase-l">VIX über 30 — Rot</div><div class="icase-a">→ Aktienquote reduzieren. Schritte 2–5 täglich prüfen.</div></div>
-      </div>
-    </div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+  <div class="card">
+    <div style="font-size:13px;font-weight:700;color:#f0c060;margin-bottom:8px">VIX — der Angst-Index</div>
+    <div style="font-size:13px;color:#c8d8f0;line-height:1.75">Der VIX misst, wie stark die Anleger erwarten, dass der S&P 500 in den nächsten 30 Tagen schwankt. Er wird aus den Preisen von Optionen berechnet.<br><br><strong style="color:#e8f0ff">Faustregeln:</strong><br>Unter 15 = sehr ruhig, Bullenmarkt<br>15–20 = normal<br>20–30 = erhöht, Vorsicht<br>Über 30 = Stress / Krise<br>Über 50 = Panik</div>
   </div>
-
-  <div class="interp-block">
-    <div class="interp-header">
-      <div class="interp-step">Schritt 2</div>
-      <div class="interp-title">R1 prüfen — VIX vs. MA10 (Pflicht für Wiedereinstieg)</div>
-      <div class="interp-badge" style="background:rgba(77,216,144,0.15);color:#4dd890;border-color:rgba(77,216,144,0.4)">● Automatisch</div>
-    </div>
-    <div class="interp-body">
-      <div class="interp-text">In der Metriken-Tabelle: Zeile "R1: VIX vs. MA10". Wie hoch ist der Streak?</div>
-      <div class="interp-cases">
-        <div class="icase ir"><div class="icase-l">Streak = 0 (VIX über MA10)</div><div class="icase-a">→ Kein Einstieg. Stopps halten. Weiter warten.</div></div>
-        <div class="icase io"><div class="icase-l">Streak 1–2 Tage</div><div class="icase-a">→ Ermutigend aber noch nicht genug. Morgen wieder prüfen.</div></div>
-        <div class="icase ig"><div class="icase-l">Streak ≥ 3 Tage ✓</div><div class="icase-a">→ R1 erfüllt! Weiter zu Schritt 3–5. Bei 2+ weiteren grün: kaufen.</div></div>
-      </div>
-    </div>
+  <div class="card">
+    <div style="font-size:13px;font-weight:700;color:#f0c060;margin-bottom:8px">Durchschnitt (MA10 / MA20)</div>
+    <div style="font-size:13px;color:#c8d8f0;line-height:1.75">MA steht für "Moving Average" — gleitender Durchschnitt.<br><br><strong style="color:#e8f0ff">MA10</strong> = Durchschnitt der letzten 10 Handelstage<br><strong style="color:#e8f0ff">MA20</strong> = Durchschnitt der letzten 20 Handelstage<br><br>Wenn der VIX <em>unter</em> seinen Durchschnitt fällt, ist das ein Zeichen der Beruhigung.</div>
   </div>
-
-  <div class="interp-block" style="border-color:rgba(240,192,96,0.4)">
-    <div class="interp-header">
-      <div class="interp-step">Schritt 3</div>
-      <div class="interp-title">R2 manuell prüfen — VIX Futures Kurvenstruktur</div>
-      <div class="interp-badge" style="background:rgba(240,192,96,0.2);color:#f0c060;border-color:rgba(240,192,96,0.5)">⚠ Manuell — 30 Sek.</div>
-    </div>
-    <div class="interp-body">
-      <div class="interp-text">Öffne: <a href="https://www.cboe.com/tradable-products/vix/term-structure/" target="_blank" style="color:#70b8ff">cboe.com → VIX Term Structure</a><br>Ist der erste Monat (M1) günstiger als der zweite (M2)?</div>
-      <div class="interp-cases">
-        <div class="icase ig"><div class="icase-l">M1 &lt; M2 (Contango) ✓</div><div class="icase-a">→ R2 erfüllt. Markt erwartet künftig weniger Angst. Kaufsignal.</div></div>
-        <div class="icase ir"><div class="icase-l">M1 &gt; M2 (Backwardation) ✗</div><div class="icase-a">→ R2 nicht erfüllt. Noch kein Einstieg — auch wenn andere Signale grün sind.</div></div>
-      </div>
-    </div>
+  <div class="card">
+    <div style="font-size:13px;font-weight:700;color:#f0c060;margin-bottom:8px">Bollinger Bänder</div>
+    <div style="font-size:13px;color:#c8d8f0;line-height:1.75">Statistische Grenzwerte um den Durchschnitt. Das obere Band zeigt an, wie weit der VIX "normalerweise" steigen darf.<br><br>Wenn der VIX <em>über</em> das obere Band steigt, ist er überhitzt — eine Gegenbewegung nach unten ist dann statistisch wahrscheinlich.</div>
   </div>
-
-  <div class="interp-block">
-    <div class="interp-header">
-      <div class="interp-step">Schritt 4</div>
-      <div class="interp-title">R4 prüfen — VVIX</div>
-      <div class="interp-badge" style="background:rgba(77,216,144,0.15);color:#4dd890;border-color:rgba(77,216,144,0.4)">● Automatisch</div>
-    </div>
-    <div class="interp-body">
-      <div class="interp-text">VVIX-Wert in der Stat-Box oben. Fällt er? Liegt er unter 120?</div>
-      <div class="interp-cases">
-        <div class="icase ir"><div class="icase-l">VVIX über 120 und steigt</div><div class="icase-a">→ Markt wird nervöser. Kein Einstieg. Risiko weiter reduzieren.</div></div>
-        <div class="icase io"><div class="icase-l">VVIX über 120 aber fällt</div><div class="icase-a">→ Erste Beruhigung. Noch nicht kaufen, morgen wieder prüfen.</div></div>
-        <div class="icase ig"><div class="icase-l">VVIX unter 120 und fällt ✓</div><div class="icase-a">→ R4 erfüllt. Starkes Normalisierungssignal.</div></div>
-      </div>
-    </div>
+  <div class="card">
+    <div style="font-size:13px;font-weight:700;color:#f0c060;margin-bottom:8px">VVIX — Nervosität der Nervosität</div>
+    <div style="font-size:13px;color:#c8d8f0;line-height:1.75">Der VVIX misst, wie stark der VIX <em>selbst</em> schwankt. Er ist ein Frühindikator:<br><br>Wenn der VVIX fällt, beruhigt sich der Markt von innen heraus — <em>bevor</em> es im VIX selbst sichtbar wird. Deshalb schauen wir ihn täglich an.</div>
   </div>
-
-  <div class="interp-block" style="border-color:rgba(240,192,96,0.4)">
-    <div class="interp-header">
-      <div class="interp-step">Schritt 5</div>
-      <div class="interp-title">R5 manuell prüfen — S&amp;P 500 Chartstruktur</div>
-      <div class="interp-badge" style="background:rgba(240,192,96,0.2);color:#f0c060;border-color:rgba(240,192,96,0.5)">⚠ Manuell — 2 Min.</div>
-    </div>
-    <div class="interp-body">
-      <div class="interp-text">Öffne <a href="https://www.tradingview.com/chart/?symbol=SPX" target="_blank" style="color:#70b8ff">TradingView → SPX Wochenchart</a>. Macht der S&amp;P 500 noch neue Tiefs?</div>
-      <div class="interp-cases">
-        <div class="icase ir"><div class="icase-l">Immer neue Tiefs ✗</div><div class="icase-a">→ R5 nicht erfüllt. Noch kein Boden. Trotz anderer Signale: abwarten.</div></div>
-        <div class="icase io"><div class="icase-l">Seitwärts, kein neues Tief seit &gt;5 Tagen</div><div class="icase-a">→ Mögliche Bodenbildung. Kleine Tranche möglich wenn R1+R2+R4 grün.</div></div>
-        <div class="icase ig"><div class="icase-l">Höheres Tief sichtbar ✓</div><div class="icase-a">→ R5 erfüllt. Klassisches Umkehrmuster. Einstieg berechtigt.</div></div>
-      </div>
-    </div>
+  <div class="card">
+    <div style="font-size:13px;font-weight:700;color:#f0c060;margin-bottom:8px">Futures-Kurve: Contango &amp; Backwardation</div>
+    <div style="font-size:13px;color:#c8d8f0;line-height:1.75">VIX-Futures sind Verträge, die auf die künftige Höhe des VIX wetten.<br><br><strong style="color:#4dd890">Contango (normal):</strong> Monat 2 teurer als Monat 1. Der Markt erwartet in Zukunft mehr Ruhe als jetzt.<br><br><strong style="color:#ff7070">Backwardation (Warnung):</strong> Monat 1 teurer als Monat 2. Der Markt hat <em>jetzt gerade</em> mehr Angst als in der Zukunft.</div>
   </div>
-
-  <div class="interp-block" style="border-color:rgba(112,184,255,0.4);background:rgba(112,184,255,0.04)">
-    <div class="interp-header">
-      <div class="interp-step" style="background:rgba(112,184,255,0.2);color:#70b8ff">Ergebnis</div>
-      <div class="interp-title">Was kaufe ich konkret?</div>
-    </div>
-    <div class="interp-body">
-      <div class="interp-cases">
-        <div class="icase ir"><div class="icase-l">R1 fehlt oder 0–1 Signale</div><div class="icase-a">Nichts kaufen. Watchlist pflegen. Morgen wieder prüfen.</div></div>
-        <div class="icase io"><div class="icase-l">R1 + 1 weiteres Signal</div><div class="icase-a">Pilotposition: 10–15% der Ziel-Aktienquote.</div></div>
-        <div class="icase ig"><div class="icase-l">R1 + 2 weitere Signale ✓</div><div class="icase-a">Erste Tranche: 20–25%. Zweite Tranche in 1 Woche.</div></div>
-        <div class="icase ig" style="border-color:rgba(77,216,144,0.6)"><div class="icase-l">R1 + 3–4 Signale ✓✓</div><div class="icase-a">Aggressiv: 40–60% sofort, Rest in 2 Wochen.</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div style="margin-top:12px;padding:12px 16px;background:rgba(240,192,96,0.08);border:1px solid rgba(240,192,96,0.3);border-radius:4px;font-size:12px;color:var(--muted);line-height:1.7">
-    <strong style="color:#f0c060">Wichtig:</strong> R2 und R5 immer manuell prüfen — das dauert ca. 3 Minuten. Kein Anlageberatung. Historische Muster garantieren keine zukünftigen Ergebnisse.
+  <div class="card">
+    <div style="font-size:13px;font-weight:700;color:#f0c060;margin-bottom:8px">Mean Reversion — Rückkehr zum Mittelwert</div>
+    <div style="font-size:13px;color:#c8d8f0;line-height:1.75">Der VIX kehrt langfristig immer zu seinem Mittelwert (~19) zurück. Das ist statistisch belegt über 35 Jahre.<br><br>Wenn der VIX weit über seinen Durchschnitt gestiegen ist (Bedingung 3: 30%+), ist eine Rückkehr nach unten statistisch sehr wahrscheinlich — das ist die Grundlage unseres Einstiegs-Timings.</div>
   </div>
 </div>
 
-<footer>
-  <span class="footer-brand">meine-geldseite.de</span>
-  <span>VIX Regime Dashboard · 2026-03-29 15:05 UTC · Yahoo Finance</span>
-</footer>
+<div style="padding:14px 18px;background:rgba(240,192,96,0.07);border:1px solid rgba(240,192,96,0.28);border-radius:4px;font-size:12px;color:#7090b8;line-height:1.8;margin-bottom:8px">
+  <strong style="color:#f0c060">Hinweis:</strong> Dieses Dashboard dient der Finanzbildung und stellt keine individuelle Anlageberatung dar. Historische Muster wiederholen sich nicht mit Sicherheit. Alle Entscheidungen liegen bei dir.
+</div>
 
-</div></div>
+<div style="border-top:1px solid #2e4070;padding-top:16px;display:flex;justify-content:space-between;font-size:11px;color:#7090b8">
+  <span style="font-family:'Syne',sans-serif;color:#f0c060;font-size:13px">meine-geldseite.de</span>
+  <span>VIX Dashboard · 2026-03-29 15:21 UTC · Yahoo Finance</span>
+</div>
+
+</div>
 
 <script>
-const vixDates = ["2025-12-29", "2025-12-30", "2025-12-31", "2026-01-02", "2026-01-05", "2026-01-06", "2026-01-07", "2026-01-08", "2026-01-09", "2026-01-12", "2026-01-13", "2026-01-14", "2026-01-15", "2026-01-16", "2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20", "2026-02-23", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27"];
-const vixVals  = [14.2, 14.33, 14.95, 14.51, 14.9, 14.75, 15.38, 15.45, 14.49, 15.12, 15.98, 16.75, 15.84, 15.86, 20.09, 16.9, 15.64, 16.09, 16.15, 16.35, 16.35, 16.88, 17.44, 16.34, 18.0, 18.64, 21.77, 20.37, 17.36, 17.79, 17.65, 20.82, 20.6, 20.29, 19.62, 20.23, 19.09, 21.01, 19.55, 17.93, 18.63, 19.86, 21.44, 23.57, 21.15, 23.75, 29.49, 25.5, 24.93, 24.23, 27.29, 27.19, 23.51, 22.37, 25.09, 24.06, 26.78, 26.15, 26.95, 25.33, 27.44, 31.05];
-const ma10     = [null, null, null, null, null, null, null, null, null, 14.81, 14.99, 15.23, 15.32, 15.45, 15.97, 16.19, 16.21, 16.28, 16.44, 16.56, 16.6, 16.61, 16.77, 16.82, 16.61, 16.79, 17.4, 17.83, 17.95, 18.09, 18.22, 18.62, 18.93, 19.33, 19.49, 19.65, 19.38, 19.45, 19.67, 19.68, 19.78, 19.68, 19.77, 20.09, 20.25, 20.6, 21.64, 22.09, 22.62, 23.25, 24.12, 24.85, 25.06, 24.94, 25.34, 25.37, 25.1, 25.16, 25.36, 25.47, 25.49, 25.87];
-const ma20     = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 15.69, 15.79, 15.92, 16.05, 16.14, 16.29, 16.49, 16.81, 17.05, 17.2, 17.33, 17.41, 17.62, 17.85, 18.08, 18.05, 18.22, 18.39, 18.64, 18.81, 18.89, 19.0, 19.15, 19.35, 19.71, 19.87, 20.12, 20.51, 20.77, 21.15, 21.47, 21.95, 22.27, 22.41, 22.52, 22.79, 22.98, 23.37, 23.62, 23.99, 24.36, 24.8, 25.36];
-const bbUp     = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 18.3, 18.32, 18.39, 18.56, 18.55, 18.77, 19.06, 20.24, 20.77, 20.72, 20.72, 20.74, 21.26, 21.63, 21.88, 21.81, 22.05, 22.04, 22.3, 22.29, 22.21, 22.1, 22.11, 22.36, 22.93, 23.04, 23.68, 25.98, 26.67, 27.1, 27.36, 28.1, 28.81, 28.93, 28.96, 29.18, 29.28, 29.6, 29.87, 30.1, 29.78, 29.66, 30.4];
-const bbLo     = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 13.08, 13.27, 13.45, 13.53, 13.72, 13.82, 13.91, 13.37, 13.33, 13.67, 13.94, 14.08, 13.97, 14.08, 14.27, 14.3, 14.39, 14.74, 14.98, 15.32, 15.57, 15.9, 16.19, 16.34, 16.49, 16.7, 16.57, 15.04, 14.86, 15.19, 15.58, 15.8, 15.72, 15.89, 16.07, 16.4, 16.69, 17.13, 17.37, 17.89, 18.94, 19.94, 20.33];
-const vvixDates= ["2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27"];
-const vvixVals = [113.44, 116.02, 106.94, 115.93, 140.44, 122.6, 125.36, 122.49, 130.18, 131.05, 116.78, 110.55, 126.5, 118.09, 126.28, 122.82, 124.14, 119.37, 124.43, 133.18];
+const gc='rgba(112,144,184,0.2)',tc='#7090b8';
+const vixDates=["2025-12-29", "2025-12-30", "2025-12-31", "2026-01-02", "2026-01-05", "2026-01-06", "2026-01-07", "2026-01-08", "2026-01-09", "2026-01-12", "2026-01-13", "2026-01-14", "2026-01-15", "2026-01-16", "2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20", "2026-02-23", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27"],vixVals=[14.2, 14.33, 14.95, 14.51, 14.9, 14.75, 15.38, 15.45, 14.49, 15.12, 15.98, 16.75, 15.84, 15.86, 20.09, 16.9, 15.64, 16.09, 16.15, 16.35, 16.35, 16.88, 17.44, 16.34, 18.0, 18.64, 21.77, 20.37, 17.36, 17.79, 17.65, 20.82, 20.6, 20.29, 19.62, 20.23, 19.09, 21.01, 19.55, 17.93, 18.63, 19.86, 21.44, 23.57, 21.15, 23.75, 29.49, 25.5, 24.93, 24.23, 27.29, 27.19, 23.51, 22.37, 25.09, 24.06, 26.78, 26.15, 26.95, 25.33, 27.44, 31.05],ma10=[null, null, null, null, null, null, null, null, null, 14.81, 14.99, 15.23, 15.32, 15.45, 15.97, 16.19, 16.21, 16.28, 16.44, 16.56, 16.6, 16.61, 16.77, 16.82, 16.61, 16.79, 17.4, 17.83, 17.95, 18.09, 18.22, 18.62, 18.93, 19.33, 19.49, 19.65, 19.38, 19.45, 19.67, 19.68, 19.78, 19.68, 19.77, 20.09, 20.25, 20.6, 21.64, 22.09, 22.62, 23.25, 24.12, 24.85, 25.06, 24.94, 25.34, 25.37, 25.1, 25.16, 25.36, 25.47, 25.49, 25.87],ma20=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 15.69, 15.79, 15.92, 16.05, 16.14, 16.29, 16.49, 16.81, 17.05, 17.2, 17.33, 17.41, 17.62, 17.85, 18.08, 18.05, 18.22, 18.39, 18.64, 18.81, 18.89, 19.0, 19.15, 19.35, 19.71, 19.87, 20.12, 20.51, 20.77, 21.15, 21.47, 21.95, 22.27, 22.41, 22.52, 22.79, 22.98, 23.37, 23.62, 23.99, 24.36, 24.8, 25.36],bbUp=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 18.3, 18.32, 18.39, 18.56, 18.55, 18.77, 19.06, 20.24, 20.77, 20.72, 20.72, 20.74, 21.26, 21.63, 21.88, 21.81, 22.05, 22.04, 22.3, 22.29, 22.21, 22.1, 22.11, 22.36, 22.93, 23.04, 23.68, 25.98, 26.67, 27.1, 27.36, 28.1, 28.81, 28.93, 28.96, 29.18, 29.28, 29.6, 29.87, 30.1, 29.78, 29.66, 30.4],bbLo=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 13.08, 13.27, 13.45, 13.53, 13.72, 13.82, 13.91, 13.37, 13.33, 13.67, 13.94, 14.08, 13.97, 14.08, 14.27, 14.3, 14.39, 14.74, 14.98, 15.32, 15.57, 15.9, 16.19, 16.34, 16.49, 16.7, 16.57, 15.04, 14.86, 15.19, 15.58, 15.8, 15.72, 15.89, 16.07, 16.4, 16.69, 17.13, 17.37, 17.89, 18.94, 19.94, 20.33];
+const vvixDates=["2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27"],vvixVals=[113.44, 116.02, 106.94, 115.93, 140.44, 122.6, 125.36, 122.49, 130.18, 131.05, 116.78, 110.55, 126.5, 118.09, 126.28, 122.82, 124.14, 119.37, 124.43, 133.18];
 
-const gc = 'rgba(112,144,184,0.2)';
-const tc = '#7090b8';
-
-if(vixVals && vixVals.length > 0) {
-  new Chart(document.getElementById('cvix'), {
+if(vixVals&&vixVals.length>0){
+  new Chart(document.getElementById('cvix'),{
     type:'line',
-    data:{
-      labels: vixDates.map(d=>d.slice(5)),
-      datasets:[
-        {label:'VIX',data:vixVals,borderColor:'#f0c060',borderWidth:2,pointRadius:0,tension:0.1,fill:false},
-        {label:'MA10',data:ma10,borderColor:'#70b8ff',borderWidth:1.5,pointRadius:0,tension:0.1,fill:false},
-        {label:'MA20',data:ma20,borderColor:'#7090b8',borderWidth:1,pointRadius:0,tension:0.1,fill:false},
-        {label:'BB↑',data:bbUp,borderColor:'rgba(255,112,112,0.5)',borderWidth:1,borderDash:[4,3],pointRadius:0,tension:0.1,fill:'+1',backgroundColor:'rgba(255,112,112,0.04)'},
-        {label:'BB↓',data:bbLo,borderColor:'rgba(77,216,144,0.35)',borderWidth:1,borderDash:[4,3],pointRadius:0,tension:0.1,fill:false},
-      ]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,animation:{duration:0},
-      plugins:{legend:{position:'top',labels:{color:tc,font:{size:10},boxWidth:12,padding:10}},tooltip:{backgroundColor:'#1a2540',borderColor:'#2e4070',borderWidth:1,titleColor:'#e8f0ff',bodyColor:'#c8d8f0',titleFont:{size:11},bodyFont:{size:11}}},
-      scales:{x:{ticks:{color:tc,font:{size:9},maxTicksLimit:8,maxRotation:0},grid:{color:gc}},y:{ticks:{color:tc,font:{size:10}},grid:{color:gc}}}
-    }
+    data:{labels:vixDates.map(d=>d.slice(5)),datasets:[
+      {label:'VIX',data:vixVals,borderColor:'#f0c060',borderWidth:2,pointRadius:0,tension:0.1,fill:false},
+      {label:'MA10',data:ma10,borderColor:'#70b8ff',borderWidth:1.5,pointRadius:0,tension:0.1,fill:false},
+      {label:'MA20',data:ma20,borderColor:'#7090b8',borderWidth:1,pointRadius:0,tension:0.1,fill:false},
+      {label:'BB↑',data:bbUp,borderColor:'rgba(255,112,112,0.5)',borderWidth:1,borderDash:[4,3],pointRadius:0,tension:0.1,fill:'+1',backgroundColor:'rgba(255,112,112,0.04)'},
+      {label:'BB↓',data:bbLo,borderColor:'rgba(77,216,144,0.35)',borderWidth:1,borderDash:[4,3],pointRadius:0,tension:0.1,fill:false},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:0},
+      plugins:{legend:{position:'top',labels:{color:tc,font:{size:10},boxWidth:12,padding:10}},
+        tooltip:{backgroundColor:'#1a2540',borderColor:'#2e4070',borderWidth:1,titleColor:'#e8f0ff',bodyColor:'#c8d8f0',titleFont:{size:11},bodyFont:{size:11}}},
+      scales:{x:{ticks:{color:tc,font:{size:9},maxTicksLimit:8,maxRotation:0},grid:{color:gc}},
+        y:{ticks:{color:tc,font:{size:10}},grid:{color:gc}}}}
   });
 }
 
-if(vvixVals && vvixVals.length > 0) {
-  new Chart(document.getElementById('cvvix'), {
+if(vvixVals&&vvixVals.length>0){
+  new Chart(document.getElementById('cvvix'),{
     type:'line',
-    data:{
-      labels: vvixDates.map(d=>d.slice(5)),
-      datasets:[
-        {label:'VVIX',data:vvixVals,borderColor:'#ffaa55',borderWidth:2,pointRadius:0,tension:0.1,fill:true,backgroundColor:'rgba(255,170,85,0.08)'},
-        {label:'120',data:Array(vvixVals.length).fill(120),borderColor:'rgba(77,216,144,0.4)',borderWidth:1,borderDash:[5,4],pointRadius:0,fill:false}
-      ]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,animation:{duration:0},
-      plugins:{legend:{position:'top',labels:{color:tc,font:{size:10},boxWidth:12,padding:10}},tooltip:{backgroundColor:'#1a2540',borderColor:'#2e4070',borderWidth:1,titleColor:'#e8f0ff',bodyColor:'#c8d8f0',titleFont:{size:11},bodyFont:{size:11}}},
-      scales:{x:{ticks:{color:tc,font:{size:9},maxRotation:45,maxTicksLimit:8},grid:{color:gc}},y:{min:95,max:155,ticks:{color:tc,font:{size:10}},grid:{color:gc}}}
-    }
+    data:{labels:vvixDates.map(d=>d.slice(5)),datasets:[
+      {label:'VVIX',data:vvixVals,borderColor:'#ffaa55',borderWidth:2,pointRadius:0,tension:0.1,fill:true,backgroundColor:'rgba(255,170,85,0.08)'},
+      {label:'Schwelle 120',data:Array(vvixVals.length).fill(120),borderColor:'rgba(77,216,144,0.4)',borderWidth:1,borderDash:[5,4],pointRadius:0,fill:false}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:0},
+      plugins:{legend:{position:'top',labels:{color:tc,font:{size:10},boxWidth:12,padding:10}},
+        tooltip:{backgroundColor:'#1a2540',borderColor:'#2e4070',borderWidth:1,titleColor:'#e8f0ff',bodyColor:'#c8d8f0',titleFont:{size:11},bodyFont:{size:11}}},
+      scales:{x:{ticks:{color:tc,font:{size:9},maxRotation:45,maxTicksLimit:8},grid:{color:gc}},
+        y:{min:95,max:160,ticks:{color:tc,font:{size:10}},grid:{color:gc}}}}
   });
 }
 </script>
