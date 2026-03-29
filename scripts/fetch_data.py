@@ -743,6 +743,7 @@ function showTab(name) {{
       btn.style.color='#7090b8';
     }}
   }});
+  window.scrollTo({{top: 0, behavior: 'smooth'}});
 }}
 </script>
 
