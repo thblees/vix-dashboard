@@ -1,0 +1,38 @@
+name: VIX Dashboard – Tägliches Update
+
+on:
+  schedule:
+    - cron: '30 21 * * 1-5'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-vix-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: Python einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Abhängigkeiten installieren
+        run: |
+          pip install yfinance pandas numpy
+
+      - name: VIX-Daten abrufen
+        run: |
+          python scripts/fetch_data.py
+
+      - name: Änderungen pushen
+        run: |
+          git config user.name  "VIX-Bot"
+          git config user.email "vix-bot@meine-geldseite.de"
+          git add docs/data.json
+          git diff --staged --quiet || git commit -m "auto: VIX-Update $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push
