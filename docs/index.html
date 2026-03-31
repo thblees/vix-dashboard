@@ -18,7 +18,6 @@ h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#e8f0ff;ma
 .divider{border:none;border-top:1px solid #2e4070;margin:28px 0}
 .card{background:#223058;border:1px solid #2e4070;border-radius:6px;padding:20px;margin-bottom:8px}
 .tab-panel{display:none}.tab-panel.active{display:block}
-#info-frame{width:100%;border:none;background:#0a0d12;border-radius:6px;min-height:600px}
 @media(max-width:700px){
   [style*="grid-template-columns:1fr 1fr"],[style*="grid-template-columns:120px"]{display:block!important}
   [style*="grid-template-columns:220px"]{display:block!important}
@@ -32,16 +31,13 @@ h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#e8f0ff;ma
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="showTab('daily')" id="tab-daily" style="background:rgba(240,192,96,0.2);border:1px solid rgba(240,192,96,0.5);color:#f0c060;padding:6px 16px;border-radius:3px;font-family:Inter,sans-serif;font-size:13px;font-weight:600;cursor:pointer">📋 Tägliches Check-up</button>
     <button onclick="showTab('info')" id="tab-info" style="background:transparent;border:1px solid #2e4070;color:#7090b8;padding:6px 16px;border-radius:3px;font-family:Inter,sans-serif;font-size:13px;font-weight:600;cursor:pointer">📖 Hintergrundwissen</button>
-    <div style="font-size:11px;color:#7090b8;margin-left:8px">Aktualisiert: 2026-03-29 16:31 UTC</div>
+    <div style="font-size:11px;color:#7090b8;margin-left:8px">Aktualisiert: 2026-03-31 07:29 UTC</div>
   </div>
 </div>
 
 <div class="w">
 <div id="panel-daily" class="tab-panel active">
 
-<!-- ══════════════════════════════════════════════
-     BLOCK 1: TÄGLICHE CHECKLISTE — GANZ OBEN
-═══════════════════════════════════════════════ -->
 <h2>📋 Deine tägliche Checkliste</h2>
 <p class="section-intro">Jeden Werktag nach 22:00 Uhr (nach US-Börsenschluss) diese 5 Punkte der Reihe nach abarbeiten. Dauert ca. 5 Minuten.</p>
 
@@ -49,8 +45,6 @@ h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#e8f0ff;ma
 <div style="margin-bottom:6px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8">Pflicht-Gates — müssen BEIDE erfüllt sein, bevor du weiterschaust</div>
 
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px">
-
-  <!-- GATE 1 -->
   <div style="background:rgba(255,112,112,0.10);border:2px solid rgba(255,112,112,0.45);border-radius:6px;padding:20px;position:relative">
     <div style="position:absolute;top:-12px;left:16px;background:#1a2540;padding:0 8px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#ff7070">Pflicht-Gate 1</div>
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
@@ -61,15 +55,13 @@ h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#e8f0ff;ma
       </div>
     </div>
     <div style="padding:10px 14px;background:rgba(0,0,0,0.2);border-radius:4px;margin-bottom:10px">
-      <div style="font-size:12px;font-weight:700;color:#ff7070;margin-bottom:4px">NICHT ERFÜLLT — VIX steht bei 31.05 (muss unter 30 sein)</div>
+      <div style="font-size:12px;font-weight:700;color:#ff7070;margin-bottom:4px">NICHT ERFÜLLT — VIX steht bei 30.61 (muss unter 30 sein)</div>
       <div style="font-size:12px;color:#c8d8f0;line-height:1.6">Solange der VIX über 30 liegt, ist der Markt im Stress-Modus. Kein Einstieg. Weiter warten. Bedingung 2 jetzt noch nicht relevant.</div>
     </div>
     <div style="font-size:12px;color:#7090b8;padding:8px 12px;background:rgba(255,255,255,0.04);border-radius:4px">
       💡 <strong style="color:#e8f0ff">Warum 30?</strong> Über 30 ist der Markt im Stress-Modus. Statistisch verlieren Aktien in solchen Phasen kurzfristig an Wert. Kein Einstieg sinnvoll.
     </div>
   </div>
-
-  <!-- GATE 2 -->
   <div style="background:rgba(255,112,112,0.10);border:2px solid rgba(255,112,112,0.45);border-radius:6px;padding:20px;position:relative">
     <div style="position:absolute;top:-12px;left:16px;background:#1a2540;padding:0 8px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#ff7070">Pflicht-Gate 2</div>
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
@@ -89,17 +81,23 @@ h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#e8f0ff;ma
   </div>
 </div>
 
-<!-- WENN GATES NICHT OFFEN: STOPP-HINWEIS -->
-<div style="padding:14px 18px;background:rgba(255,112,112,0.10);border:1px solid rgba(255,112,112,0.4);border-radius:4px;margin-bottom:20px;font-size:13px;color:#ff9090;line-height:1.7"><strong>🛑 Stopp hier.</strong> Solange nicht beide Pflicht-Gates erfüllt sind, sind Bedingungen 3–5 irrelevant. Nicht weiter prüfen — Kapital schützen und täglich wiederholen.</div>
+<div style="padding:14px 18px;background:rgba(255,112,112,0.10);border:1px solid rgba(255,112,112,0.4);border-radius:4px;margin-bottom:20px;font-size:13px;color:#ff9090;line-height:1.7"><strong>🛑 Stopp hier.</strong> Solange nicht beide Pflicht-Gates erfüllt sind, sind Bedingungen 3–5 noch nicht handlungsrelevant. Nicht kaufen — Kapital schützen und täglich wiederholen.</div>
 
-<!-- BESTÄTIGUNGS-BEDINGUNGEN (ausgegraut wenn Gates nicht offen) -->
-<div style="opacity:0.4;pointer-events:none">
+<!-- BESTÄTIGUNGS-BEDINGUNGEN — IMMER LESBAR -->
+<div style="">
 <div style="margin-bottom:6px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8">Bestätigungs-Bedingungen — je mehr erfüllt, desto aggressiver der Einstieg</div>
+<div style="padding:12px 16px;background:rgba(112,144,184,0.08);border:1px solid rgba(112,144,184,0.25);border-radius:4px;margin-bottom:12px;font-size:13px;color:#90a8c8;line-height:1.7;display:flex;align-items:center;gap:10px">
+    <span style="font-size:18px">ℹ️</span>
+    <span><strong style="color:#c8d8f0">Zur Info:</strong> Diese Bedingungen werden erst aktiv, wenn beide Pflicht-Gates oben erfüllt sind. Du kannst sie aber jetzt schon lesen und verstehen, was geprüft wird.</span>
+</div>
 <div style="background:#223058;border:1px solid #2e4070;border-radius:6px;overflow:hidden;margin-bottom:8px">
-  <div style="display:flex;align-items:center;gap:12px;padding:13px 18px;background:rgba(255,255,255,0.03);border-bottom:1px solid #2e4070;flex-wrap:wrap">
-    <div style="width:32px;height:32px;border-radius:50%;background:rgba(112,184,255,0.15);color:#70b8ff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0">3 — Bestätigung</div>
-    <div style="font-size:20px;flex-shrink:0">📈</div>
-    <div style="flex:1">
+  <div style="display:flex;align-items:center;gap:10px;padding:13px 18px;background:rgba(255,255,255,0.03);border-bottom:1px solid #2e4070;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+      <div style="width:28px;height:28px;border-radius:50%;background:rgba(112,184,255,0.15);color:#70b8ff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800">3</div>
+      <span style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#7090b8;font-weight:600">Bestätigung</span>
+    </div>
+    <div style="font-size:18px;flex-shrink:0">📈</div>
+    <div style="flex:1;min-width:200px">
       <div style="font-size:15px;font-weight:700;color:#e8f0ff">Beruhigt sich auch der Futures-Markt?</div>
     </div>
     <span style="font-size:11px;padding:2px 10px;border-radius:3px;background:rgba(240,192,96,0.15);color:#f0c060;border:1px solid rgba(240,192,96,0.4);font-weight:600">⚠ Manuell auf externer Website prüfen</span>
@@ -118,10 +116,13 @@ h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#e8f0ff;ma
   </div>
 </div>
 <div style="background:#223058;border:1px solid #2e4070;border-radius:6px;overflow:hidden;margin-bottom:8px">
-  <div style="display:flex;align-items:center;gap:12px;padding:13px 18px;background:rgba(255,255,255,0.03);border-bottom:1px solid #2e4070;flex-wrap:wrap">
-    <div style="width:32px;height:32px;border-radius:50%;background:rgba(112,184,255,0.15);color:#70b8ff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0">4 — Bestätigung</div>
-    <div style="font-size:20px;flex-shrink:0">🔍</div>
-    <div style="flex:1">
+  <div style="display:flex;align-items:center;gap:10px;padding:13px 18px;background:rgba(255,255,255,0.03);border-bottom:1px solid #2e4070;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+      <div style="width:28px;height:28px;border-radius:50%;background:rgba(112,184,255,0.15);color:#70b8ff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800">4</div>
+      <span style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#7090b8;font-weight:600">Bestätigung</span>
+    </div>
+    <div style="font-size:18px;flex-shrink:0">🔍</div>
+    <div style="flex:1;min-width:200px">
       <div style="font-size:15px;font-weight:700;color:#e8f0ff">Beruhigt sich der Nerven-Index (VVIX)?</div>
     </div>
     <span style="font-size:11px;padding:2px 10px;border-radius:3px;background:rgba(77,216,144,0.12);color:#4dd890;border:1px solid rgba(77,216,144,0.3);font-weight:600">● Dashboard zeigt es automatisch</span>
@@ -133,17 +134,20 @@ h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#e8f0ff;ma
     </div>
     <div>
       <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Was prüfe ich konkret?</div>
-      <div style="font-size:13px;color:#c8d8f0;line-height:1.75;margin-bottom:12px">Aktueller VVIX: <strong style="color:#e8f0ff">133.18</strong><br>Trend der letzten 5 Tage: <strong style="color:#ffaa55">steigt</strong><br>Schwelle: unter 120 UND fallend</div>
-      <span style="padding:4px 12px;border-radius:3px;font-size:13px;font-weight:700;background:rgba(255,112,112,0.12);color:#ff7070">✗ VVIX = 133.18 — noch zu hoch oder steigend</span>
+      <div style="font-size:13px;color:#c8d8f0;line-height:1.75;margin-bottom:12px">Aktueller VVIX: <strong style="color:#e8f0ff">127.84</strong><br>Trend der letzten 5 Tage: <strong style="color:#ffaa55">steigt</strong><br>Schwelle: unter 120 UND fallend</div>
+      <span style="padding:4px 12px;border-radius:3px;font-size:13px;font-weight:700;background:rgba(255,112,112,0.12);color:#ff7070">✗ VVIX = 127.84 — noch zu hoch oder steigend</span>
       <div style="font-size:12px;color:#7090b8;margin-top:6px">Fällt der VVIX, obwohl der VIX noch hoch ist? → Das ist das früheste Signal überhaupt.</div>
     </div>
   </div>
 </div>
 <div style="background:#223058;border:1px solid #2e4070;border-radius:6px;overflow:hidden;margin-bottom:8px">
-  <div style="display:flex;align-items:center;gap:12px;padding:13px 18px;background:rgba(255,255,255,0.03);border-bottom:1px solid #2e4070;flex-wrap:wrap">
-    <div style="width:32px;height:32px;border-radius:50%;background:rgba(112,184,255,0.15);color:#70b8ff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0">5 — Bestätigung</div>
-    <div style="font-size:20px;flex-shrink:0">📉</div>
-    <div style="flex:1">
+  <div style="display:flex;align-items:center;gap:10px;padding:13px 18px;background:rgba(255,255,255,0.03);border-bottom:1px solid #2e4070;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+      <div style="width:28px;height:28px;border-radius:50%;background:rgba(112,184,255,0.15);color:#70b8ff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800">5</div>
+      <span style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#7090b8;font-weight:600">Bestätigung</span>
+    </div>
+    <div style="font-size:18px;flex-shrink:0">📉</div>
+    <div style="flex:1;min-width:200px">
       <div style="font-size:15px;font-weight:700;color:#e8f0ff">Bestätigt der S&P 500 Chart die Erholung?</div>
     </div>
     <span style="font-size:11px;padding:2px 10px;border-radius:3px;background:rgba(240,192,96,0.15);color:#f0c060;border:1px solid rgba(240,192,96,0.4);font-weight:600">⚠ Manuell auf externer Website prüfen</span>
@@ -163,11 +167,11 @@ h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#e8f0ff;ma
 </div>
 </div>
 
-<!-- ══════ ERGEBNIS ══════ -->
+<!-- ERGEBNIS -->
 <div style="background:#223058;border:2px solid #ff707044;border-radius:6px;padding:20px 22px;margin-bottom:8px">
   <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">Ergebnis heute — 0 von 4 automatischen Bedingungen erfüllt</div>
   <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#ff7070;margin-bottom:8px">🔴 Pflicht-Gate 1 nicht erfüllt — VIX noch über 30</div>
-  <div style="font-size:14px;color:#c8d8f0;line-height:1.7;margin-bottom:16px">VIX steht bei 31.05 — über der 30er-Schwelle. Kein Wiedereinstieg möglich. Bedingung 2 gar nicht erst prüfen. Abwarten und Kapital schützen.</div>
+  <div style="font-size:14px;color:#c8d8f0;line-height:1.7;margin-bottom:16px">VIX steht bei 30.61 — über der 30er-Schwelle. Kein Wiedereinstieg möglich. Bedingung 2 gar nicht erst prüfen. Abwarten und Kapital schützen.</div>
   <div style="background:#1a2540;border-radius:4px;overflow:hidden">
     <div style="padding:10px 14px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;border-bottom:1px solid #2e4070">Was tue ich jetzt konkret?</div>
     <div style="display:grid;grid-template-columns:120px 1fr 2fr;border-bottom:1px solid #2e4070">
@@ -201,15 +205,12 @@ h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#e8f0ff;ma
 </div>
   </div>
   <div style="margin-top:12px;font-size:12px;color:#7090b8;padding:10px 14px;background:rgba(240,192,96,0.06);border:1px solid rgba(240,192,96,0.25);border-radius:4px">
-    ⚠ <strong style="color:#f0c060">Wichtig:</strong> Bedingung 3 (Futures-Kurve) und Bedingung 5 (S&P 500 Chart) musst du immer selbst kurz manuell prüfen — das Dashboard kann das nicht automatisch. Kein Anlageberatung.
+    ⚠ <strong style="color:#f0c060">Wichtig:</strong> Bedingung 3 (Futures-Kurve) und Bedingung 5 (S&P 500 Chart) musst du immer selbst kurz manuell prüfen — das Dashboard kann das nicht automatisch. Keine Anlageberatung.
   </div>
 </div>
 
 <hr class="divider">
 
-<!-- ══════════════════════════════════════════════
-     BLOCK 2: AKTUELLE ZAHLEN IM ÜBERBLICK
-═══════════════════════════════════════════════ -->
 <h2>📊 Aktuelle Zahlen im Überblick</h2>
 <p class="section-intro">Alle Werte auf einen Blick. Werden täglich um 22:30 Uhr automatisch aktualisiert.</p>
 
@@ -217,36 +218,36 @@ h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#e8f0ff;ma
   <div class="card" style="display:flex;flex-direction:column;justify-content:space-between">
     <div>
       <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:8px">CBOE VIX — Aktuell</div>
-      <div style="font-family:'Syne',sans-serif;font-size:52px;font-weight:800;line-height:1;color:#ff7070">31.05</div>
-      <div style="font-size:12px;color:#7090b8;margin-top:8px">10-Tage-Durchschnitt: 25.87<br>20-Tage-Durchschnitt: 25.36<br>Oberes Bollinger Band: 30.4</div>
+      <div style="font-family:'Syne',sans-serif;font-size:52px;font-weight:800;line-height:1;color:#ff7070">30.61</div>
+      <div style="font-size:12px;color:#7090b8;margin-top:8px">10-Tage-Durchschnitt: 26.58<br>20-Tage-Durchschnitt: 25.82<br>Oberes Bollinger Band: 31.02</div>
     </div>
     <div style="display:inline-block;padding:6px 14px;border-radius:3px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:14px;background:rgba(255,112,112,0.12);color:#ff7070;border:1px solid rgba(255,112,112,0.45)">Stress-Zone</div>
   </div>
   <div style="display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;gap:6px">
     <div class="card" style="padding:14px 16px">
       <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:6px">10-Tage-Durchschnitt</div>
-      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:#e8f0ff">25.87</div>
+      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:#e8f0ff">26.58</div>
       <div style="font-size:12px;margin-top:3px;color:#ff7070">▲ VIX darüber — Warnung</div>
     </div>
     <div class="card" style="padding:14px 16px">
       <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:6px">20-Tage-Durchschnitt</div>
-      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:#e8f0ff">25.36</div>
-      <div style="font-size:12px;margin-top:3px;color:#ff7070">+22.4% über Durchschnitt</div>
+      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:#e8f0ff">25.82</div>
+      <div style="font-size:12px;margin-top:3px;color:#ff7070">+18.5% über Durchschnitt</div>
     </div>
     <div class="card" style="padding:14px 16px">
       <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:6px">Bollinger Band oben</div>
-      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:#e8f0ff">30.4</div>
-      <div style="font-size:12px;margin-top:3px;color:#ff7070">⚠ VIX darüber — überhitzt</div>
+      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:#e8f0ff">31.02</div>
+      <div style="font-size:12px;margin-top:3px;color:#4dd890">✓ VIX darunter — normal</div>
     </div>
     <div class="card" style="padding:14px 16px">
       <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:6px">VVIX (Nervositäts-Index)</div>
-      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:#e8f0ff">133.18</div>
+      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:#e8f0ff">127.84</div>
       <div style="font-size:12px;margin-top:3px;color:#ffaa55">Trend: steigt — Vorsicht</div>
     </div>
     <div class="card" style="padding:14px 16px">
       <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:6px">S&amp;P 500</div>
-      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:#e8f0ff">6368.9</div>
-      <div style="font-size:12px;margin-top:3px;color:#7090b8">-6.5% vs. 50-Tage-Durchschnitt</div>
+      <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:#e8f0ff">6343.7</div>
+      <div style="font-size:12px;margin-top:3px;color:#7090b8">-6.7% vs. 50-Tage-Durchschnitt</div>
     </div>
     <div class="card" style="padding:14px 16px">
       <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:6px">VIX 30-Tage-Maximum</div>
@@ -256,30 +257,26 @@ h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#e8f0ff;ma
   </div>
 </div>
 
-<!-- Charts -->
 <div style="display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-bottom:12px">
   <div class="card">
-    <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:10px;display:flex;justify-content:space-between"><span>VIX-Verlauf 90 Tage</span><span style="font-size:13px;font-weight:600;color:#e8f0ff;text-transform:none;letter-spacing:0">VIX: 31.05</span></div>
+    <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:10px;display:flex;justify-content:space-between"><span>VIX-Verlauf 90 Tage</span><span style="font-size:13px;font-weight:600;color:#e8f0ff;text-transform:none;letter-spacing:0">VIX: 30.61</span></div>
     <div style="position:relative;height:200px"><canvas id="cvix"></canvas></div>
   </div>
   <div class="card">
-    <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:10px;display:flex;justify-content:space-between"><span>VVIX Nervositäts-Index</span><span style="font-size:13px;font-weight:600;color:#e8f0ff;text-transform:none;letter-spacing:0">133.18</span></div>
+    <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#7090b8;margin-bottom:10px;display:flex;justify-content:space-between"><span>VVIX Nervositäts-Index</span><span style="font-size:13px;font-weight:600;color:#e8f0ff;text-transform:none;letter-spacing:0">127.84</span></div>
     <div style="position:relative;height:200px"><canvas id="cvvix"></canvas></div>
   </div>
 </div>
 
 <hr class="divider">
 
-<!-- ══════════════════════════════════════════════
-     BLOCK 3: ERKLÄRUNGEN & GLOSSAR
-═══════════════════════════════════════════════ -->
 <h2>📖 Was bedeuten die Begriffe?</h2>
 <p class="section-intro">Hier findest du alle Fachbegriffe einfach erklärt.</p>
 
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
   <div class="card">
     <div style="font-size:13px;font-weight:700;color:#f0c060;margin-bottom:8px">VIX — der Angst-Index</div>
-    <div style="font-size:13px;color:#c8d8f0;line-height:1.75">Der VIX misst, wie stark die Anleger erwarten, dass der S&P 500 in den nächsten 30 Tagen schwankt. Er wird aus den Preisen von Optionen berechnet.<br><br><strong style="color:#e8f0ff">Faustregeln:</strong><br>Unter 15 = sehr ruhig, Bullenmarkt<br>15–20 = normal<br>20–30 = erhöht, Vorsicht<br>Über 30 = Stress / Krise<br>Über 50 = Panik</div>
+    <div style="font-size:13px;color:#c8d8f0;line-height:1.75">Der VIX misst, wie stark die Anleger erwarten, dass der S&amp;P 500 in den nächsten 30 Tagen schwankt. Er wird aus den Preisen von Optionen berechnet.<br><br><strong style="color:#e8f0ff">Faustregeln:</strong><br>Unter 15 = sehr ruhig, Bullenmarkt<br>15–20 = normal<br>20–30 = erhöht, Vorsicht<br>Über 30 = Stress / Krise<br>Über 50 = Panik</div>
   </div>
   <div class="card">
     <div style="font-size:13px;font-weight:700;color:#f0c060;margin-bottom:8px">Durchschnitt (MA10 / MA20)</div>
@@ -309,12 +306,11 @@ h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#e8f0ff;ma
 
 <div style="border-top:1px solid #2e4070;padding-top:16px;display:flex;justify-content:space-between;font-size:11px;color:#7090b8">
   <span style="font-family:'Syne',sans-serif;color:#f0c060;font-size:13px">meine-geldseite.de</span>
-  <span>VIX Dashboard · 2026-03-29 16:31 UTC · Yahoo Finance</span>
+  <span>VIX Dashboard · 2026-03-31 07:29 UTC · Yahoo Finance</span>
 </div>
 
-</div><!-- /panel-daily -->
+</div>
 
-<!-- INFO-TAB -->
 <div id="panel-info" class="tab-panel">
 <div style="background:#0a0d12;padding:24px;font-family:'Inter',sans-serif">
 <style>
@@ -342,6 +338,13 @@ h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#e8f0ff;ma
   .rc-yellow .regime-verdict{background:rgba(243,156,18,0.08);color:#f8c56b;border:1px solid rgba(243,156,18,0.2)}
   .rc-orange .regime-verdict{background:rgba(224,92,58,0.08);color:#f09070;border:1px solid rgba(224,92,58,0.2)}
   .rc-red .regime-verdict{background:rgba(231,76,60,0.08);color:#f08080;border:1px solid rgba(231,76,60,0.2)}
+  .fw-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+  .fw-box{background:#111620;border:1px solid #1e2535;padding:20px}
+  .fw-box h3{font-family:'Syne',sans-serif;font-size:15px;color:#fff;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #1e2535}
+  .rule-item{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start}
+  .rule-dot{width:5px;height:5px;border-radius:50%;margin-top:7px;flex-shrink:0}
+  .rule-text{font-size:13px;line-height:1.6;color:#d8dde8}
+  .disclaimer{background:rgba(224,92,58,0.06);border:1px solid rgba(224,92,58,0.2);padding:16px 20px;margin-top:24px;font-size:12px;color:#5a6478;line-height:1.7;border-radius:2px}
   .tl-bar { height:44px; background:#111620; border:1px solid #1e2535; border-radius:3px; overflow:hidden; display:flex; margin:10px 0 6px; }
   .tl-seg { display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:500; }
   .tl-labels { display:flex; justify-content:space-between; font-size:10px; color:#5a6478; margin-bottom:4px; }
@@ -368,26 +371,17 @@ h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#e8f0ff;ma
   .corr-wrap{flex:1;height:20px;background:#111620;border:1px solid #1e2535;position:relative;overflow:hidden}
   .corr-bar{height:100%;position:absolute;left:50%}
   .corr-val{width:55px;text-align:right;font-size:12px;font-weight:500}
-  .fw-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
-  .fw-box{background:#111620;border:1px solid #1e2535;padding:20px}
-  .fw-box h3{font-family:'Syne',sans-serif;font-size:15px;color:#fff;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #1e2535}
-  .rule-item{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start}
-  .rule-dot{width:5px;height:5px;border-radius:50%;margin-top:7px;flex-shrink:0}
-  .rule-text{font-size:13px;line-height:1.6;color:#d8dde8}
-  .disclaimer{background:rgba(224,92,58,0.06);border:1px solid rgba(224,92,58,0.2);padding:16px 20px;margin-top:24px;font-size:12px;color:#5a6478;line-height:1.7;border-radius:2px}
   @media(max-width:600px){.regime-grid,.fw-grid,.signal-grid{grid-template-columns:1fr}}
 </style>
-
 <div class="info-wrap">
   <div class="tag-pill">Research-Report · meine-geldseite.de</div>
   <h1>Der <span>VIX</span> als<br>Investitionsfilter</h1>
   <p style="color:#5a6478;font-size:13px;max-width:580px">Statistische Analyse: Ab welchem VIX-Level solltest du nicht mehr in Aktien investiert sein? 35 Jahre Daten, vier Regimes, ein klares Regelwerk.</p>
-
   <section>
     <div class="sec-label">01 · Grundlagen</div>
     <h2>Was der VIX wirklich misst</h2>
-    <p>Der VIX (CBOE Volatility Index) ist kein Kurs und kein Trend – er ist die <em>implizite Volatilität</em> des S&P 500, abgeleitet aus Optionspreisen. Ein VIX von 20 bedeutet: Der Markt erwartet im nächsten Jahr Schwankungen von ±20%. Täglich ausgedrückt: VIX ÷ 19,1 = erwartete Tagesbewegung. Bei VIX 20 sind das ~1,05% pro Tag.</p>
-    <p>Entscheidend: Der VIX ist <strong style="color:#f0c060">mean-reverting</strong> – er kehrt immer zu seinem Langzeitmittelwert zurück. Dieser liegt seit 1990 bei etwa 19–20. Werte über 30 sind statistisch nicht stabil; sie normalisieren sich. Das ist die Basis aller Regime-Analysen.</p>
+    <p>Der VIX (CBOE Volatility Index) ist kein Kurs und kein Trend – er ist die <em>implizite Volatilität</em> des S&P 500, abgeleitet aus Optionspreisen. Ein VIX von 20 bedeutet: Der Markt erwartet im nächsten Jahr Schwankungen von ±20%.</p>
+    <p>Entscheidend: Der VIX ist <strong style="color:#f0c060">mean-reverting</strong> – er kehrt immer zu seinem Langzeitmittelwert zurück (~19–20). Werte über 30 sind statistisch nicht stabil.</p>
     <div class="tl-labels"><span>VIX-Langzeitverlauf 1990–2026</span><span>Durchschnitt: ~19.5</span></div>
     <div class="tl-bar">
       <div class="tl-seg" style="width:38%;background:rgba(46,204,113,0.25);color:#7de8a4">VIX &lt;15</div>
@@ -395,211 +389,85 @@ h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#e8f0ff;ma
       <div class="tl-seg" style="width:18%;background:rgba(224,92,58,0.3);color:#f09070">25–35</div>
       <div class="tl-seg" style="width:12%;background:rgba(231,76,60,0.35);color:#f08080">&gt;35</div>
     </div>
-    <div class="tl-labels">
-      <span style="color:#2ecc71">38% der Zeit</span><span style="color:#f39c12">32% der Zeit</span>
-      <span style="color:#e05c3a">18% der Zeit</span><span style="color:#e74c3c">12% der Zeit</span>
-    </div>
+    <div class="tl-labels"><span style="color:#2ecc71">38% der Zeit</span><span style="color:#f39c12">32%</span><span style="color:#e05c3a">18%</span><span style="color:#e74c3c">12%</span></div>
   </section>
-
   <section>
     <div class="sec-label">02 · Regime-Analyse</div>
-    <h2>Die vier VIX-Regimes & ihre Statistiken</h2>
-    <p>Basierend auf 35 Jahren Daten lassen sich vier Marktregimes identifizieren. Die Forward-Returns des S&P 500 unterscheiden sich dramatisch je nach Regime.</p>
+    <h2>Die vier VIX-Regimes &amp; ihre Statistiken</h2>
     <div class="regime-grid">
-      <div class="regime-card rc-green">
-        <div class="regime-range">&lt; 15</div><div class="regime-name">Komfort-Zone</div>
-        <div class="stat-row"><span class="stat-label">Ø 1M-Return</span><span class="stat-pos">+1.8%</span></div>
-        <div class="stat-row"><span class="stat-label">Ø 3M-Return</span><span class="stat-pos">+5.2%</span></div>
-        <div class="stat-row"><span class="stat-label">Ø 12M-Return</span><span class="stat-pos">+10.4%</span></div>
-        <div class="stat-row"><span class="stat-label">Win-Rate 3M</span><span class="stat-pos">74%</span></div>
-        <div class="stat-row"><span class="stat-label">Max. Drawdown</span><span class="stat-warn">-12%</span></div>
-        <div class="regime-verdict">✓ Ideale Bedingungen. Trend folgen, voll investiert. Aktienquote: 80–100%</div>
-      </div>
-      <div class="regime-card rc-yellow">
-        <div class="regime-range">15–25</div><div class="regime-name">Normalbereich</div>
-        <div class="stat-row"><span class="stat-label">Ø 1M-Return</span><span class="stat-pos">+0.9%</span></div>
-        <div class="stat-row"><span class="stat-label">Ø 3M-Return</span><span class="stat-pos">+2.7%</span></div>
-        <div class="stat-row"><span class="stat-label">Ø 12M-Return</span><span class="stat-pos">+9.1%</span></div>
-        <div class="stat-row"><span class="stat-label">Win-Rate 3M</span><span class="stat-warn">61%</span></div>
-        <div class="stat-row"><span class="stat-label">Max. Drawdown</span><span class="stat-warn">-28%</span></div>
-        <div class="regime-verdict">⚠ Akzeptabel, aber Wachsamkeit geboten. Aktienquote: 60–80%.</div>
-      </div>
-      <div class="regime-card rc-orange">
-        <div class="regime-range">25–35</div><div class="regime-name">Stress-Zone</div>
-        <div class="stat-row"><span class="stat-label">Ø 1M-Return</span><span class="stat-neg">-1.4%</span></div>
-        <div class="stat-row"><span class="stat-label">Ø 3M-Return</span><span class="stat-warn">+0.6%</span></div>
-        <div class="stat-row"><span class="stat-label">Ø 12M-Return</span><span class="stat-pos">+8.3%</span></div>
-        <div class="stat-row"><span class="stat-label">Win-Rate 3M</span><span class="stat-neg">48%</span></div>
-        <div class="stat-row"><span class="stat-label">Max. Drawdown</span><span class="stat-neg">-51%</span></div>
-        <div class="regime-verdict">✗ Drastische Reduktion. Aktienquote: 20–40%. Defensive Assets aufbauen.</div>
-      </div>
-      <div class="regime-card rc-red">
-        <div class="regime-range">&gt; 35</div><div class="regime-name">Panik / Krise</div>
-        <div class="stat-row"><span class="stat-label">Ø 1M-Return</span><span class="stat-neg">-4.1%</span></div>
-        <div class="stat-row"><span class="stat-label">Ø 3M-Return</span><span class="stat-warn">+3.8%</span></div>
-        <div class="stat-row"><span class="stat-label">Ø 12M-Return</span><span class="stat-pos">+22.1%</span></div>
-        <div class="stat-row"><span class="stat-label">Win-Rate 3M</span><span class="stat-neg">44%</span></div>
-        <div class="stat-row"><span class="stat-label">Max. Drawdown</span><span class="stat-neg">-57%</span></div>
-        <div class="regime-verdict">⚡ Paradox: Kurzfristig gefährlichst, langfristig beste Einstiegschance.</div>
-      </div>
+      <div class="regime-card rc-green"><div class="regime-range">&lt; 15</div><div class="regime-name">Komfort-Zone</div><div class="stat-row"><span class="stat-label">Ø 12M-Return</span><span class="stat-pos">+10.4%</span></div><div class="stat-row"><span class="stat-label">Win-Rate 3M</span><span class="stat-pos">74%</span></div><div class="regime-verdict">✓ Ideale Bedingungen. Aktienquote: 80–100%</div></div>
+      <div class="regime-card rc-yellow"><div class="regime-range">15–25</div><div class="regime-name">Normalbereich</div><div class="stat-row"><span class="stat-label">Ø 12M-Return</span><span class="stat-pos">+9.1%</span></div><div class="stat-row"><span class="stat-label">Win-Rate 3M</span><span class="stat-warn">61%</span></div><div class="regime-verdict">⚠ Akzeptabel. Aktienquote: 60–80%</div></div>
+      <div class="regime-card rc-orange"><div class="regime-range">25–35</div><div class="regime-name">Stress-Zone</div><div class="stat-row"><span class="stat-label">Ø 12M-Return</span><span class="stat-pos">+8.3%</span></div><div class="stat-row"><span class="stat-label">Win-Rate 3M</span><span class="stat-neg">48%</span></div><div class="regime-verdict">✗ Reduktion. Aktienquote: 20–40%</div></div>
+      <div class="regime-card rc-red"><div class="regime-range">&gt; 35</div><div class="regime-name">Panik / Krise</div><div class="stat-row"><span class="stat-label">Ø 12M-Return</span><span class="stat-pos">+22.1%</span></div><div class="stat-row"><span class="stat-label">Win-Rate 3M</span><span class="stat-neg">44%</span></div><div class="regime-verdict">⚡ Paradox: Kurzfristig gefährlich, langfristig beste Chance</div></div>
     </div>
-    <p style="font-size:11px;color:#5a6478;font-style:italic">Quellen: CBOE VIX-Daten, S&P 500 historische Returns, Kensington Asset Management (1993–2024). Past performance ≠ future results.</p>
   </section>
-
   <section>
     <div class="sec-label">03 · Signal-Generator</div>
     <h2>Dein VIX-Level → Deine Allokation</h2>
-    <p>Stell den aktuellen VIX-Stand ein und sieh sofort, welches Regime aktiv ist.</p>
     <div class="slider-wrap">
-      <div class="slider-header">
-        <span class="slider-title">VIX-Stand eingeben:</span>
-        <span class="slider-val" id="sVal">20</span>
-      </div>
+      <div class="slider-header"><span class="slider-title">VIX-Stand eingeben:</span><span class="slider-val" id="sVal">20</span></div>
       <input type="range" id="sSlider" min="8" max="80" value="20" step="1">
-      <div class="slider-ticks">
-        <span>8 (Rekordtief)</span><span>15</span><span>20 (Mittel)</span>
-        <span>25</span><span>35</span><span>80 (COVID-Peak)</span>
-      </div>
-      <div id="sAlert" style="padding:12px 16px;background:rgba(243,156,18,0.1);border:1px solid rgba(243,156,18,0.3);margin-bottom:18px;font-size:13px;color:#f8c56b;transition:all 0.3s;border-radius:2px">
-        Regime: NORMALBEREICH (15–25) · Trend-Investition möglich, aber Risiko-Management aktiv halten
-      </div>
+      <div class="slider-ticks"><span>8</span><span>15</span><span>20</span><span>25</span><span>35</span><span>80</span></div>
+      <div id="sAlert" style="padding:12px 16px;background:rgba(243,156,18,0.1);border:1px solid rgba(243,156,18,0.3);margin-bottom:18px;font-size:13px;color:#f8c56b;border-radius:2px">Regime: NORMALBEREICH</div>
       <div class="signal-grid">
-        <div class="signal-box">
-          <div class="signal-icon">📈</div>
-          <div class="signal-asset">Aktien</div>
-          <div class="signal-action" id="sEq">60–80% Quote</div>
-          <div class="signal-detail" id="sEqD">Selektiv, Stopp-Kurse setzen</div>
-        </div>
-        <div class="signal-box">
-          <div class="signal-icon">💵</div>
-          <div class="signal-asset">Cash / Anleihen</div>
-          <div class="signal-action" id="sCa">20–30% Quote</div>
-          <div class="signal-detail" id="sCaD">Geldmarkt, kurzl. Anleihen</div>
-        </div>
-        <div class="signal-box">
-          <div class="signal-icon">🪙</div>
-          <div class="signal-asset">Gold / Bitcoin</div>
-          <div class="signal-action" id="sAl">0–10% Quote</div>
-          <div class="signal-detail" id="sAlD">Kleiner Hedgeanteil möglich</div>
-        </div>
+        <div class="signal-box"><div class="signal-icon">📈</div><div class="signal-asset">Aktien</div><div class="signal-action" id="sEq">60–80%</div><div class="signal-detail" id="sEqD">Selektiv</div></div>
+        <div class="signal-box"><div class="signal-icon">💵</div><div class="signal-asset">Cash</div><div class="signal-action" id="sCa">20–30%</div><div class="signal-detail" id="sCaD">Geldmarkt</div></div>
+        <div class="signal-box"><div class="signal-icon">🪙</div><div class="signal-asset">Gold/BTC</div><div class="signal-action" id="sAl">0–10%</div><div class="signal-detail" id="sAlD">Hedge</div></div>
       </div>
     </div>
   </section>
-
   <section>
     <div class="sec-label">04 · Historische Kalibrierung</div>
     <h2>VIX-Spitzen in historischen Krisen</h2>
-    <p>So verhielt sich der VIX in den wichtigsten Marktereignissen seit 1990 – und was darauf folgte.</p>
     <table class="data-table">
-      <thead><tr><th>Ereignis</th><th>VIX-Peak</th><th>Warnzeit</th><th>S&P Drawdown</th><th>12M-Return danach</th><th>Typ</th></tr></thead>
+      <thead><tr><th>Ereignis</th><th>VIX-Peak</th><th>S&P Drawdown</th><th>12M danach</th></tr></thead>
       <tbody>
-        <tr><td>Gulf War 1990</td><td style="color:#f09070">36.5</td><td>3–4 Wochen</td><td style="color:#e74c3c">-19.9%</td><td style="color:#2ecc71">+26.3%</td><td><span class="crisis-pill" style="background:rgba(46,204,113,0.15);color:#2ecc71">Kontraindikator</span></td></tr>
-        <tr><td>Dot-Com 2000–02</td><td style="color:#f09070">43.7</td><td>6–12 Monate</td><td style="color:#e74c3c">-49.1%</td><td style="color:#f39c12">+1.2%</td><td><span class="crisis-pill" style="background:rgba(231,76,60,0.15);color:#e74c3c">Strukturkrise</span></td></tr>
-        <tr><td>9/11 – 2001</td><td style="color:#f09070">43.0</td><td>Tage</td><td style="color:#e74c3c">-11.6%</td><td style="color:#2ecc71">+18.7%</td><td><span class="crisis-pill" style="background:rgba(46,204,113,0.15);color:#2ecc71">Exogener Schock</span></td></tr>
-        <tr><td>Finanzkrise 2008–09</td><td style="color:#e74c3c"><strong>89.5</strong></td><td>6–9 Monate</td><td style="color:#e74c3c">-56.8%</td><td style="color:#2ecc71">+26.5%</td><td><span class="crisis-pill" style="background:rgba(231,76,60,0.15);color:#e74c3c">Systemkrise</span></td></tr>
-        <tr><td>Euro-Krise 2011</td><td style="color:#f09070">48.0</td><td>4–6 Wochen</td><td style="color:#e74c3c">-19.4%</td><td style="color:#2ecc71">+15.9%</td><td><span class="crisis-pill" style="background:rgba(46,204,113,0.15);color:#2ecc71">Kontraindikator</span></td></tr>
-        <tr><td>COVID-Crash 2020</td><td style="color:#e74c3c"><strong>85.5</strong></td><td>2–3 Wochen</td><td style="color:#e74c3c">-33.9%</td><td style="color:#2ecc71">+74.8%</td><td><span class="crisis-pill" style="background:rgba(46,204,113,0.15);color:#2ecc71">Bester Einstieg</span></td></tr>
-        <tr><td>Zinserhöhungs-Baisse 2022</td><td style="color:#f09070">36.4</td><td>2–4 Monate</td><td style="color:#e74c3c">-27.5%</td><td style="color:#2ecc71">+19.4%</td><td><span class="crisis-pill" style="background:rgba(46,204,113,0.15);color:#2ecc71">Kontraindikator</span></td></tr>
-        <tr><td>Trump-Zoll-Schock 2025</td><td style="color:#f09070">60.1</td><td>Wochen</td><td style="color:#e74c3c">-19%</td><td style="color:#5a6478">TBD</td><td><span class="crisis-pill" style="background:rgba(243,156,18,0.15);color:#f39c12">Laufend</span></td></tr>
+        <tr><td>Gulf War 1990</td><td style="color:#f09070">36.5</td><td style="color:#e74c3c">-19.9%</td><td style="color:#2ecc71">+26.3%</td></tr>
+        <tr><td>Finanzkrise 2008</td><td style="color:#e74c3c"><strong>89.5</strong></td><td style="color:#e74c3c">-56.8%</td><td style="color:#2ecc71">+26.5%</td></tr>
+        <tr><td>COVID 2020</td><td style="color:#e74c3c"><strong>85.5</strong></td><td style="color:#e74c3c">-33.9%</td><td style="color:#2ecc71">+74.8%</td></tr>
+        <tr><td>Trump-Zölle 2025</td><td style="color:#f09070">60.1</td><td style="color:#e74c3c">-19%</td><td style="color:#5a6478">TBD</td></tr>
       </tbody>
     </table>
   </section>
-
   <section>
-    <div class="sec-label">05 · Korrelationsanalyse</div>
-    <h2>VIX als Hedge-Indikator für Alternative Assets</h2>
-    <p>Wenn der VIX steigt, verhalten sich verschiedene Assets sehr unterschiedlich.</p>
-    <div style="margin:16px 0">
-      <div class="corr-row"><div class="corr-lbl">S&P 500</div><div class="corr-wrap"><div class="corr-bar" style="background:linear-gradient(to left,rgba(231,76,60,0.6),rgba(231,76,60,0.2));width:37.5%;transform:translateX(-100%)"></div><div style="position:absolute;left:50%;top:0;width:1px;height:100%;background:#1e2535"></div></div><div class="corr-val" style="color:#e74c3c">−0.75</div><span style="font-size:11px;color:#5a6478;margin-left:8px">Stark invers</span></div>
-      <div class="corr-row"><div class="corr-lbl">Gold</div><div class="corr-wrap"><div class="corr-bar" style="background:linear-gradient(to left,rgba(243,156,18,0.5),rgba(243,156,18,0.1));width:12%;transform:translateX(-100%)"></div><div style="position:absolute;left:50%;top:0;width:1px;height:100%;background:#1e2535"></div></div><div class="corr-val" style="color:#f39c12">−0.15</div><span style="font-size:11px;color:#5a6478;margin-left:8px">Schwach negativ</span></div>
-      <div class="corr-row"><div class="corr-lbl">Bitcoin</div><div class="corr-wrap"><div class="corr-bar" style="background:linear-gradient(to left,rgba(58,184,224,0.5),rgba(58,184,224,0.1));width:22%;transform:translateX(-100%)"></div><div style="position:absolute;left:50%;top:0;width:1px;height:100%;background:#1e2535"></div></div><div class="corr-val" style="color:#3ab8e0">−0.42</div><span style="font-size:11px;color:#5a6478;margin-left:8px">Mittel negativ</span></div>
-      <div class="corr-row"><div class="corr-lbl">USD (DXY)</div><div class="corr-wrap"><div class="corr-bar" style="background:linear-gradient(to right,rgba(46,204,113,0.5),rgba(46,204,113,0.1));width:17.5%"></div><div style="position:absolute;left:50%;top:0;width:1px;height:100%;background:#1e2535"></div></div><div class="corr-val" style="color:#2ecc71">+0.35</div><span style="font-size:11px;color:#5a6478;margin-left:8px">Flucht in Dollar</span></div>
-      <div class="corr-row"><div class="corr-lbl">US-Anleihen</div><div class="corr-wrap"><div class="corr-bar" style="background:linear-gradient(to right,rgba(240,192,64,0.5),rgba(240,192,64,0.1));width:20%"></div><div style="position:absolute;left:50%;top:0;width:1px;height:100%;background:#1e2535"></div></div><div class="corr-val" style="color:#f0c060">+0.40</div><span style="font-size:11px;color:#5a6478;margin-left:8px">Klassischer Bond-Hedge</span></div>
-    </div>
-  </section>
-
-  <section>
-    <div class="sec-label">06 · Regelwerk</div>
-    <h2>Der VIX-gestützte Trend-Investitionsrahmen</h2>
-    <p>Das Grundprinzip: Wir folgen dem Trend – aber nur wenn die Marktstruktur es zulässt. Der VIX ist unser Kapitalschutz-Filter.</p>
+    <div class="sec-label">05 · Regelwerk</div>
+    <h2>Der VIX-gestützte Investitionsrahmen</h2>
     <div class="fw-grid">
-      <div class="fw-box">
-        <h3 style="color:#2ecc71">✓ VIX unter 20 — Invest-Modus</h3>
-        <div class="rule-item"><div class="rule-dot" style="background:#2ecc71"></div><div class="rule-text">Aktienquote 80–100%, Trend vollständig folgen</div></div>
-        <div class="rule-item"><div class="rule-dot" style="background:#2ecc71"></div><div class="rule-text">Momentum-Strategien maximal nutzen</div></div>
-        <div class="rule-item"><div class="rule-dot" style="background:#2ecc71"></div><div class="rule-text">Stopps können weiter gesetzt werden</div></div>
-        <div class="rule-item"><div class="rule-dot" style="background:#2ecc71"></div><div class="rule-text">Rebalancing in Ruhe, kein Handlungsdruck</div></div>
-      </div>
-      <div class="fw-box">
-        <h3 style="color:#f39c12">⚠ VIX 20–25 — Wachsamkeits-Modus</h3>
-        <div class="rule-item"><div class="rule-dot" style="background:#f39c12"></div><div class="rule-text">Aktienquote auf 60–70% reduzieren</div></div>
-        <div class="rule-item"><div class="rule-dot" style="background:#f39c12"></div><div class="rule-text">Stopps enger setzen, Positionsgrößen kleiner</div></div>
-        <div class="rule-item"><div class="rule-dot" style="background:#f39c12"></div><div class="rule-text">Cash-Aufbau beginnen (10–20%)</div></div>
-        <div class="rule-item"><div class="rule-dot" style="background:#f39c12"></div><div class="rule-text">VIX-Trend beobachten: Steigt er weiter?</div></div>
-      </div>
-      <div class="fw-box">
-        <h3 style="color:#e05c3a">✗ VIX 25–35 — Defensiv-Modus</h3>
-        <div class="rule-item"><div class="rule-dot" style="background:#e05c3a"></div><div class="rule-text">Aktienquote 20–40%, nur Qualitätsaktien</div></div>
-        <div class="rule-item"><div class="rule-dot" style="background:#e05c3a"></div><div class="rule-text">Cash / kurzlaufende Anleihen: 40–60%</div></div>
-        <div class="rule-item"><div class="rule-dot" style="background:#e05c3a"></div><div class="rule-text">Gold-Anteil auf 5–15% erhöhen</div></div>
-        <div class="rule-item"><div class="rule-dot" style="background:#e05c3a"></div><div class="rule-text">Keine neuen Long-Positionen bis VIX fällt</div></div>
-      </div>
-      <div class="fw-box">
-        <h3 style="color:#e74c3c">⚡ VIX über 35 — Cash-Modus + Watchlist</h3>
-        <div class="rule-item"><div class="rule-dot" style="background:#e74c3c"></div><div class="rule-text">Aktienquote &lt;20% oder 0% — Cash ist Position</div></div>
-        <div class="rule-item"><div class="rule-dot" style="background:#e74c3c"></div><div class="rule-text">Gold + Dollar als defensive Anker (15–25%)</div></div>
-        <div class="rule-item"><div class="rule-dot" style="background:#e74c3c"></div><div class="rule-text">Watchlist: WAS kaufe ich wenn VIX &lt;30 fällt?</div></div>
-        <div class="rule-item"><div class="rule-dot" style="background:#e74c3c"></div><div class="rule-text">VIX &gt;50 = beste 12-Monats-Einstiegschancen</div></div>
-      </div>
+      <div class="fw-box"><h3 style="color:#2ecc71">✓ VIX unter 20</h3><div class="rule-item"><div class="rule-dot" style="background:#2ecc71"></div><div class="rule-text">80–100% Aktien, Trend folgen</div></div></div>
+      <div class="fw-box"><h3 style="color:#f39c12">⚠ VIX 20–25</h3><div class="rule-item"><div class="rule-dot" style="background:#f39c12"></div><div class="rule-text">60–70% Aktien, engere Stopps</div></div></div>
+      <div class="fw-box"><h3 style="color:#e05c3a">✗ VIX 25–35</h3><div class="rule-item"><div class="rule-dot" style="background:#e05c3a"></div><div class="rule-text">20–40% Aktien, defensiv</div></div></div>
+      <div class="fw-box"><h3 style="color:#e74c3c">⚡ VIX über 35</h3><div class="rule-item"><div class="rule-dot" style="background:#e74c3c"></div><div class="rule-text">&lt;20% Aktien, Watchlist bauen</div></div></div>
     </div>
-  </section>
-
-  <section>
-    <div class="sec-label">07 · Das Paradox</div>
-    <h2>Warum hoher VIX langfristig bullisch ist</h2>
-    <p>Der VIX ist ein <strong style="color:#f0c060">Kontraindikator für langfristige Returns</strong>, aber ein valides Warnsignal für kurzfristige Verluste. Die höchsten 12-Monats-Returns werden erzielt wenn der VIX extrem hoch ist – also während der größten Angst.</p>
-    <p>Der praktische Schluss: Wir verlassen den Markt bei hohem VIX um Drawdowns zu vermeiden – und kehren aggressiv zurück wenn der VIX wieder unter 30 fällt und die Kurse noch nicht normalisiert haben.</p>
-    <div class="disclaimer">
-      <strong style="color:#e05c3a">Wichtiger Hinweis:</strong> Diese Analyse dient der Finanzbildung und stellt keine individuelle Anlageberatung dar. Historische Muster wiederholen sich nicht mit Sicherheit.
-    </div>
+    <div class="disclaimer"><strong style="color:#e05c3a">Wichtiger Hinweis:</strong> Diese Analyse dient der Finanzbildung und stellt keine individuelle Anlageberatung dar.</div>
   </section>
 </div>
-
 <script>
 (function() {
-  var sSlider = document.getElementById('sSlider');
-  var sVal = document.getElementById('sVal');
-  var sAlert = document.getElementById('sAlert');
-  var regimes = [
-    {max:15,label:'KOMFORT-ZONE (VIX < 15)',desc:'Optimale Bedingungen. Trend vollständig folgen.',color:'rgba(46,204,113,0.1)',border:'rgba(46,204,113,0.3)',tc:'#7de8a4',eq:'80–100% Aktien',eqD:'Vollständig investiert',ca:'0–15% Cash',caD:'Nur Liquiditätsreserve',al:'0–5% Alternativen',alD:'Optional kleiner Gold-Anteil'},
-    {max:20,label:'NIEDRIGER NORMALBEREICH (15–20)',desc:'Gut investierbar. Stopps aktiv halten.',color:'rgba(46,204,113,0.08)',border:'rgba(46,204,113,0.2)',tc:'#a8e8b4',eq:'70–85% Aktien',eqD:'Qualitätstitel bevorzugen',ca:'10–25% Cash',caD:'Geldmarkt oder kurzl. Anleihen',al:'5–10% Alternativen',alD:'Gold als Anker sinnvoll'},
-    {max:25,label:'NORMALBEREICH (20–25)',desc:'Erhöhte Aufmerksamkeit. Risiko-Management aktiv halten.',color:'rgba(243,156,18,0.1)',border:'rgba(243,156,18,0.3)',tc:'#f8c56b',eq:'60–75% Aktien',eqD:'Enge Stopps, kleinere Positionen',ca:'20–30% Cash',caD:'Geldmarkt aufbauen',al:'5–15% Alternativen',alD:'Gold + kleiner BTC möglich'},
-    {max:30,label:'ERHÖHTE SPANNUNG (25–30)',desc:'Vorsicht. Markt instabil. Defensive Positionierung.',color:'rgba(243,156,18,0.12)',border:'rgba(243,156,18,0.4)',tc:'#fad080',eq:'40–55% Aktien',eqD:'Nur Qualität, enge Stopps',ca:'30–45% Cash',caD:'Cash-Aufbau, sichere Häfen',al:'10–20% Alternativen',alD:'Gold erhöhen, BTC reduzieren'},
-    {max:35,label:'STRESS-ZONE (30–35)',desc:'Rotiere defensiv. Kapitalschutz hat Vorrang.',color:'rgba(224,92,58,0.1)',border:'rgba(224,92,58,0.3)',tc:'#f09070',eq:'20–40% Aktien',eqD:'Defensivtitel, enge Stopps',ca:'40–60% Cash',caD:'Cash + Treasuries',al:'15–25% Alternativen',alD:'Gold priorisieren'},
-    {max:50,label:'KRISE (35–50)',desc:'Verteidigungs-Modus. Cash ist Position.',color:'rgba(231,76,60,0.12)',border:'rgba(231,76,60,0.35)',tc:'#f08080',eq:'<20% Aktien',eqD:'Nur krisenresistente Titel',ca:'50–70% Cash',caD:'Cash + sichere Staatsanleihen',al:'15–25% Alternativen',alD:'Gold als primärer Hedge'},
-    {max:999,label:'PANIK / SYSTEMKRISE (> 50)',desc:'⚡ Historisch beste Langzeit-Einstiegschance. Kurzfristig extrem gefährlich.',color:'rgba(231,76,60,0.15)',border:'rgba(231,76,60,0.5)',tc:'#ff9090',eq:'0–10% Aktien',eqD:'Fast alles raus. Watchlist!',ca:'60–80% Cash',caD:'Cash, Gold, Dollar',al:'20–30% Alternativen',alD:'Gold maximal, kein BTC'}
-  ];
-  function update() {
-    var val = parseInt(sSlider.value);
-    sVal.textContent = val;
-    var col = val<15?'#2ecc71':val<20?'#27ae60':val<25?'#f39c12':val<35?'#e05c3a':'#e74c3c';
-    sVal.style.color = col;
-    var r = regimes.find(function(x){return val<=x.max});
-    sAlert.style.background=r.color; sAlert.style.borderColor=r.border; sAlert.style.color=r.tc;
-    sAlert.textContent='Regime: '+r.label+' · '+r.desc;
+  var s = document.getElementById('sSlider'), v = document.getElementById('sVal'), a = document.getElementById('sAlert');
+  var R = [{max:15,l:'KOMFORT-ZONE',d:'Optimal.',c:'rgba(46,204,113,0.1)',b:'rgba(46,204,113,0.3)',t:'#7de8a4',eq:'80–100%',eqD:'Voll investiert',ca:'0–15%',caD:'Reserve',al:'0–5%',alD:'Optional Gold'},
+    {max:20,l:'NIEDRIGER NORMAL',d:'Gut.',c:'rgba(46,204,113,0.08)',b:'rgba(46,204,113,0.2)',t:'#a8e8b4',eq:'70–85%',eqD:'Qualität',ca:'10–25%',caD:'Geldmarkt',al:'5–10%',alD:'Gold'},
+    {max:25,l:'NORMAL',d:'Aufmerksam.',c:'rgba(243,156,18,0.1)',b:'rgba(243,156,18,0.3)',t:'#f8c56b',eq:'60–75%',eqD:'Enge Stopps',ca:'20–30%',caD:'Aufbauen',al:'5–15%',alD:'Gold+BTC'},
+    {max:30,l:'ERHÖHTE SPANNUNG',d:'Vorsicht.',c:'rgba(243,156,18,0.12)',b:'rgba(243,156,18,0.4)',t:'#fad080',eq:'40–55%',eqD:'Nur Qualität',ca:'30–45%',caD:'Cash hoch',al:'10–20%',alD:'Gold hoch'},
+    {max:35,l:'STRESS',d:'Defensiv.',c:'rgba(224,92,58,0.1)',b:'rgba(224,92,58,0.3)',t:'#f09070',eq:'20–40%',eqD:'Defensiv',ca:'40–60%',caD:'Treasuries',al:'15–25%',alD:'Gold'},
+    {max:50,l:'KRISE',d:'Cash.',c:'rgba(231,76,60,0.12)',b:'rgba(231,76,60,0.35)',t:'#f08080',eq:'<20%',eqD:'Krisenresist.',ca:'50–70%',caD:'Staatsanleihen',al:'15–25%',alD:'Gold-Hedge'},
+    {max:999,l:'PANIK',d:'Watchlist!',c:'rgba(231,76,60,0.15)',b:'rgba(231,76,60,0.5)',t:'#ff9090',eq:'0–10%',eqD:'Raus!',ca:'60–80%',caD:'Cash+Gold',al:'20–30%',alD:'Max Gold'}];
+  function u() {
+    var val=+s.value; v.textContent=val;
+    var col=val<15?'#2ecc71':val<20?'#27ae60':val<25?'#f39c12':val<35?'#e05c3a':'#e74c3c'; v.style.color=col;
+    var r=R.find(x=>val<=x.max); a.style.background=r.c; a.style.borderColor=r.b; a.style.color=r.t;
+    a.textContent='Regime: '+r.l+' · '+r.d;
     document.getElementById('sEq').textContent=r.eq; document.getElementById('sEqD').textContent=r.eqD;
     document.getElementById('sCa').textContent=r.ca; document.getElementById('sCaD').textContent=r.caD;
     document.getElementById('sAl').textContent=r.al; document.getElementById('sAlD').textContent=r.alD;
-    var pct=((val-8)/(80-8))*100;
-    sSlider.style.background='linear-gradient(to right,'+col+' '+pct+'%,#1e2535 '+pct+'%)';
+    s.style.background='linear-gradient(to right,'+col+' '+((val-8)/72*100)+'%,#1e2535 '+((val-8)/72*100)+'%)';
   }
-  sSlider.addEventListener('input',update); update();
+  s.addEventListener('input',u); u();
 })();
 </script>
 </div>
 </div>
 
-</div><!-- /w -->
+</div>
 
 <script>
 function showTab(name) {
@@ -624,8 +492,8 @@ function showTab(name) {
 
 <script>
 const gc='rgba(112,144,184,0.2)',tc='#7090b8';
-const vixDates=["2025-12-29", "2025-12-30", "2025-12-31", "2026-01-02", "2026-01-05", "2026-01-06", "2026-01-07", "2026-01-08", "2026-01-09", "2026-01-12", "2026-01-13", "2026-01-14", "2026-01-15", "2026-01-16", "2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20", "2026-02-23", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27"],vixVals=[14.2, 14.33, 14.95, 14.51, 14.9, 14.75, 15.38, 15.45, 14.49, 15.12, 15.98, 16.75, 15.84, 15.86, 20.09, 16.9, 15.64, 16.09, 16.15, 16.35, 16.35, 16.88, 17.44, 16.34, 18.0, 18.64, 21.77, 20.37, 17.36, 17.79, 17.65, 20.82, 20.6, 20.29, 19.62, 20.23, 19.09, 21.01, 19.55, 17.93, 18.63, 19.86, 21.44, 23.57, 21.15, 23.75, 29.49, 25.5, 24.93, 24.23, 27.29, 27.19, 23.51, 22.37, 25.09, 24.06, 26.78, 26.15, 26.95, 25.33, 27.44, 31.05],ma10=[null, null, null, null, null, null, null, null, null, 14.81, 14.99, 15.23, 15.32, 15.45, 15.97, 16.19, 16.21, 16.28, 16.44, 16.56, 16.6, 16.61, 16.77, 16.82, 16.61, 16.79, 17.4, 17.83, 17.95, 18.09, 18.22, 18.62, 18.93, 19.33, 19.49, 19.65, 19.38, 19.45, 19.67, 19.68, 19.78, 19.68, 19.77, 20.09, 20.25, 20.6, 21.64, 22.09, 22.62, 23.25, 24.12, 24.85, 25.06, 24.94, 25.34, 25.37, 25.1, 25.16, 25.36, 25.47, 25.49, 25.87],ma20=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 15.69, 15.79, 15.92, 16.05, 16.14, 16.29, 16.49, 16.81, 17.05, 17.2, 17.33, 17.41, 17.62, 17.85, 18.08, 18.05, 18.22, 18.39, 18.64, 18.81, 18.89, 19.0, 19.15, 19.35, 19.71, 19.87, 20.12, 20.51, 20.77, 21.15, 21.47, 21.95, 22.27, 22.41, 22.52, 22.79, 22.98, 23.37, 23.62, 23.99, 24.36, 24.8, 25.36],bbUp=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 18.3, 18.32, 18.39, 18.56, 18.55, 18.77, 19.06, 20.24, 20.77, 20.72, 20.72, 20.74, 21.26, 21.63, 21.88, 21.81, 22.05, 22.04, 22.3, 22.29, 22.21, 22.1, 22.11, 22.36, 22.93, 23.04, 23.68, 25.98, 26.67, 27.1, 27.36, 28.1, 28.81, 28.93, 28.96, 29.18, 29.28, 29.6, 29.87, 30.1, 29.78, 29.66, 30.4],bbLo=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 13.08, 13.27, 13.45, 13.53, 13.72, 13.82, 13.91, 13.37, 13.33, 13.67, 13.94, 14.08, 13.97, 14.08, 14.27, 14.3, 14.39, 14.74, 14.98, 15.32, 15.57, 15.9, 16.19, 16.34, 16.49, 16.7, 16.57, 15.04, 14.86, 15.19, 15.58, 15.8, 15.72, 15.89, 16.07, 16.4, 16.69, 17.13, 17.37, 17.89, 18.94, 19.94, 20.33];
-const vvixDates=["2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27"],vvixVals=[113.44, 116.02, 106.94, 115.93, 140.44, 122.6, 125.36, 122.49, 130.18, 131.05, 116.78, 110.55, 126.5, 118.09, 126.28, 122.82, 124.14, 119.37, 124.43, 133.18];
+const vixDates=["2025-12-31", "2026-01-02", "2026-01-05", "2026-01-06", "2026-01-07", "2026-01-08", "2026-01-09", "2026-01-12", "2026-01-13", "2026-01-14", "2026-01-15", "2026-01-16", "2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20", "2026-02-23", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-30"],vixVals=[14.95, 14.51, 14.9, 14.75, 15.38, 15.45, 14.49, 15.12, 15.98, 16.75, 15.84, 15.86, 20.09, 16.9, 15.64, 16.09, 16.15, 16.35, 16.35, 16.88, 17.44, 16.34, 18.0, 18.64, 21.77, 20.37, 17.36, 17.79, 17.65, 20.82, 20.6, 20.29, 19.62, 20.23, 19.09, 21.01, 19.55, 17.93, 18.63, 19.86, 21.44, 23.57, 21.15, 23.75, 29.49, 25.5, 24.93, 24.23, 27.29, 27.19, 23.51, 22.37, 25.09, 24.06, 26.78, 26.15, 26.95, 25.33, 27.44, 31.05, 30.61],ma10=[null, null, null, null, null, null, null, null, null, 15.23, 15.32, 15.45, 15.97, 16.19, 16.21, 16.28, 16.44, 16.56, 16.6, 16.61, 16.77, 16.82, 16.61, 16.79, 17.4, 17.83, 17.95, 18.09, 18.22, 18.62, 18.93, 19.33, 19.49, 19.65, 19.38, 19.45, 19.67, 19.68, 19.78, 19.68, 19.77, 20.09, 20.25, 20.6, 21.64, 22.09, 22.62, 23.25, 24.12, 24.85, 25.06, 24.94, 25.34, 25.37, 25.1, 25.16, 25.36, 25.47, 25.49, 25.87, 26.58],ma20=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 15.92, 16.05, 16.14, 16.29, 16.49, 16.81, 17.05, 17.2, 17.33, 17.41, 17.62, 17.85, 18.08, 18.05, 18.22, 18.39, 18.64, 18.81, 18.89, 19.0, 19.15, 19.35, 19.71, 19.87, 20.12, 20.51, 20.77, 21.15, 21.47, 21.95, 22.27, 22.41, 22.52, 22.79, 22.98, 23.37, 23.62, 23.99, 24.36, 24.8, 25.36, 25.82],bbUp=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 18.39, 18.56, 18.55, 18.77, 19.06, 20.24, 20.77, 20.72, 20.72, 20.74, 21.26, 21.63, 21.88, 21.81, 22.05, 22.04, 22.3, 22.29, 22.21, 22.1, 22.11, 22.36, 22.93, 23.04, 23.68, 25.98, 26.67, 27.1, 27.36, 28.1, 28.81, 28.93, 28.96, 29.18, 29.28, 29.6, 29.87, 30.1, 29.78, 29.66, 30.4, 31.02],bbLo=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 13.45, 13.53, 13.72, 13.82, 13.91, 13.37, 13.33, 13.67, 13.94, 14.08, 13.97, 14.08, 14.27, 14.3, 14.39, 14.74, 14.98, 15.32, 15.57, 15.9, 16.19, 16.34, 16.49, 16.7, 16.57, 15.04, 14.86, 15.19, 15.58, 15.8, 15.72, 15.89, 16.07, 16.4, 16.69, 17.13, 17.37, 17.89, 18.94, 19.94, 20.33, 20.62];
+const vvixDates=["2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-30"],vvixVals=[113.44, 116.02, 106.94, 115.93, 140.44, 122.6, 125.36, 122.49, 130.18, 131.05, 116.78, 110.55, 126.5, 118.09, 126.28, 122.82, 124.14, 119.37, 124.43, 133.18, 127.84];
 
 if(vixVals&&vixVals.length>0){
   new Chart(document.getElementById('cvix'),{
