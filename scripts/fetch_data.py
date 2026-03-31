@@ -757,4 +757,9 @@ def main():
     html = build_html(output)
     with open("docs/index.html","w",encoding="utf-8") as f:
         f.write(html)
-    print(f"  VIX: {vix_signals.get('current
+    print(f"  VIX: {vix_signals.get('current_vix','?')} · {vix_signals.get('regime_label','?')}")
+    print(f"  Signal: {reentry.get('signal_label','?')}")
+    print(f"  ✓ data.json + index.html geschrieben")
+
+if __name__ == "__main__":
+    main()
