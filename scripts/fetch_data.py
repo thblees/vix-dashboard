@@ -167,10 +167,13 @@ def build_html(data):
                     if auto else
                     '<span style="font-size:11px;padding:2px 10px;border-radius:3px;background:rgba(240,192,96,0.15);color:#f0c060;border:1px solid rgba(240,192,96,0.4);font-weight:600">⚠ Manuell auf externer Website prüfen</span>')
         return f'''<div style="background:#223058;border:1px solid #2e4070;border-radius:6px;overflow:hidden;margin-bottom:8px">
-  <div style="display:flex;align-items:center;gap:12px;padding:13px 18px;background:rgba(255,255,255,0.03);border-bottom:1px solid #2e4070;flex-wrap:wrap">
-    <div style="width:32px;height:32px;border-radius:50%;background:rgba(112,184,255,0.15);color:#70b8ff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0">{num}</div>
-    <div style="font-size:20px;flex-shrink:0">{icon}</div>
-    <div style="flex:1">
+  <div style="display:flex;align-items:center;gap:10px;padding:13px 18px;background:rgba(255,255,255,0.03);border-bottom:1px solid #2e4070;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+      <div style="width:28px;height:28px;border-radius:50%;background:rgba(112,184,255,0.15);color:#70b8ff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800">{num}</div>
+      <span style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#7090b8;font-weight:600">Bestätigung</span>
+    </div>
+    <div style="font-size:18px;flex-shrink:0">{icon}</div>
+    <div style="flex:1;min-width:200px">
       <div style="font-size:15px;font-weight:700;color:#e8f0ff">{title}</div>
     </div>
     {auto_lbl}
@@ -287,7 +290,7 @@ def build_html(data):
     <span style="font-size:18px">ℹ️</span>
     <span><strong style="color:#c8d8f0">Zur Info:</strong> Diese Bedingungen werden erst aktiv, wenn beide Pflicht-Gates oben erfüllt sind. Du kannst sie aber jetzt schon lesen und verstehen, was geprüft wird.</span>
 </div>'''
-        confirm_style = 'opacity:0.7'
+        confirm_style = ''
     else:
         confirm_banner = '''<div style="padding:12px 16px;background:rgba(77,216,144,0.08);border:1px solid rgba(77,216,144,0.3);border-radius:4px;margin-bottom:12px;font-size:13px;color:#4dd890;line-height:1.7;display:flex;align-items:center;gap:10px">
     <span style="font-size:18px">✅</span>
@@ -754,9 +757,4 @@ def main():
     html = build_html(output)
     with open("docs/index.html","w",encoding="utf-8") as f:
         f.write(html)
-    print(f"  VIX: {vix_signals.get('current_vix','?')} · {vix_signals.get('regime_label','?')}")
-    print(f"  Signal: {reentry.get('signal_label','?')}")
-    print(f"  ✓ data.json + index.html geschrieben")
-
-if __name__ == "__main__":
-    main()
+    print(f"  VIX: {vix_signals.get('current
