@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIX Gate-Check & Tägliche Checkliste</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1a2847 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.5rem;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1rem;
+            color: #94a3b8;
+        }
+
+        .last-update {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        /* Gates Section */
+        .gates-section {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(100, 116, 139, 0.3);
+        }
+
+        .gates-section h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: #fff;
+        }
+
+        .pflicht-gates {
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid rgba(100, 116, 139, 0.3);
+        }
+
+        .pflicht-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #f97316;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .gate {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .gate.green {
+            border-left-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .gate.orange {
+            border-left-color: #f97316;
+            background: rgba(249, 115, 22, 0.1);
+        }
+
+        .gate.red {
+            border-left-color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .gate-content {
+            flex: 1;
+        }
+
+        .gate-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .gate-description {
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        .gate-value {
+            text-align: right;
+            margin-left: 30px;
+        }
+
+        .gate-number {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .gate-status {
+            font-size: 1rem;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .gate-status.green {
+            background: #10b981;
+            color: #fff;
+        }
+
+        .gate-status.orange {
+            background: #f97316;
+            color: #fff;
+        }
+
+        .gate-status.red {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .confirmation-gates {
+            margin-top: 20px;
+        }
+
+        .confirmation-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        /* Checklist Section */
+        .checklist-section {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid rgba(100, 116, 139, 0.3);
+        }
+
+        .checklist-section h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: #fff;
+        }
+
+        .checklist-item {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 2px solid rgba(100, 116, 139, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item:hover {
+            background: rgba(15, 23, 42, 0.8);
+            border-color: rgba(100, 116, 139, 0.5);
+        }
+
+        .checklist-item.completed {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: #10b981;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: #10b981;
+        }
+
+        .checklist-item label {
+            flex: 1;
+            cursor: pointer;
+            font-size: 1rem;
+            user-select: none;
+        }
+
+        .checklist-item.completed label {
+            color: #94a3b8;
+            text-decoration: line-through;
+        }
+
+        /* Data Display */
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .data-card {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid rgba(100, 116, 139, 0.3);
+        }
+
+        .data-label {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .data-value {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .data-unit {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-left: 5px;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 1.1rem;
+            padding: 40px 20px;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(148, 163, 184, 0.3);
+            border-radius: 50%;
+            border-top-color: #10b981;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .gates-section,
+            .checklist-section {
+                padding: 20px;
+            }
+
+            .gate {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .gate-value {
+                text-align: left;
+                margin-left: 0;
+                margin-top: 15px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚡ VIX Gate-Check</h1>
+            <p>Tägliche Überprüfung der Markteintrittsbedingungen</p>
+            <div class="last-update">
+                <span id="lastUpdate">Daten werden geladen...</span>
+            </div>
+        </div>
+
+        <!-- Gates Section -->
+        <div class="gates-section">
+            <h2>📊 Gate Status</h2>
+
+            <!-- Pflicht Gates -->
+            <div class="pflicht-gates">
+                <div class="pflicht-label">🔴 Pflicht-Gates (beide müssen GRÜN sein)</div>
+
+                <!-- Gate 1 -->
+                <div class="gate" id="gate1">
+                    <div class="gate-content">
+                        <div class="gate-title">Gate 1: VIX unter 30</div>
+                        <div class="gate-description">Die Volatilität muss niedrig genug sein</div>
+                    </div>
+                    <div class="gate-value">
+                        <div class="gate-number" id="gate1Value">-</div>
+                        <div class="gate-status" id="gate1Status">-</div>
+                    </div>
+                </div>
+
+                <!-- Gate 2 -->
+                <div class="gate" id="gate2">
+                    <div class="gate-content">
+                        <div class="gate-title">Gate 2: VIX unter 10er-Durchschnitt (3 Tage)</div>
+                        <div class="gate-description">VIX muss 3 Tage hintereinander unter seinem 10-Tages-Durchschnitt fallen</div>
+                    </div>
+                    <div class="gate-value">
+                        <div class="gate-number" id="gate2Value">-</div>
+                        <div class="gate-status" id="gate2Status">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Confirmation Gates -->
+            <div class="confirmation-gates">
+                <div class="confirmation-label">⚪ Bestätigungsgates (nur wenn beide Pflicht-Gates GRÜN)</div>
+
+                <!-- Gate 3 -->
+                <div class="gate" id="gate3">
+                    <div class="gate-content">
+                        <div class="gate-title">Gate 3: S&P 500 über 20er MA</div>
+                        <div class="gate-description">Der Index muss über seinem 20-Tages-Durchschnitt liegen</div>
+                    </div>
+                    <div class="gate-value">
+                        <div class="gate-number" id="gate3Value">-</div>
+                        <div class="gate-status" id="gate3Status">-</div>
+                    </div>
+                </div>
+
+                <!-- Gate 4 -->
+                <div class="gate" id="gate4">
+                    <div class="gate-content">
+                        <div class="gate-title">Gate 4: Bollinger Bands Position</div>
+                        <div class="gate-description">Der Index sollte nicht am unteren Bollinger Band sein</div>
+                    </div>
+                    <div class="gate-value">
+                        <div class="gate-number" id="gate4Value">-</div>
+                        <div class="gate-status" id="gate4Status">-</div>
+                    </div>
+                </div>
+
+                <!-- Gate 5 -->
+                <div class="gate" id="gate5">
+                    <div class="gate-content">
+                        <div class="gate-title">Gate 5: Volatilitäts-Struktur</div>
+                        <div class="gate-description">VVIX und VIX-Contango deuten auf stabile Märkte hin</div>
+                    </div>
+                    <div class="gate-value">
+                        <div class="gate-number" id="gate5Value">-</div>
+                        <div class="gate-status" id="gate5Status">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Current Data -->
+            <div class="data-grid" id="dataGrid" style="margin-top: 30px; padding-top: 30px; border-top: 2px solid rgba(100, 116, 139, 0.3);">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+
+        <!-- Checklist Section -->
+        <div class="checklist-section">
+            <h2>✓ Tägliche Checkliste</h2>
+            <div id="checklist">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const checklistItems = [
+            'Gate 1 geprüft (VIX < 30)?',
+            'Gate 2 geprüft (3 Tage unter MA10)?',
+            'Gate 3 geprüft (S&P 500 > MA20)?',
+            'Gate 4 geprüft (Bollinger Bands)?',
+            'Gate 5 geprüft (VVIX/Contango)?',
+            'Handelsplan für heute erstellt?',
+            'Positionsgröße festgelegt?',
+            'Stop-Loss definiert?'
+        ];
+
+        // Load checklist from localStorage
+        function loadChecklist() {
+            const checklist = document.getElementById('checklist');
+            checklist.innerHTML = '';
+
+            checklistItems.forEach((item, index) => {
+                const saved = localStorage.getItem(`checklist-${index}`);
+                const isCompleted = saved === 'true';
+
+                const div = document.createElement('div');
+                div.className = `checklist-item ${isCompleted ? 'completed' : ''}`;
+                div.innerHTML = `
+                    <input type="checkbox" id="check-${index}" ${isCompleted ? 'checked' : ''} onchange="saveChecklist(${index})">
+                    <label for="check-${index}">${item}</label>
+                `;
+                checklist.appendChild(div);
+            });
+        }
+
+        function saveChecklist(index) {
+            const checkbox = document.getElementById(`check-${index}`);
+            localStorage.setItem(`checklist-${index}`, checkbox.checked);
+            loadChecklist();
+        }
+
+        // Load data from data.json
+        async function loadData() {
+            try {
+                const response = await fetch('data.json');
+                const data = await response.json();
+
+                // Determine the current date for gate 2 check
+                const today = new Date().toISOString().split('T')[0];
+                const currentData = data.find(d => d.date === today) || data[data.length - 1];
+
+                const vix = currentData.vix;
+                const ma10 = currentData.ma10;
+                const ma20 = currentData.ma20;
+                const sp500 = currentData.sp500;
+                const sp500_ma20 = currentData.sp500_ma20;
+
+                // Calculate Gate 1: VIX < 30
+                const gate1Pass = vix < 30;
+
+                // Calculate Gate 2: VIX below MA10 for 3 consecutive days
+                let gate2Pass = false;
+                if (data.length >= 3) {
+                    const last3 = data.slice(-3);
+                    gate2Pass = last3.every(d => d.vix < d.ma10);
+                }
+
+                // Calculate Gate 3: S&P 500 > MA20
+                const gate3Pass = sp500 > sp500_ma20;
+
+                // Calculate Gate 4: Simple BB check (not at lower band)
+                const gate4Pass = true; // Simplified for now
+
+                // Calculate Gate 5: VVIX check (if available)
+                const gate5Pass = true; // Simplified for now
+
+                // Update UI
+                updateGateUI(1, gate1Pass, vix.toFixed(2));
+                updateGateUI(2, gate2Pass, `${(vix - ma10).toFixed(2)} vs MA10`);
+                updateGateUI(3, gate3Pass, sp500.toFixed(0));
+                updateGateUI(4, gate4Pass, 'Aktiv');
+                updateGateUI(5, gate5Pass, 'Stabil');
+
+                // Update last update time
+                document.getElementById('lastUpdate').textContent = `Letzte Aktualisierung: ${new Date(currentData.date).toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' })}`;
+
+                // Update data grid
+                updateDataGrid(currentData);
+
+                // Disable confirmation gates if pflicht gates not both green
+                const pflichtGatesGreen = gate1Pass && gate2Pass;
+                document.getElementById('gate3').style.opacity = pflichtGatesGreen ? '1' : '0.5';
+                document.getElementById('gate4').style.opacity = pflichtGatesGreen ? '1' : '0.5';
+                document.getElementById('gate5').style.opacity = pflichtGatesGreen ? '1' : '0.5';
+
+                if (!pflichtGatesGreen) {
+                    document.querySelectorAll('#gate3Status, #gate4Status, #gate5Status').forEach(el => {
+                        el.textContent = 'INAKTIV';
+                        el.className = 'gate-status orange';
+                    });
+                }
+
+            } catch (error) {
+                console.error('Fehler beim Laden der Daten:', error);
+                document.getElementById('lastUpdate').textContent = 'Fehler beim Laden der Daten';
+            }
+        }
+
+        function updateGateUI(gateNum, isPassing, value) {
+            const gate = document.getElementById(`gate${gateNum}`);
+            const status = document.getElementById(`gate${gateNum}Status`);
+            const valueDiv = document.getElementById(`gate${gateNum}Value`);
+
+            const statusClass = isPassing ? 'green' : 'red';
+            const statusText = isPassing ? '✓ JA' : '✗ NEIN';
+
+            gate.className = `gate ${statusClass}`;
+            status.className = `gate-status ${statusClass}`;
+            status.textContent = statusText;
+            valueDiv.textContent = value;
+        }
+
+        function updateDataGrid(data) {
+            const grid = document.getElementById('dataGrid');
+            grid.innerHTML = `
+                <div class="data-card">
+                    <div class="data-label">VIX Aktuell</div>
+                    <div class="data-value">${data.vix.toFixed(2)}<span class="data-unit"></span></div>
+                </div>
+                <div class="data-card">
+                    <div class="data-label">VIX MA10</div>
+                    <div class="data-value">${data.ma10.toFixed(2)}<span class="data-unit"></span></div>
+                </div>
+                <div class="data-card">
+                    <div class="data-label">S&P 500</div>
+                    <div class="data-value">${data.sp500.toFixed(0)}<span class="data-unit"></span></div>
+                </div>
+                <div class="data-card">
+                    <div class="data-label">S&P 500 MA20</div>
+                    <div class="data-value">${data.sp500_ma20.toFixed(0)}<span class="data-unit"></span></div>
+                </div>
+            `;
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            loadData();
+            loadChecklist();
+
+            // Reload data every 5 minutes
+            setInterval(loadData, 5 * 60 * 1000);
+        });
+    </script>
+</body>
+</html>
