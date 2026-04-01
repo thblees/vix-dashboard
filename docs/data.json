@@ -1,22 +1,22 @@
 {
   "meta": {
-    "updated_at": "2026-03-31 22:01 UTC",
-    "updated_date": "2026-03-31",
+    "updated_at": "2026-04-01 10:45 UTC",
+    "updated_date": "2026-04-01",
     "data_source": "Yahoo Finance via yfinance"
   },
   "vix": {
-    "current_vix": 25.25,
-    "current_ma10": 26.87,
-    "current_ma20": 25.91,
-    "current_bb_upper": 31.01,
-    "current_bb_lower": 20.81,
-    "vix_pct_above_ma20": -2.5,
+    "current_vix": 24.82,
+    "current_ma10": 26.84,
+    "current_ma20": 26.09,
+    "current_bb_upper": 30.71,
+    "current_bb_lower": 21.47,
+    "vix_pct_above_ma20": -4.9,
     "vix_30d_max": 31.05,
     "vix_30d_min": 17.93,
-    "regime": "ERHOEHTE_SPANNUNG",
-    "regime_label": "Erh\u00f6hte Spannung",
-    "equity_pct": "40\u201355%",
-    "r1_streak": 1,
+    "regime": "NORMAL",
+    "regime_label": "Normalbereich",
+    "equity_pct": "60\u201375%",
+    "r1_streak": 2,
     "e1_streak": 0,
     "r1_active": false,
     "e1_active": false,
@@ -24,7 +24,6 @@
     "r3_active": true,
     "max_pct_above_ma20_30d": 43.8,
     "chart_dates": [
-      "2025-12-31",
       "2026-01-02",
       "2026-01-05",
       "2026-01-06",
@@ -85,10 +84,10 @@
       "2026-03-26",
       "2026-03-27",
       "2026-03-30",
-      "2026-03-31"
+      "2026-03-31",
+      "2026-04-01"
     ],
     "chart_vix": [
-      14.95,
       14.51,
       14.9,
       14.75,
@@ -149,7 +148,8 @@
       27.44,
       31.05,
       30.61,
-      25.25
+      25.25,
+      24.82
     ],
     "chart_ma10": [
       null,
@@ -161,7 +161,6 @@
       null,
       null,
       null,
-      15.23,
       15.32,
       15.45,
       15.97,
@@ -213,7 +212,8 @@
       25.49,
       25.87,
       26.58,
-      26.87
+      26.87,
+      26.84
     ],
     "chart_ma20": [
       null,
@@ -235,7 +235,6 @@
       null,
       null,
       null,
-      15.92,
       16.05,
       16.14,
       16.29,
@@ -277,7 +276,8 @@
       24.8,
       25.36,
       25.82,
-      25.91
+      25.91,
+      26.09
     ],
     "chart_bb_upper": [
       null,
@@ -299,7 +299,6 @@
       null,
       null,
       null,
-      18.39,
       18.56,
       18.55,
       18.77,
@@ -341,7 +340,8 @@
       29.66,
       30.4,
       31.02,
-      31.01
+      31.01,
+      30.71
     ],
     "chart_bb_lower": [
       null,
@@ -363,7 +363,6 @@
       null,
       null,
       null,
-      13.45,
       13.53,
       13.72,
       13.82,
@@ -405,7 +404,8 @@
       19.94,
       20.33,
       20.62,
-      20.81
+      20.81,
+      21.47
     ]
   },
   "vvix": {
@@ -480,7 +480,7 @@
     "auto_conditions_met": 0,
     "signal": "GATE2_BLOCKED",
     "signal_label": "\ud83d\udfe0 Pflicht-Gate 2 nicht erf\u00fcllt \u2014 VIX noch nicht 3 Tage unter MA10",
-    "action": "VIX ist zwar unter 30, aber noch nicht lange genug unter dem 10-Tage-Durchschnitt (1 von 3 Tagen). Bedingungen 3\u20135 noch nicht relevant. Morgen wieder pr\u00fcfen.",
-    "current_vix": 25.25
+    "action": "VIX ist zwar unter 30, aber noch nicht lange genug unter dem 10-Tage-Durchschnitt (2 von 3 Tagen). Bedingungen 3\u20135 noch nicht relevant. Morgen wieder pr\u00fcfen.",
+    "current_vix": 24.82
   }
 }
