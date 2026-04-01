@@ -757,4 +757,7 @@ def main():
     html = build_html(output)
     with open("docs/index.html","w",encoding="utf-8") as f:
         f.write(html)
-    print(f"  VIX: {vix_signals.get('current
+    print("  VIX update done")
+
+if __name__ == "__main__":
+    main()
