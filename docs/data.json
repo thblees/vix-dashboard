@@ -1,22 +1,22 @@
 {
   "meta": {
-    "updated_at": "2026-04-03 21:55 UTC",
-    "updated_date": "2026-04-03",
+    "updated_at": "2026-04-06 21:57 UTC",
+    "updated_date": "2026-04-06",
     "data_source": "Yahoo Finance via yfinance"
   },
   "vix": {
-    "current_vix": 23.87,
-    "current_ma10": 26.8,
-    "current_ma20": 26.08,
-    "current_bb_upper": 30.71,
-    "current_bb_lower": 21.46,
-    "vix_pct_above_ma20": -8.5,
+    "current_vix": 24.17,
+    "current_ma10": 26.54,
+    "current_ma20": 25.82,
+    "current_bb_upper": 30.22,
+    "current_bb_lower": 21.41,
+    "vix_pct_above_ma20": -6.4,
     "vix_30d_max": 31.05,
     "vix_30d_min": 17.93,
     "regime": "NORMAL",
     "regime_label": "Normalbereich",
     "equity_pct": "60\u201375%",
-    "r1_streak": 3,
+    "r1_streak": 4,
     "e1_streak": 0,
     "r1_active": true,
     "e1_active": false,
@@ -24,7 +24,6 @@
     "r3_active": true,
     "max_pct_above_ma20_30d": 43.8,
     "chart_dates": [
-      "2026-01-05",
       "2026-01-06",
       "2026-01-07",
       "2026-01-08",
@@ -85,10 +84,10 @@
       "2026-03-30",
       "2026-03-31",
       "2026-04-01",
-      "2026-04-02"
+      "2026-04-02",
+      "2026-04-06"
     ],
     "chart_vix": [
-      14.9,
       14.75,
       15.38,
       15.45,
@@ -149,7 +148,8 @@
       30.61,
       25.25,
       24.54,
-      23.87
+      23.87,
+      24.17
     ],
     "chart_ma10": [
       null,
@@ -161,7 +161,6 @@
       null,
       null,
       null,
-      15.45,
       15.97,
       16.19,
       16.21,
@@ -213,7 +212,8 @@
       26.58,
       26.87,
       26.82,
-      26.8
+      26.8,
+      26.54
     ],
     "chart_ma20": [
       null,
@@ -235,7 +235,6 @@
       null,
       null,
       null,
-      16.14,
       16.29,
       16.49,
       16.81,
@@ -277,7 +276,8 @@
       25.82,
       25.91,
       26.08,
-      26.08
+      26.08,
+      25.82
     ],
     "chart_bb_upper": [
       null,
@@ -299,7 +299,6 @@
       null,
       null,
       null,
-      18.55,
       18.77,
       19.06,
       20.24,
@@ -341,7 +340,8 @@
       31.02,
       31.01,
       30.71,
-      30.71
+      30.71,
+      30.22
     ],
     "chart_bb_lower": [
       null,
@@ -363,7 +363,6 @@
       null,
       null,
       null,
-      13.72,
       13.82,
       13.91,
       13.37,
@@ -405,19 +404,16 @@
       20.62,
       20.81,
       21.44,
-      21.46
+      21.46,
+      21.41
     ]
   },
   "vvix": {
-    "current_vvix": 115.33,
-    "vvix_5d_ago": 124.43,
+    "current_vvix": 113.53,
+    "vvix_5d_ago": 133.18,
     "vvix_trend": "f\u00e4llt",
     "r4_active": true,
     "vvix_hist_dates": [
-      "2026-03-03",
-      "2026-03-04",
-      "2026-03-05",
-      "2026-03-06",
       "2026-03-09",
       "2026-03-10",
       "2026-03-11",
@@ -436,13 +432,10 @@
       "2026-03-30",
       "2026-03-31",
       "2026-04-01",
-      "2026-04-02"
+      "2026-04-02",
+      "2026-04-06"
     ],
     "vvix_hist_vals": [
-      116.02,
-      106.94,
-      115.93,
-      140.44,
       122.6,
       125.36,
       122.49,
@@ -461,16 +454,17 @@
       127.84,
       116.05,
       114.83,
-      115.33
+      115.33,
+      113.53
     ]
   },
   "spy": {
-    "current_spy": 6582.7,
-    "spy_ma50": 6783.6,
-    "spy_pct_from_ma50": -3.0,
+    "current_spy": 6611.8,
+    "spy_ma50": 6777.6,
+    "spy_pct_from_ma50": -2.4,
     "spy_30d_min": 6343.7,
-    "days_since_30d_low": 4,
-    "r5_hint": false
+    "days_since_30d_low": 5,
+    "r5_hint": true
   },
   "reentry": {
     "gate1": true,
@@ -478,11 +472,11 @@
     "r1": true,
     "r3": true,
     "r4": true,
-    "r5_hint": false,
-    "auto_conditions_met": 2,
-    "signal": "BUY",
-    "signal_label": "\ud83d\udfe2 Klares Kaufsignal \u2014 Einstieg",
-    "action": "Erste Kauftranche: 20\u201325%. Zweite Tranche in einer Woche wenn Signale stabil bleiben.",
-    "current_vix": 23.87
+    "r5_hint": true,
+    "auto_conditions_met": 3,
+    "signal": "STRONG_BUY",
+    "signal_label": "\ud83d\udfe2 Starkes Kaufsignal \u2014 Aggressiver Einstieg",
+    "action": "40\u201360% sofort kaufen. Rest in 2 Wochen aufbauen. Historisch beste Einstiegschancen.",
+    "current_vix": 24.17
   }
 }
