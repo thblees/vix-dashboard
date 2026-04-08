@@ -755,6 +755,7 @@ def main():
     with open("docs/data.json","w") as f:
         json.dump(output, f, indent=2, default=str)
     html = build_html(output)
+    html = html.replace('</head>', f'<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"></head>')
     with open("docs/index.html","w",encoding="utf-8") as f:
         f.write(html)
     print("  VIX update done")
